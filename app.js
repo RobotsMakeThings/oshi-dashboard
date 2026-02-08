@@ -1,6 +1,6 @@
 // Oshi Dashboard - Real-time Data Fetching
 
-const API_BASE = 'http://138.197.212.247:8080/api';
+const API_BASE = '/api';  // Proxied through Netlify
 const REFRESH_INTERVAL = 10000; // 10 seconds
 
 // Format currency
