@@ -308,6 +308,74 @@ body {
 
 .card-body { padding: 12px 16px 16px; }
 
+/* === CURRENT POSITIONS === */
+.positions-section {
+  grid-column: 2 / 5;
+  margin-bottom: 16px;
+}
+.positions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.no-positions {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+.position-item {
+  display: grid;
+  grid-template-columns: 80px 60px 1fr 80px 80px 90px;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(0, 229, 195, 0.05);
+  border: 1px solid var(--oshi-border);
+  border-radius: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+}
+.position-item:hover {
+  background: rgba(0, 229, 195, 0.1);
+  border-color: var(--oshi-teal);
+}
+.position-asset {
+  font-weight: 700;
+  color: var(--oshi-teal);
+}
+.position-side {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.position-side.yes { background: rgba(57,255,20,0.15); color: var(--profit); }
+.position-side.no { background: rgba(255,59,92,0.15); color: var(--loss); }
+.position-entry, .position-current, .position-size {
+  color: var(--text-secondary);
+}
+.position-pnl {
+  font-weight: 700;
+  text-align: right;
+}
+.position-pnl.positive { color: var(--profit); }
+.position-pnl.negative { color: var(--loss); }
+#positionsBadge {
+  background: rgba(0,229,195,0.15);
+  color: var(--oshi-teal);
+}
+#positionsBadge.has-positions {
+  background: rgba(57,255,20,0.2);
+  color: var(--profit);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
 /* === PNL HERO CARDS === */
 .pnl-row {
   grid-column: 2 / 5;
@@ -715,6 +783,19 @@ body {
       </div>
     </div>
   </aside>
+
+  <!-- CURRENT POSITIONS -->
+  <div class="positions-section card" id="positionsSection">
+    <div class="card-header">
+      <h3>📊 Current Positions</h3>
+      <span class="badge" id="positionsBadge">0 OPEN</span>
+    </div>
+    <div class="card-body">
+      <div id="positionsList" class="positions-list">
+        <div class="no-positions">No current positions</div>
+      </div>
+    </div>
+  </div>
 
   <!-- PNL HERO ROW -->
   <div class="pnl-row">
@@ -1158,6 +1239,32 @@ async function fetchTrades() {
       winRateEl.style.color = winRate >= 50 ? 'var(--profit)' : 'var(--loss)';
     }
     
+    // Update Recent Trades list
+    const tradesListEl = document.getElementById('recentTrades');
+    if (tradesListEl && completedTrades.length > 0) {
+      tradesListEl.innerHTML = completedTrades.slice(0, 8).map(t => {
+        const asset = t.ticker?.includes('BTC') ? 'BTC' : t.ticker?.includes('SOL') ? 'SOL' : 'ETH';
+        const side = (t.side || '').toUpperCase();
+        const resultClass = t.won ? 'win' : 'loss';
+        const result = t.won ? 'WIN' : 'LOSS';
+        const pnl = t.pnl || 0;
+        const pnlPct = t.pnl_pct || 0;
+        const pnlClass = pnl >= 0 ? 'positive' : 'negative';
+        const pnlSign = pnl >= 0 ? '+' : '';
+        const closeType = t.close_type || '';
+        const typeIcon = closeType === 'DETERMINED' ? '⏰' : closeType.includes('EARLY') ? '💰' : '📊';
+        
+        return `
+          <li class="trade-item">
+            <span class="trade-name">${typeIcon} ${asset} ${side} @ ${t.price || 0}¢</span>
+            <span class="trade-result ${resultClass}">${result}</span>
+            <span class="trade-pct">${pnlSign}${pnlPct.toFixed(1)}%</span>
+            <span class="trade-pnl ${pnlClass}">${pnlSign}$${Math.abs(pnl).toFixed(2)}</span>
+          </li>
+        `;
+      }).join('');
+    }
+    
     // Update brain activity streams with recent trades
     updateBrainStreams(trades.slice(0, 5));
     
@@ -1243,11 +1350,58 @@ function updateBrainStreams(trades) {
   }).join('');
 }
 
+// Fetch current positions
+async function fetchPositions() {
+  try {
+    const res = await fetch(`${API_BASE}/positions`);
+    const data = await res.json();
+    
+    const listEl = document.getElementById('positionsList');
+    const badgeEl = document.getElementById('positionsBadge');
+    
+    if (!listEl) return;
+    
+    const positions = data.positions || [];
+    
+    // Update badge
+    if (badgeEl) {
+      badgeEl.textContent = positions.length > 0 ? `${positions.length} OPEN` : '0 OPEN';
+      badgeEl.classList.toggle('has-positions', positions.length > 0);
+    }
+    
+    // Render positions
+    if (positions.length === 0) {
+      listEl.innerHTML = '<div class="no-positions">No current positions</div>';
+      return;
+    }
+    
+    listEl.innerHTML = positions.map(p => {
+      const pnlClass = p.unrealized_pnl >= 0 ? 'positive' : 'negative';
+      const pnlSign = p.unrealized_pnl >= 0 ? '+' : '';
+      return `
+        <div class="position-item">
+          <span class="position-asset">${p.asset}</span>
+          <span class="position-side ${p.side}">${p.side.toUpperCase()}</span>
+          <span class="position-entry">${p.contracts}x @ ${p.entry_price}¢</span>
+          <span class="position-current">Now: ${p.current_price}¢</span>
+          <span class="position-size">$${p.size_usd.toFixed(2)}</span>
+          <span class="position-pnl ${pnlClass}">${pnlSign}$${p.unrealized_pnl.toFixed(2)}</span>
+        </div>
+      `;
+    }).join('');
+    
+  } catch (e) {
+    console.error('Positions fetch failed:', e);
+  }
+}
+
 // Initial fetch and refresh loop
 fetchStatus();
+fetchPositions();
 fetchTrades();
 fetchBrain();
 setInterval(fetchStatus, 15000);  // Every 15s
+setInterval(fetchPositions, 10000); // Every 10s (positions are time-sensitive)
 setInterval(fetchTrades, 30000);  // Every 30s
 setInterval(fetchBrain, 60000);   // Every 60s
 setInterval(updateUptime, 60000); // Update uptime every minute
