@@ -1007,7 +1007,11 @@ body {
 </footer>
 
 <script>
-// Toggle status
+const API_BASE = 'http://138.197.212.247:8080/api';
+let sessionStartTime = null;
+let totalDeposits = 200.49; // Track deposits separately
+
+// Toggle status (manual override)
 function toggleStatus() {
   const track = document.getElementById('toggleTrack');
   const label = document.getElementById('statusLabel');
@@ -1029,9 +1033,7 @@ resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
 class Particle {
-  constructor() {
-    this.reset();
-  }
+  constructor() { this.reset(); }
   reset() {
     this.x = Math.random() * canvas.width;
     this.y = Math.random() * canvas.height;
@@ -1044,7 +1046,7 @@ class Particle {
   update() {
     this.y += this.speedY;
     this.x += this.speedX;
-    if (this.y < -10) this.reset(), this.y = canvas.height + 10;
+    if (this.y < -10) { this.reset(); this.y = canvas.height + 10; }
   }
   draw() {
     ctx.beginPath();
@@ -1053,9 +1055,7 @@ class Particle {
     ctx.fill();
   }
 }
-
 for (let i = 0; i < 60; i++) particles.push(new Particle());
-
 function animateParticles() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   particles.forEach(p => { p.update(); p.draw(); });
@@ -1063,27 +1063,187 @@ function animateParticles() {
 }
 animateParticles();
 
-// Simulate live data updates
-function simulateTicker() {
-  const el = document.getElementById('sessionPnl');
-  const base = 342.50;
-  const fluctuation = (Math.random() - 0.45) * 8;
-  const newVal = base + fluctuation;
-  const sign = newVal >= 0 ? '+' : '';
-  el.textContent = `${sign}$${newVal.toFixed(2)}`;
-  el.className = `pnl-value ${newVal >= 0 ? 'positive' : 'negative'}`;
+// Format time ago
+function timeAgo(dateStr) {
+  const now = new Date();
+  const then = new Date(dateStr);
+  const mins = Math.floor((now - then) / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins} min ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  return `${Math.floor(hrs / 24)}d ago`;
 }
-setInterval(simulateTicker, 3000);
 
-// Uptime counter
-let uptimeMinutes = 263;
+// Calculate uptime from session start
 function updateUptime() {
-  uptimeMinutes++;
-  const h = Math.floor(uptimeMinutes / 60);
-  const m = uptimeMinutes % 60;
+  if (!sessionStartTime) return;
+  const now = new Date();
+  const start = new Date(sessionStartTime);
+  const mins = Math.floor((now - start) / 60000);
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
   document.getElementById('uptime').textContent = `${h}h ${m.toString().padStart(2, '0')}m`;
 }
-setInterval(updateUptime, 60000);
+
+// Fetch status from API
+async function fetchStatus() {
+  try {
+    const res = await fetch(`${API_BASE}/status`);
+    const data = await res.json();
+    
+    // Update balance
+    document.getElementById('walletBalance').textContent = `$${data.balance.toFixed(2)}`;
+    
+    // Update status
+    const label = document.getElementById('statusLabel');
+    const track = document.getElementById('toggleTrack');
+    if (data.running) {
+      label.textContent = 'RUNNING';
+      label.style.color = 'var(--profit)';
+      track?.classList.add('on');
+    } else {
+      label.textContent = 'OFFLINE';
+      label.style.color = 'var(--loss)';
+      track?.classList.remove('on');
+    }
+    
+    // Session start time for uptime
+    if (data.session_started) {
+      sessionStartTime = data.session_started;
+      updateUptime();
+    }
+    
+    // Calculate total P&L (balance - deposits)
+    const totalPnl = data.balance - totalDeposits;
+    const totalPnlEl = document.getElementById('totalPnl');
+    if (totalPnlEl) {
+      const sign = totalPnl >= 0 ? '+' : '';
+      totalPnlEl.textContent = `${sign}$${totalPnl.toFixed(2)}`;
+      totalPnlEl.className = `pnl-value ${totalPnl >= 0 ? 'positive' : 'negative'}`;
+    }
+  } catch (e) {
+    console.error('Status fetch failed:', e);
+  }
+}
+
+// Fetch trades and calculate session P&L + win rate
+async function fetchTrades() {
+  try {
+    const res = await fetch(`${API_BASE}/trades`);
+    const data = await res.json();
+    const trades = data.recent || [];
+    
+    // Calculate session P&L (today's trades only)
+    const today = new Date().toISOString().split('T')[0];
+    const todayTrades = trades.filter(t => t.timestamp?.startsWith(today));
+    const sessionPnl = todayTrades.reduce((sum, t) => sum + (t.pnl || 0), 0);
+    
+    const sessionEl = document.getElementById('sessionPnl');
+    const sign = sessionPnl >= 0 ? '+' : '';
+    sessionEl.textContent = `${sign}$${sessionPnl.toFixed(2)}`;
+    sessionEl.className = `pnl-value ${sessionPnl >= 0 ? 'positive' : 'negative'}`;
+    
+    // Calculate win rate
+    const completedTrades = trades.filter(t => t.won !== undefined);
+    const wins = completedTrades.filter(t => t.won).length;
+    const winRate = completedTrades.length > 0 ? (wins / completedTrades.length * 100) : 0;
+    document.getElementById('winRate').textContent = `${winRate.toFixed(1)}%`;
+    document.getElementById('winRate').style.color = winRate >= 50 ? 'var(--profit)' : 'var(--loss)';
+    
+    // Update brain activity streams with recent trades
+    updateBrainStreams(trades.slice(0, 5));
+    
+  } catch (e) {
+    console.error('Trades fetch failed:', e);
+  }
+}
+
+// Fetch brain lessons
+async function fetchBrain() {
+  try {
+    const res = await fetch(`${API_BASE}/brain`);
+    const data = await res.json();
+    
+    // Update lessons
+    const lessonsEl = document.getElementById('lessons');
+    if (lessonsEl && data.lessons?.length) {
+      lessonsEl.innerHTML = data.lessons.slice(0, 5).map(l => `
+        <li class="lesson-item ${l.won ? 'win' : 'loss'}">
+          <span class="lesson-time">${timeAgo(l.timestamp)}</span>
+          ${l.key_lesson}
+        </li>
+      `).join('');
+    }
+    
+    // Update auto implementations
+    const implEl = document.getElementById('implementations');
+    if (implEl && data.auto_implementations?.length) {
+      implEl.innerHTML = data.auto_implementations.slice(0, 5).map(i => `
+        <li class="lesson-item impl">
+          <span class="lesson-time">${timeAgo(i.timestamp)}</span>
+          ${i.description || i.key_lesson}
+        </li>
+      `).join('');
+    }
+  } catch (e) {
+    console.error('Brain fetch failed:', e);
+  }
+}
+
+// Update brain streams with trade analysis
+function updateBrainStreams(trades) {
+  const leftStream = document.getElementById('leftBrainStream');
+  const rightStream = document.getElementById('rightBrainStream');
+  
+  if (!leftStream || !rightStream || !trades.length) return;
+  
+  // Left Brain: Analytical view
+  leftStream.innerHTML = trades.map(t => {
+    const action = t.won ? (t.side === 'yes' ? 'buy' : 'sell') : 'skip';
+    const actionClass = t.won ? (t.pnl > 0 ? 'buy' : 'sell') : 'skip';
+    const asset = t.ticker?.includes('BTC') ? 'BTC' : t.ticker?.includes('SOL') ? 'SOL' : 'ETH';
+    return `
+      <div class="thought-entry">
+        <span class="thought-time">${timeAgo(t.timestamp)}</span>
+        <span class="thought-action ${actionClass}">${t.side?.toUpperCase() || 'TRADE'}</span>
+        <div class="thought-text">
+          <strong>${asset} ${t.side?.toUpperCase()}</strong> — ${t.contracts} contracts @ ${t.price}¢. 
+          RSI: ${t.rsi?.toFixed(0) || 'N/A'}, ADX: ${t.adx?.toFixed(0) || 'N/A'}. 
+          Tier: ${t.tier || 'N/A'}, Edge: ${((t.edge || 0) * 100).toFixed(1)}%. 
+          <em>${t.won ? `Won +$${t.pnl?.toFixed(2)} (${t.pnl_pct?.toFixed(0)}%)` : `Lost $${Math.abs(t.pnl || 0).toFixed(2)}`}</em>
+        </div>
+      </div>
+    `;
+  }).join('');
+  
+  // Right Brain: Pattern/sentiment view
+  rightStream.innerHTML = trades.map(t => {
+    const asset = t.ticker?.includes('BTC') ? 'BTC' : t.ticker?.includes('SOL') ? 'SOL' : 'ETH';
+    const sentiment = t.won ? 'Signal confirmed by price action' : 'Market moved against position';
+    return `
+      <div class="thought-entry">
+        <span class="thought-time">${timeAgo(t.timestamp)}</span>
+        <span class="thought-action ${t.won ? 'buy' : 'sell'}">${t.won ? 'HIT' : 'MISS'}</span>
+        <div class="thought-text">
+          <strong>${asset} ${t.close_type || 'CLOSE'}</strong> — ${sentiment}. 
+          ${t.tier === 'S+' ? 'Mispricing opportunity detected.' : ''} 
+          ${t.pnl_pct > 50 ? 'Strong momentum play.' : t.pnl_pct < -50 ? 'Reversal caught us.' : 'Standard execution.'}
+          <em>${t.won ? '✓ Pattern held' : '✗ Pattern failed'}</em>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Initial fetch and refresh loop
+fetchStatus();
+fetchTrades();
+fetchBrain();
+setInterval(fetchStatus, 15000);  // Every 15s
+setInterval(fetchTrades, 30000);  // Every 30s
+setInterval(fetchBrain, 60000);   // Every 60s
+setInterval(updateUptime, 60000); // Update uptime every minute
 </script>
 </body>
 </html>
