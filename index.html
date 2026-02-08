@@ -719,19 +719,19 @@ body {
   <!-- PNL HERO ROW -->
   <div class="pnl-row">
     <div class="pnl-hero balance">
-      <div class="pnl-label">Wallet Balance</div>
-      <div class="pnl-value balance-val" id="walletBalance">$4,847.30</div>
-      <div class="pnl-pct" style="color: var(--text-secondary);" id="balanceNote">Kalshi · USD</div>
+      <div class="pnl-label">Starting Balance</div>
+      <div class="pnl-value balance-val">$192.00</div>
+      <div class="pnl-pct" style="color: var(--text-secondary);">Two-Brain v2 Baseline</div>
     </div>
     <div class="pnl-hero session">
-      <div class="pnl-label">Session P&L</div>
-      <div class="pnl-value positive" id="sessionPnl">+$342.50</div>
-      <div class="pnl-pct positive" id="sessionPct">+18.7%</div>
+      <div class="pnl-label">Current Balance</div>
+      <div class="pnl-value balance-val" id="currentBalance">$192.00</div>
+      <div class="pnl-pct" style="color: var(--text-secondary);">Kalshi · USD</div>
     </div>
     <div class="pnl-hero wallet">
-      <div class="pnl-label">Total Wallet P&L</div>
-      <div class="pnl-value positive" id="walletPnl">+$2,847.30</div>
-      <div class="pnl-pct positive" id="walletPct">+142.4%</div>
+      <div class="pnl-label">P&L</div>
+      <div class="pnl-value" id="totalPnl">$0.00</div>
+      <div class="pnl-pct" id="pnlPct">0.0%</div>
     </div>
   </div>
 
@@ -1009,7 +1009,7 @@ body {
 <script>
 const API_BASE = 'http://138.197.212.247:8080/api';
 let sessionStartTime = null;
-let totalDeposits = 200.49; // Track deposits separately
+const STARTING_BALANCE = 192.00; // Two-Brain v2 baseline
 
 // Toggle status (manual override)
 function toggleStatus() {
@@ -1092,20 +1092,23 @@ async function fetchStatus() {
     const res = await fetch(`${API_BASE}/status`);
     const data = await res.json();
     
-    // Update balance
-    document.getElementById('walletBalance').textContent = `$${data.balance.toFixed(2)}`;
+    // Update current balance
+    const currentBalanceEl = document.getElementById('currentBalance');
+    if (currentBalanceEl) {
+      currentBalanceEl.textContent = `$${data.balance.toFixed(2)}`;
+    }
     
-    // Update status
+    // Update status indicator
     const label = document.getElementById('statusLabel');
     const track = document.getElementById('toggleTrack');
     if (data.running) {
       label.textContent = 'RUNNING';
       label.style.color = 'var(--profit)';
-      track?.classList.add('on');
+      if (track) track.classList.add('on');
     } else {
       label.textContent = 'OFFLINE';
       label.style.color = 'var(--loss)';
-      track?.classList.remove('on');
+      if (track) track.classList.remove('on');
     }
     
     // Session start time for uptime
@@ -1114,42 +1117,46 @@ async function fetchStatus() {
       updateUptime();
     }
     
-    // Calculate total P&L (balance - deposits)
-    const totalPnl = data.balance - totalDeposits;
+    // Calculate P&L (current - starting balance)
+    const pnl = data.balance - STARTING_BALANCE;
+    const pnlPct = (pnl / STARTING_BALANCE) * 100;
+    
     const totalPnlEl = document.getElementById('totalPnl');
+    const pnlPctEl = document.getElementById('pnlPct');
+    
     if (totalPnlEl) {
-      const sign = totalPnl >= 0 ? '+' : '';
-      totalPnlEl.textContent = `${sign}$${totalPnl.toFixed(2)}`;
-      totalPnlEl.className = `pnl-value ${totalPnl >= 0 ? 'positive' : 'negative'}`;
+      const sign = pnl >= 0 ? '+' : '';
+      totalPnlEl.textContent = `${sign}$${pnl.toFixed(2)}`;
+      totalPnlEl.className = `pnl-value ${pnl >= 0 ? 'positive' : 'negative'}`;
+    }
+    
+    if (pnlPctEl) {
+      const sign = pnlPct >= 0 ? '+' : '';
+      pnlPctEl.textContent = `${sign}${pnlPct.toFixed(1)}%`;
+      pnlPctEl.className = `pnl-pct ${pnlPct >= 0 ? 'positive' : 'negative'}`;
     }
   } catch (e) {
     console.error('Status fetch failed:', e);
   }
 }
 
-// Fetch trades and calculate session P&L + win rate
+// Fetch trades and calculate win rate
 async function fetchTrades() {
   try {
     const res = await fetch(`${API_BASE}/trades`);
     const data = await res.json();
     const trades = data.recent || [];
     
-    // Calculate session P&L (today's trades only)
-    const today = new Date().toISOString().split('T')[0];
-    const todayTrades = trades.filter(t => t.timestamp?.startsWith(today));
-    const sessionPnl = todayTrades.reduce((sum, t) => sum + (t.pnl || 0), 0);
-    
-    const sessionEl = document.getElementById('sessionPnl');
-    const sign = sessionPnl >= 0 ? '+' : '';
-    sessionEl.textContent = `${sign}$${sessionPnl.toFixed(2)}`;
-    sessionEl.className = `pnl-value ${sessionPnl >= 0 ? 'positive' : 'negative'}`;
-    
-    // Calculate win rate
+    // Calculate win rate from all trades
     const completedTrades = trades.filter(t => t.won !== undefined);
     const wins = completedTrades.filter(t => t.won).length;
     const winRate = completedTrades.length > 0 ? (wins / completedTrades.length * 100) : 0;
-    document.getElementById('winRate').textContent = `${winRate.toFixed(1)}%`;
-    document.getElementById('winRate').style.color = winRate >= 50 ? 'var(--profit)' : 'var(--loss)';
+    
+    const winRateEl = document.getElementById('winRate');
+    if (winRateEl) {
+      winRateEl.textContent = `${winRate.toFixed(1)}%`;
+      winRateEl.style.color = winRate >= 50 ? 'var(--profit)' : 'var(--loss)';
+    }
     
     // Update brain activity streams with recent trades
     updateBrainStreams(trades.slice(0, 5));
