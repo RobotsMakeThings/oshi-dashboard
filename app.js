@@ -1,194 +1,168 @@
-// Oshi Dashboard - Real-time Data Fetching
+// Oshi Dashboard - Live Data Connection
+const API_BASE = '/api';
+const REFRESH_INTERVAL = 5000;
 
-const API_BASE = '/api';  // Proxied through Netlify
-const REFRESH_INTERVAL = 10000; // 10 seconds
-
-// Format currency
-const formatCurrency = (value) => {
-    const num = parseFloat(value) || 0;
-    const sign = num >= 0 ? '+' : '';
-    return `${sign}$${Math.abs(num).toFixed(2)}`;
+// Format helpers
+const fmt = (v) => {
+    const n = parseFloat(v) || 0;
+    return `${n >= 0 ? '+' : ''}$${Math.abs(n).toFixed(2)}`;
 };
-
-// Format percentage
-const formatPercent = (value) => {
-    const num = parseFloat(value) || 0;
-    const sign = num >= 0 ? '+' : '';
-    return `(${sign}${num.toFixed(1)}%)`;
-};
-
-// Get ticker short name
-const shortTicker = (ticker) => {
-    if (!ticker) return '???';
-    // Extract asset and time from ticker like KXBTC15M-26FEB081615-15
-    const match = ticker.match(/(BTC|SOL|ETH)/);
-    const asset = match ? match[1] : '???';
-    const timeMatch = ticker.match(/(\d{4})-/);
-    const time = timeMatch ? timeMatch[1] : '';
+const fmtPct = (v) => `${parseFloat(v) >= 0 ? '+' : ''}${(parseFloat(v) || 0).toFixed(1)}%`;
+const shortTicker = (t) => {
+    if (!t) return '???';
+    const asset = (t.match(/(BTC|SOL|ETH)/) || ['???'])[0];
+    const time = (t.match(/(\d{4})-/) || ['', ''])[1];
     return `${asset} ${time}`;
 };
 
-// Update status badge
+// Update status section
 const updateStatus = (data) => {
-    const badge = document.getElementById('status-badge');
-    const text = badge.querySelector('.status-text');
-    
+    const label = document.getElementById('statusLabel');
     if (data.running) {
-        badge.classList.add('online');
-        badge.classList.remove('offline');
-        text.textContent = 'ONLINE';
+        label.textContent = 'RUNNING';
+        label.style.color = 'var(--profit)';
     } else {
-        badge.classList.add('offline');
-        badge.classList.remove('online');
-        text.textContent = 'OFFLINE';
+        label.textContent = 'OFFLINE';
+        label.style.color = 'var(--loss)';
     }
+};
+
+// Update stats row
+const updateStats = (pnl, trades) => {
+    const session = pnl?.session || {};
+    const wins = session.wins || 0;
+    const losses = session.losses || 0;
+    const total = wins + losses;
     
-    document.getElementById('oshi-market').textContent = data.market || 'Kalshi';
-    document.getElementById('oshi-session').textContent = data.session_name || '-';
+    document.getElementById('winRate').textContent = total > 0 ? `${((wins/total)*100).toFixed(1)}%` : '0%';
+    document.getElementById('tradesToday').textContent = total;
+    document.getElementById('avgReturn').textContent = fmtPct(session.pct / Math.max(total, 1));
+    document.getElementById('activePos').textContent = trades?.active?.length || 0;
+    document.getElementById('streak').textContent = session.streak || '-';
 };
 
 // Update PnL cards
 const updatePnL = (data) => {
-    const session = data.session || {};
-    const wallet = data.wallet || {};
+    const session = data?.session || {};
+    const wallet = data?.wallet || {};
     
-    // Session PnL
-    const sessionPnlEl = document.getElementById('session-pnl');
-    sessionPnlEl.textContent = formatCurrency(session.pnl);
-    sessionPnlEl.className = `pnl-value ${session.pnl >= 0 ? 'positive' : 'negative'}`;
-    document.getElementById('session-pct').textContent = formatPercent(session.pct);
-    document.getElementById('session-wins').textContent = `${session.wins || 0}W`;
-    document.getElementById('session-losses').textContent = `${session.losses || 0}L`;
-    document.getElementById('session-wr').textContent = `(${session.win_rate || 0}%)`;
+    const sPnl = document.getElementById('sessionPnl');
+    sPnl.textContent = fmt(session.pnl);
+    sPnl.className = `pnl-value ${(session.pnl || 0) >= 0 ? 'positive' : 'negative'}`;
     
-    // Wallet PnL
-    const walletPnlEl = document.getElementById('wallet-pnl');
-    walletPnlEl.textContent = formatCurrency(wallet.pnl);
-    walletPnlEl.className = `pnl-value ${wallet.pnl >= 0 ? 'positive' : 'negative'}`;
-    document.getElementById('wallet-pct').textContent = formatPercent(wallet.pct);
-    document.getElementById('wallet-balance').textContent = `$${(wallet.balance || 0).toFixed(2)}`;
+    const sPct = document.getElementById('sessionPct');
+    sPct.textContent = fmtPct(session.pct);
+    sPct.className = `pnl-pct ${(session.pct || 0) >= 0 ? 'positive' : 'negative'}`;
+    
+    const wPnl = document.getElementById('walletPnl');
+    wPnl.textContent = fmt(wallet.pnl);
+    wPnl.className = `pnl-value ${(wallet.pnl || 0) >= 0 ? 'positive' : 'negative'}`;
+    
+    const wPct = document.getElementById('walletPct');
+    wPct.textContent = fmtPct(wallet.pct);
+    wPct.className = `pnl-pct ${(wallet.pct || 0) >= 0 ? 'positive' : 'negative'}`;
 };
 
-// Update trades list
+// Update recent trades
 const updateTrades = (data) => {
-    const container = document.getElementById('trades-list');
-    const trades = data.recent || [];
+    const container = document.getElementById('recentTrades');
+    const trades = data?.recent || [];
     
-    if (trades.length === 0) {
-        container.innerHTML = '<div class="empty">No trades yet</div>';
+    if (!trades.length) {
+        container.innerHTML = '<li class="trade-item">No trades yet</li>';
         return;
     }
     
-    container.innerHTML = trades.slice(0, 15).map(trade => {
-        const side = (trade.side || 'yes').toLowerCase();
-        const won = trade.won;
-        const pnl = trade.pnl || 0;
-        const pnlPct = trade.pnl_pct || 0;
-        
+    container.innerHTML = trades.slice(0, 10).map(t => {
+        const side = (t.side || 'yes').toUpperCase();
+        const won = t.won;
+        const pnl = t.pnl || 0;
+        const cls = won === true ? 'win' : won === false ? 'loss' : 'open';
         return `
-            <div class="trade-item">
-                <div class="trade-info">
-                    <span class="trade-side ${side}">${side.toUpperCase()}</span>
-                    <span class="trade-ticker">${shortTicker(trade.ticker)}</span>
-                </div>
-                <div class="trade-result">
-                    <div class="trade-pnl ${won ? 'win' : won === false ? 'loss' : ''}">${won === null ? 'OPEN' : formatCurrency(pnl)}</div>
-                    <div class="trade-pct">${won !== null ? formatPercent(pnlPct) : '@' + trade.price + '¢'}</div>
-                </div>
-            </div>
+            <li class="trade-item ${cls}">
+                <span class="trade-side ${side.toLowerCase()}">${side}</span>
+                <span class="trade-name">${shortTicker(t.ticker)}</span>
+                <span class="trade-result">${won === null ? 'OPEN' : (won ? 'WIN' : 'LOSS')}</span>
+                <span class="trade-pct">${won !== null ? fmtPct(t.pnl_pct) : '@' + t.price + '¢'}</span>
+                <span class="trade-pnl ${pnl >= 0 ? 'positive' : 'negative'}">${won !== null ? fmt(pnl) : '-'}</span>
+            </li>
         `;
     }).join('');
 };
 
-// Update leaderboard
+// Update leaderboards
 const updateLeaderboard = (data) => {
-    const renderBoard = (containerId, trades, isTop) => {
-        const container = document.getElementById(containerId);
-        
-        if (!trades || trades.length === 0) {
-            container.innerHTML = '<div class="empty">No trades yet</div>';
+    const render = (id, items) => {
+        const el = document.getElementById(id);
+        if (!items?.length) {
+            el.innerHTML = '<li class="leader-item">No data</li>';
             return;
         }
-        
-        container.innerHTML = trades.map((trade, idx) => {
-            const pnl = trade.pnl || 0;
-            const rank = isTop ? idx + 1 : trades.length - idx;
-            
+        el.innerHTML = items.slice(0, 5).map((t, i) => {
+            const pnl = t.pnl || 0;
+            const rankCls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
             return `
-                <div class="board-item">
-                    <span class="rank">#${idx + 1}</span>
-                    <span class="ticker">${shortTicker(trade.ticker)}</span>
-                    <span class="pnl ${pnl >= 0 ? 'positive' : 'negative'}">${formatCurrency(pnl)}</span>
-                </div>
+                <li class="leader-item">
+                    <span class="rank ${rankCls}">${i + 1}</span>
+                    <span class="trade-name">${shortTicker(t.ticker)}</span>
+                    <span class="trade-pct">${fmtPct(t.pnl_pct)}</span>
+                    <span class="trade-pnl ${pnl >= 0 ? 'positive' : 'negative'}">${fmt(pnl)}</span>
+                </li>
             `;
         }).join('');
     };
     
-    renderBoard('session-top', data.session_top, true);
-    renderBoard('session-bottom', data.session_bottom, false);
-    renderBoard('alltime-top', data.all_time_top, true);
-    renderBoard('alltime-bottom', data.all_time_bottom, false);
+    render('sessionTop', data?.session_top);
+    render('sessionWorst', data?.session_bottom);
+    render('allTimeTop', data?.all_time_top);
+    render('allTimeWorst', data?.all_time_bottom);
 };
 
 // Update brain section
 const updateBrain = (data) => {
-    const renderList = (containerId, items, emptyText) => {
-        const container = document.getElementById(containerId);
-        
-        if (!items || items.length === 0) {
-            container.innerHTML = `<li class="empty">${emptyText}</li>`;
+    const render = (id, items, empty) => {
+        const el = document.getElementById(id);
+        if (!items?.length) {
+            el.innerHTML = `<li class="lesson-item">${empty}</li>`;
             return;
         }
-        
-        container.innerHTML = items.map(item => {
-            const text = typeof item === 'string' ? item : (item.lesson || item.change || item.text || JSON.stringify(item));
-            return `<li>${text}</li>`;
+        el.innerHTML = items.slice(0, 5).map(item => {
+            const text = item.key_lesson || item.lesson || item.change || item.text || JSON.stringify(item);
+            const won = item.won;
+            const cls = won === true ? 'success' : won === false ? 'warning' : '';
+            return `<li class="lesson-item ${cls}">${text}</li>`;
         }).join('');
     };
     
-    renderList('brain-lessons', data.lessons, 'Learning in progress...');
-    renderList('brain-auto', data.auto_implementations, 'No auto-tweaks yet');
-    renderList('brain-manual', data.manual_implementations, 'No manual changes');
+    render('lessons', data?.lessons, 'Learning in progress...');
+    render('implementations', data?.auto_implementations, 'No auto-tweaks');
+    render('manual', data?.manual_implementations, 'No manual changes');
 };
 
-// Main fetch function
+// Main fetch
 const fetchData = async () => {
     try {
-        const response = await fetch(`${API_BASE}/all`);
-        if (!response.ok) throw new Error('API error');
+        const res = await fetch(`${API_BASE}/all`);
+        if (!res.ok) throw new Error('API error');
+        const data = await res.json();
         
-        const data = await response.json();
+        updateStatus(data.status || {});
+        updateStats(data.pnl, data.trades);
+        updatePnL(data.pnl || {});
+        updateTrades(data.trades || {});
+        updateLeaderboard(data.leaderboard || {});
+        updateBrain(data.brain || {});
         
-        updateStatus(data.status);
-        updatePnL(data.pnl);
-        updateTrades(data.trades);
-        updateLeaderboard(data.leaderboard);
-        updateBrain(data.brain);
-        
-        // Update timestamp
-        document.getElementById('last-update').textContent = new Date().toLocaleTimeString();
-        
-    } catch (error) {
-        console.error('Fetch error:', error);
-        const badge = document.getElementById('status-badge');
-        badge.classList.remove('online');
-        badge.classList.add('offline');
-        badge.querySelector('.status-text').textContent = 'API ERROR';
+        console.log('✅ Oshi data updated', new Date().toLocaleTimeString());
+    } catch (err) {
+        console.error('❌ Fetch error:', err);
+        document.getElementById('statusLabel').textContent = 'API ERROR';
+        document.getElementById('statusLabel').style.color = 'var(--loss)';
     }
 };
 
-// Initialize
+// Init on load
 document.addEventListener('DOMContentLoaded', () => {
     fetchData();
     setInterval(fetchData, REFRESH_INTERVAL);
 });
-
-// Add some visual flair - random glitch effect
-setInterval(() => {
-    if (Math.random() < 0.1) {
-        document.body.style.filter = 'hue-rotate(180deg)';
-        setTimeout(() => {
-            document.body.style.filter = 'none';
-        }, 50);
-    }
-}, 5000);

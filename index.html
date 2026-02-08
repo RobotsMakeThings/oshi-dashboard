@@ -820,27 +820,8 @@ function animateParticles() {
 }
 animateParticles();
 
-// Simulate live data updates
-function simulateTicker() {
-  const el = document.getElementById('sessionPnl');
-  const base = 342.50;
-  const fluctuation = (Math.random() - 0.45) * 8;
-  const newVal = base + fluctuation;
-  const sign = newVal >= 0 ? '+' : '';
-  el.textContent = `${sign}$${newVal.toFixed(2)}`;
-  el.className = `pnl-value ${newVal >= 0 ? 'positive' : 'negative'}`;
-}
-setInterval(simulateTicker, 3000);
-
-// Uptime counter
-let uptimeMinutes = 263;
-function updateUptime() {
-  uptimeMinutes++;
-  const h = Math.floor(uptimeMinutes / 60);
-  const m = uptimeMinutes % 60;
-  document.getElementById('uptime').textContent = `${h}h ${m.toString().padStart(2, '0')}m`;
-}
-setInterval(updateUptime, 60000);
+// Uptime is now managed by app.js
 </script>
+<script src="app.js"></script>
 </body>
 </html>
