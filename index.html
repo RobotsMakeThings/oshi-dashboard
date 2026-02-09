@@ -1409,7 +1409,7 @@ body {
         <div class="version-desc">Initial deployment with basic PolyChad framework</div>
         <div class="version-stats">
           <div class="stat">
-            <span class="stat-value positive">+$57.84</span>
+            <span class="stat-value" style="color: var(--loss);">-$347.73</span>
             <span class="stat-label">P&L ($)</span>
           </div>
           <div class="stat">
@@ -1423,9 +1423,9 @@ body {
         </div>
         <div style="padding-top: 10px; border-top: 1px solid var(--oshi-border); margin-top: 10px;">
           <div style="font-size: 11px; color: var(--loss); margin-bottom: 4px;">❌ What went wrong:</div>
-          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">S-tier had 14% WR (worst!), mispricing plays losing, ADX exhaustion not detected</div>
-          <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ What we fixed:</div>
-          <div style="font-size: 12px; color: var(--text-secondary);">Inverted ADX scoring (30-45 = optimal), disabled mispricing, implemented Two-Brain</div>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">S-tier had only 14% WR (worst!), mispricing plays were losing money, no ADX exhaustion detection, system kept fighting trends</div>
+          <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ What we fixed in v2.0:</div>
+          <div style="font-size: 12px; color: var(--text-secondary);">Inverted ADX scoring (30-45 = +2, >65 = -1), disabled mispricing plays entirely, implemented Two-Brain Architecture with S+A tier filter</div>
         </div>
       </div>
       
@@ -1438,7 +1438,7 @@ body {
         <div class="version-desc">Two-Brain Architecture deployed with S+A tier filter</div>
         <div class="version-stats">
           <div class="stat">
-            <span class="stat-value positive">+$153.87</span>
+            <span class="stat-value positive">+$154.30</span>
             <span class="stat-label">P&L ($)</span>
           </div>
           <div class="stat">
@@ -1452,38 +1452,9 @@ body {
         </div>
         <div style="padding-top: 10px; border-top: 1px solid var(--oshi-border); margin-top: 10px;">
           <div style="font-size: 11px; color: var(--loss); margin-bottom: 4px;">❌ What went wrong:</div>
-          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">P&L tracking bugs, market discovery API broke, orderbook NoneType errors</div>
-          <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ What we fixed:</div>
-          <div style="font-size: 12px; color: var(--text-secondary);">Fixed API endpoint, patched orderbook analysis, deployed Slow Brain</div>
-        </div>
-      </div>
-      
-      <!-- V2.1 -->
-      <div class="version-card">
-        <div class="version-header">
-          <span class="version-name">v2.1</span>
-          <span class="version-badge">FEB 9</span>
-        </div>
-        <div class="version-desc">Bug fixes, API repair, Two-Brain fully integrated</div>
-        <div class="version-stats">
-          <div class="stat">
-            <span class="stat-value" style="color: var(--text-secondary);">$0.00</span>
-            <span class="stat-label">P&L ($)</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value" style="color: var(--text-secondary);">0</span>
-            <span class="stat-label">Trades</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value" style="color: var(--text-secondary);">—</span>
-            <span class="stat-label">Win Rate</span>
-          </div>
-        </div>
-        <div style="padding-top: 10px; border-top: 1px solid var(--oshi-border); margin-top: 10px;">
-          <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 4px;">🔧 Maintenance release:</div>
-          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">No trading - focused on fixing critical infrastructure bugs</div>
-          <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ Fixes applied:</div>
-          <div style="font-size: 12px; color: var(--text-secondary);">Markets API endpoint, orderbook NoneType errors, tier filtering</div>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">P&L tracking had bugs (both sides marked as wins), market discovery API broke (404 errors), orderbook NoneType errors blocked trades</div>
+          <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ What we fixed in v2.2:</div>
+          <div style="font-size: 12px; color: var(--text-secondary);">Fixed API endpoint path, patched orderbook analysis, deployed Slow Brain for self-learning, added full version tracking</div>
         </div>
       </div>
       
@@ -1510,9 +1481,9 @@ body {
         </div>
         <div style="padding-top: 10px; border-top: 1px solid var(--oshi-border); margin-top: 10px;">
           <div style="font-size: 11px; color: var(--oshi-teal); margin-bottom: 4px;">🎯 Current focus:</div>
-          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">$1 flat sizing per asset per window to gather more data points</div>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">$1 flat sizing per asset per window to gather more data points while minimizing risk</div>
           <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ New features:</div>
-          <div style="font-size: 12px; color: var(--text-secondary);">Full version tracking, improved leaderboards, Slow Brain analysis</div>
+          <div style="font-size: 12px; color: var(--text-secondary);">Full version tracking, improved leaderboards with % ranking, transparent version history with lessons learned</div>
         </div>
       </div>
       
