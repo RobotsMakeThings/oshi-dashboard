@@ -2043,13 +2043,14 @@ fetchPositions();
 fetchTrades();
 fetchBrain();
 fetchLeaderboard();
-fetchPnL();
+// fetchPnL() disabled - v2.2 P&L uses STARTING_BALANCE from fetchStatus()
+// fetchPnL();
 setInterval(fetchStatus, 15000);  // Every 15s
 setInterval(fetchPositions, 10000); // Every 10s (positions are time-sensitive)
 setInterval(fetchTrades, 30000);  // Every 30s
 setInterval(fetchBrain, 60000);   // Every 60s
 setInterval(fetchLeaderboard, 30000); // Every 30s
-setInterval(fetchPnL, 15000); // Every 15s
+// setInterval(fetchPnL, 15000);
 setInterval(updateUptime, 60000); // Update uptime every minute
 
 // Register Service Worker for PWA
