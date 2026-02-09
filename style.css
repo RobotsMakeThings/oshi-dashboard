@@ -1,9 +1,9 @@
 /* Oshi Dashboard - Anime Cyberpunk Theme */
 
 :root {
-    --bg-dark: #0a0a0f;
-    --bg-card: #12121a;
-    --bg-card-hover: #1a1a25;
+    --bg-dark: #060918;
+    --bg-card: #0d1025;
+    --bg-card-hover: #141835;
     --primary: #00f5ff;
     --secondary: #ff6b9d;
     --accent: #c44569;
@@ -11,8 +11,8 @@
     --danger: #ff4757;
     --warning: #ffa502;
     --text: #e8e8e8;
-    --text-dim: #888;
-    --border: rgba(0, 245, 255, 0.2);
+    --text-dim: #666;
+    --border: rgba(0, 245, 255, 0.15);
     --glow-primary: 0 0 20px rgba(0, 245, 255, 0.5);
     --glow-secondary: 0 0 20px rgba(255, 107, 157, 0.5);
 }
@@ -30,35 +30,18 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* Disable scanlines on mobile for performance */
-.scanlines {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    background: repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.1) 0px,
-        rgba(0, 0, 0, 0.1) 1px,
-        transparent 1px,
-        transparent 2px
-    );
-    z-index: 1000;
-    opacity: 0.3;
-}
-
-.noise {
-    display: none; /* Disable noise on all devices for cleaner look */
+/* Disable effects for cleaner look */
+.scanlines, .noise {
+    display: none;
 }
 
 .container {
-    max-width: 1600px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 16px;
     position: relative;
     z-index: 1;
 }
@@ -68,67 +51,60 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 30px;
-    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(18, 18, 26, 0.8) 100%);
+    padding: 16px 20px;
+    background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    margin-bottom: 20px;
-    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    margin-bottom: 16px;
 }
 
 .logo-section {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
 }
 
 .logo-icon {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 900;
     color: var(--secondary);
     text-shadow: var(--glow-secondary);
-    animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
 }
 
 .logo-text h1 {
     font-family: 'Orbitron', sans-serif;
-    font-size: 2.5rem;
+    font-size: 1.8rem;
     font-weight: 900;
     background: linear-gradient(90deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.1em;
 }
 
 .subtitle {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     color: var(--text-dim);
-    letter-spacing: 0.2em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
 }
 
 .status-badge {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 12px 24px;
+    gap: 8px;
+    padding: 10px 18px;
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid var(--border);
     border-radius: 50px;
     font-family: 'Orbitron', sans-serif;
-    font-size: 0.9rem;
-    letter-spacing: 0.1em;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
 }
 
 .status-dot {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: var(--warning);
     animation: blink 1s ease-in-out infinite;
@@ -153,15 +129,15 @@ body {
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    gap: 16px;
 }
 
 /* Cards */
 .card {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 24px;
+    border-radius: 12px;
+    padding: 20px;
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
@@ -173,16 +149,10 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
+    height: 2px;
     background: linear-gradient(90deg, var(--primary), var(--secondary));
     opacity: 0;
     transition: opacity 0.3s ease;
-}
-
-.card:hover {
-    background: var(--bg-card-hover);
-    border-color: rgba(0, 245, 255, 0.4);
-    transform: translateY(-2px);
 }
 
 .card:hover::before {
@@ -191,10 +161,10 @@ body {
 
 .card h3 {
     font-family: 'Orbitron', sans-serif;
-    font-size: 1rem;
+    font-size: 0.85rem;
     color: var(--primary);
-    margin-bottom: 16px;
-    letter-spacing: 0.1em;
+    margin-bottom: 14px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
@@ -206,7 +176,8 @@ body {
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, var(--bg-card) 0%, rgba(196, 69, 105, 0.1) 100%);
-    border-color: rgba(255, 107, 157, 0.3);
+    border-color: rgba(255, 107, 157, 0.2);
+    padding: 30px;
 }
 
 .oshi-container {
@@ -218,21 +189,15 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(255, 107, 157, 0.2) 0%, transparent 70%);
-    animation: glow-pulse 3s ease-in-out infinite;
-}
-
-@keyframes glow-pulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(255, 107, 157, 0.15) 0%, transparent 70%);
 }
 
 .oshi-avatar {
-    width: 200px;
-    height: 200px;
-    margin: 0 auto 20px;
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 16px;
     position: relative;
     z-index: 1;
 }
@@ -240,27 +205,27 @@ body {
 .oshi-svg {
     width: 100%;
     height: 100%;
-    filter: drop-shadow(0 0 20px rgba(255, 107, 157, 0.5));
+    filter: drop-shadow(0 0 15px rgba(255, 107, 157, 0.4));
 }
 
 .oshi-info h2 {
     font-family: 'Orbitron', sans-serif;
-    font-size: 2rem;
+    font-size: 1.8rem;
     background: linear-gradient(90deg, var(--secondary), var(--primary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
 .oshi-title {
     color: var(--text-dim);
-    font-size: 1rem;
-    margin-bottom: 20px;
+    font-size: 0.9rem;
+    margin-bottom: 16px;
 }
 
 .oshi-stats {
     display: flex;
-    gap: 30px;
+    gap: 24px;
     justify-content: center;
 }
 
@@ -270,15 +235,15 @@ body {
 }
 
 .oshi-stat .label {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: var(--text-dim);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
 }
 
 .oshi-stat .value {
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--primary);
 }
 
@@ -289,62 +254,43 @@ body {
 
 .pnl-value {
     font-family: 'Orbitron', sans-serif;
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: 700;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 }
 
 .pnl-value.positive {
     color: var(--success);
-    text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+    text-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
 }
 
 .pnl-value.negative {
     color: var(--danger);
-    text-shadow: 0 0 20px rgba(255, 71, 87, 0.5);
+    text-shadow: 0 0 15px rgba(255, 71, 87, 0.4);
 }
 
 .pnl-percent {
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: var(--text-dim);
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 .pnl-stats {
+    font-size: 0.9rem;
+}
+
+.pnl-stats .wins { color: var(--success); }
+.pnl-stats .losses { color: var(--danger); }
+.pnl-stats .separator { color: var(--text-dim); margin: 0 4px; }
+.pnl-stats .winrate { color: var(--primary); margin-left: 8px; }
+
+.wallet-balance {
+    margin-top: 8px;
     font-size: 1rem;
 }
 
-.pnl-stats .wins {
-    color: var(--success);
-}
-
-.pnl-stats .losses {
-    color: var(--danger);
-}
-
-.pnl-stats .separator {
-    color: var(--text-dim);
-    margin: 0 5px;
-}
-
-.pnl-stats .winrate {
-    color: var(--primary);
-    margin-left: 10px;
-}
-
-.wallet-balance {
-    margin-top: 10px;
-    font-size: 1.1rem;
-}
-
-.wallet-balance .label {
-    color: var(--text-dim);
-}
-
-.wallet-balance .value {
-    color: var(--primary);
-    font-family: 'Orbitron', sans-serif;
-}
+.wallet-balance .label { color: var(--text-dim); }
+.wallet-balance .value { color: var(--primary); font-family: 'Orbitron', sans-serif; }
 
 /* Trades Card */
 .trades-card {
@@ -352,7 +298,7 @@ body {
 }
 
 .trades-list {
-    max-height: 300px;
+    max-height: 280px;
     overflow-y: auto;
 }
 
@@ -360,82 +306,57 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px;
+    padding: 10px 8px;
     border-bottom: 1px solid var(--border);
-    transition: background 0.2s ease;
 }
 
-.trade-item:hover {
-    background: rgba(0, 245, 255, 0.05);
-}
-
-.trade-item:last-child {
-    border-bottom: none;
-}
+.trade-item:last-child { border-bottom: none; }
 
 .trade-info {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 .trade-side {
-    padding: 4px 10px;
+    padding: 4px 8px;
     border-radius: 4px;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-weight: 600;
     text-transform: uppercase;
 }
 
-.trade-side.yes {
-    background: rgba(0, 255, 136, 0.2);
-    color: var(--success);
-}
-
-.trade-side.no {
-    background: rgba(255, 71, 87, 0.2);
-    color: var(--danger);
-}
+.trade-side.yes { background: rgba(0, 255, 136, 0.15); color: var(--success); }
+.trade-side.no { background: rgba(255, 71, 87, 0.15); color: var(--danger); }
 
 .trade-ticker {
     font-family: 'Orbitron', sans-serif;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: var(--text);
 }
 
-.trade-result {
-    text-align: right;
-}
+.trade-result { text-align: right; }
 
 .trade-pnl {
     font-family: 'Orbitron', sans-serif;
     font-weight: 600;
+    font-size: 0.9rem;
 }
 
-.trade-pnl.win {
-    color: var(--success);
-}
-
-.trade-pnl.loss {
-    color: var(--danger);
-}
+.trade-pnl.win { color: var(--success); }
+.trade-pnl.loss { color: var(--danger); }
 
 .trade-pct {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     color: var(--text-dim);
 }
 
-/* Leaderboard Cards */
-.leaderboard-card {
-    grid-column: span 1;
-}
-
-.leaderboard-card.loser h3 {
-    color: var(--danger);
-}
+/* Leaderboard */
+.leaderboard-card { grid-column: span 1; }
+.leaderboard-card.loser h3 { color: var(--danger); }
 
 .board-list {
-    max-height: 200px;
+    max-height: 180px;
     overflow-y: auto;
 }
 
@@ -443,28 +364,26 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 8px;
+    padding: 8px;
+    border-radius: 6px;
+    margin-bottom: 6px;
     background: rgba(0, 0, 0, 0.2);
 }
 
 .board-item .rank {
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: var(--primary);
-    min-width: 30px;
+    min-width: 24px;
 }
 
-.loser .board-item .rank {
-    color: var(--danger);
-}
+.loser .board-item .rank { color: var(--danger); }
 
 .board-item .ticker {
     flex: 1;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: var(--text);
-    margin-left: 10px;
+    margin-left: 8px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -473,51 +392,40 @@ body {
 .board-item .pnl {
     font-family: 'Orbitron', sans-serif;
     font-weight: 600;
+    font-size: 0.85rem;
 }
 
-.board-item .pnl.positive {
-    color: var(--success);
-}
-
-.board-item .pnl.negative {
-    color: var(--danger);
-}
+.board-item .pnl.positive { color: var(--success); }
+.board-item .pnl.negative { color: var(--danger); }
 
 /* Brain Card */
-.brain-card {
-    grid-column: span 2;
-}
+.brain-card { grid-column: span 2; }
 
-.brain-section {
-    margin-bottom: 20px;
-}
-
-.brain-section:last-child {
-    margin-bottom: 0;
-}
+.brain-section { margin-bottom: 16px; }
+.brain-section:last-child { margin-bottom: 0; }
 
 .brain-section h4 {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--secondary);
-    margin-bottom: 10px;
-    padding-bottom: 5px;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
     border-bottom: 1px solid var(--border);
 }
 
 .brain-section ul {
     list-style: none;
-    max-height: 100px;
+    max-height: 90px;
     overflow-y: auto;
 }
 
 .brain-section li {
-    padding: 8px 12px;
-    font-size: 0.9rem;
+    padding: 6px 10px;
+    font-size: 0.8rem;
     color: var(--text);
     background: rgba(0, 0, 0, 0.2);
-    border-radius: 6px;
-    margin-bottom: 6px;
-    border-left: 3px solid var(--primary);
+    border-radius: 4px;
+    margin-bottom: 4px;
+    border-left: 2px solid var(--primary);
 }
 
 .brain-section li.empty {
@@ -530,47 +438,31 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    margin-top: 20px;
+    padding: 16px;
+    margin-top: 16px;
     border-top: 1px solid var(--border);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--text-dim);
 }
 
-.footer-brand {
-    color: var(--secondary);
-}
+.footer-brand { color: var(--secondary); }
 
 /* Loading & Empty States */
 .loading, .empty {
     text-align: center;
-    padding: 20px;
+    padding: 16px;
     color: var(--text-dim);
     font-style: italic;
 }
 
 /* Scrollbar */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 2px; }
 
-::-webkit-scrollbar-track {
-    background: var(--bg-dark);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--primary);
-    border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--secondary);
-}
-
-/* ==================== */
-/* RESPONSIVE - TABLET  */
-/* ==================== */
+/* ====================== */
+/* TABLET (max-width 1200px) */
+/* ====================== */
 @media (max-width: 1200px) {
     .dashboard-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -579,62 +471,70 @@ body {
     .oshi-card {
         grid-column: span 2;
         grid-row: span 1;
+        padding: 20px;
     }
     
     .oshi-avatar {
-        width: 150px;
-        height: 150px;
+        width: 140px;
+        height: 140px;
     }
 }
 
-/* ==================== */
-/* RESPONSIVE - MOBILE  */
-/* ==================== */
+/* ====================== */
+/* MOBILE (max-width 768px) */
+/* ====================== */
 @media (max-width: 768px) {
-    /* Disable effects for performance */
-    .scanlines {
-        display: none;
+    body {
+        background: #050810;
     }
     
     .container {
-        padding: 12px;
+        padding: 10px;
     }
     
     /* Compact header */
     .header {
         flex-direction: column;
-        gap: 12px;
-        padding: 16px;
+        gap: 10px;
+        padding: 12px 14px;
         text-align: center;
+        border-radius: 10px;
+        margin-bottom: 10px;
     }
     
     .logo-section {
-        flex-direction: column;
-        gap: 8px;
+        flex-direction: row;
+        gap: 10px;
     }
     
     .logo-icon {
-        font-size: 2rem;
+        font-size: 1.6rem;
     }
     
     .logo-text h1 {
-        font-size: 1.5rem;
-        letter-spacing: 0.1em;
+        font-size: 1.3rem;
+        letter-spacing: 0.08em;
     }
     
     .subtitle {
-        font-size: 0.75rem;
+        font-size: 0.65rem;
+        letter-spacing: 0.1em;
     }
     
     .status-badge {
-        padding: 8px 16px;
-        font-size: 0.8rem;
+        padding: 6px 12px;
+        font-size: 0.7rem;
+    }
+    
+    .status-dot {
+        width: 8px;
+        height: 8px;
     }
     
     /* Single column grid */
     .dashboard-grid {
         grid-template-columns: 1fr;
-        gap: 12px;
+        gap: 10px;
     }
     
     .oshi-card, .trades-card, .brain-card {
@@ -643,143 +543,37 @@ body {
     
     /* Compact cards */
     .card {
-        padding: 16px;
-        border-radius: 12px;
+        padding: 14px;
+        border-radius: 10px;
     }
     
     .card h3 {
-        font-size: 0.85rem;
-        margin-bottom: 12px;
+        font-size: 0.75rem;
+        margin-bottom: 10px;
     }
     
-    /* Smaller Oshi on mobile */
+    /* Compact Oshi */
     .oshi-card {
-        padding: 20px;
+        padding: 16px;
+        flex-direction: row;
+        gap: 16px;
+    }
+    
+    .oshi-container {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        text-align: left;
     }
     
     .oshi-avatar {
-        width: 120px;
-        height: 120px;
-        margin-bottom: 12px;
+        width: 80px;
+        height: 80px;
+        margin: 0;
+        flex-shrink: 0;
     }
     
     .oshi-glow {
-        width: 180px;
-        height: 180px;
-    }
-    
-    .oshi-info h2 {
-        font-size: 1.4rem;
-    }
-    
-    .oshi-title {
-        font-size: 0.85rem;
-        margin-bottom: 12px;
-    }
-    
-    .oshi-stats {
-        gap: 20px;
-    }
-    
-    .oshi-stat .label {
-        font-size: 0.7rem;
-    }
-    
-    .oshi-stat .value {
-        font-size: 0.95rem;
-    }
-    
-    /* Compact PnL */
-    .pnl-value {
-        font-size: 2rem;
-    }
-    
-    .pnl-percent {
-        font-size: 1rem;
-    }
-    
-    .pnl-stats {
-        font-size: 0.9rem;
-    }
-    
-    /* Better touch targets for trades */
-    .trade-item {
-        padding: 14px 12px;
-        min-height: 60px;
-    }
-    
-    .trade-side {
-        padding: 6px 10px;
-        font-size: 0.75rem;
-    }
-    
-    .trade-ticker {
-        font-size: 0.8rem;
-    }
-    
-    .trades-list {
-        max-height: 250px;
-    }
-    
-    /* Compact board items */
-    .board-item {
-        padding: 10px 8px;
-    }
-    
-    .board-item .rank {
-        font-size: 1rem;
-        min-width: 25px;
-    }
-    
-    .board-item .ticker {
-        font-size: 0.75rem;
-    }
-    
-    .board-list {
-        max-height: 180px;
-    }
-    
-    /* Brain section */
-    .brain-section ul {
-        max-height: 80px;
-    }
-    
-    .brain-section li {
-        padding: 6px 10px;
-        font-size: 0.8rem;
-    }
-    
-    /* Footer */
-    .footer {
-        flex-direction: column;
-        gap: 8px;
-        padding: 16px;
-        text-align: center;
-        font-size: 0.8rem;
-    }
-}
-
-/* ==================== */
-/* RESPONSIVE - SMALL   */
-/* ==================== */
-@media (max-width: 400px) {
-    .container {
-        padding: 8px;
-    }
-    
-    .header {
-        padding: 12px;
-    }
-    
-    .logo-text h1 {
-        font-size: 1.3rem;
-    }
-    
-    .card {
-        padding: 12px;
-    }
-    
-    .oshi-avatar {
         width: 100px;
         height: 100px;
     }
@@ -788,19 +582,155 @@ body {
         font-size: 1.2rem;
     }
     
+    .oshi-title {
+        font-size: 0.75rem;
+        margin-bottom: 8px;
+    }
+    
+    .oshi-stats {
+        gap: 16px;
+        justify-content: flex-start;
+    }
+    
+    .oshi-stat .label {
+        font-size: 0.6rem;
+    }
+    
+    .oshi-stat .value {
+        font-size: 0.85rem;
+    }
+    
+    /* Compact PnL */
     .pnl-value {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
+    }
+    
+    .pnl-percent {
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+    }
+    
+    .pnl-stats {
+        font-size: 0.8rem;
+    }
+    
+    .wallet-balance {
+        font-size: 0.9rem;
+    }
+    
+    /* Compact trades */
+    .trade-item {
+        padding: 10px 6px;
+    }
+    
+    .trade-side {
+        padding: 3px 6px;
+        font-size: 0.65rem;
+    }
+    
+    .trade-ticker {
+        font-size: 0.7rem;
+    }
+    
+    .trade-pnl {
+        font-size: 0.85rem;
+    }
+    
+    .trades-list {
+        max-height: 200px;
+    }
+    
+    /* Compact leaderboard */
+    .board-item {
+        padding: 6px;
+    }
+    
+    .board-item .rank {
+        font-size: 0.9rem;
+        min-width: 20px;
+    }
+    
+    .board-item .ticker {
+        font-size: 0.7rem;
+    }
+    
+    .board-item .pnl {
+        font-size: 0.8rem;
+    }
+    
+    .board-list {
+        max-height: 150px;
+    }
+    
+    /* Compact brain */
+    .brain-section ul {
+        max-height: 70px;
+    }
+    
+    .brain-section li {
+        padding: 5px 8px;
+        font-size: 0.75rem;
+    }
+    
+    .brain-section h4 {
+        font-size: 0.75rem;
+    }
+    
+    /* Footer */
+    .footer {
+        flex-direction: column;
+        gap: 6px;
+        padding: 12px;
+        text-align: center;
+        font-size: 0.7rem;
+    }
+}
+
+/* ====================== */
+/* SMALL MOBILE (max-width 400px) */
+/* ====================== */
+@media (max-width: 400px) {
+    .container {
+        padding: 8px;
+    }
+    
+    .header {
+        padding: 10px 12px;
+    }
+    
+    .logo-text h1 {
+        font-size: 1.1rem;
+    }
+    
+    .card {
+        padding: 12px;
+    }
+    
+    .oshi-avatar {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .oshi-info h2 {
+        font-size: 1rem;
     }
     
     .oshi-stats {
         flex-wrap: wrap;
-        gap: 12px;
+        gap: 10px;
+    }
+    
+    .pnl-value {
+        font-size: 1.5rem;
     }
 }
 
-/* Pull-to-refresh feel */
-@media (max-width: 768px) {
-    body {
-        overscroll-behavior-y: contain;
+/* Safe area for notched phones */
+@supports (padding-top: env(safe-area-inset-top)) {
+    .container {
+        padding-top: max(10px, env(safe-area-inset-top));
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
+        padding-left: max(10px, env(safe-area-inset-left));
+        padding-right: max(10px, env(safe-area-inset-right));
     }
 }
