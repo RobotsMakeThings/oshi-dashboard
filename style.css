@@ -29,9 +29,10 @@ body {
     color: var(--text);
     min-height: 100vh;
     overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* Scanlines effect */
+/* Disable scanlines on mobile for performance */
 .scanlines {
     position: fixed;
     top: 0;
@@ -51,15 +52,7 @@ body {
 }
 
 .noise {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    opacity: 0.02;
-    z-index: 999;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+    display: none; /* Disable noise on all devices for cleaner look */
 }
 
 .container {
@@ -575,7 +568,9 @@ body {
     background: var(--secondary);
 }
 
-/* Responsive */
+/* ==================== */
+/* RESPONSIVE - TABLET  */
+/* ==================== */
 @media (max-width: 1200px) {
     .dashboard-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -585,24 +580,227 @@ body {
         grid-column: span 2;
         grid-row: span 1;
     }
+    
+    .oshi-avatar {
+        width: 150px;
+        height: 150px;
+    }
 }
 
+/* ==================== */
+/* RESPONSIVE - MOBILE  */
+/* ==================== */
 @media (max-width: 768px) {
+    /* Disable effects for performance */
+    .scanlines {
+        display: none;
+    }
+    
+    .container {
+        padding: 12px;
+    }
+    
+    /* Compact header */
+    .header {
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+        text-align: center;
+    }
+    
+    .logo-section {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .logo-icon {
+        font-size: 2rem;
+    }
+    
+    .logo-text h1 {
+        font-size: 1.5rem;
+        letter-spacing: 0.1em;
+    }
+    
+    .subtitle {
+        font-size: 0.75rem;
+    }
+    
+    .status-badge {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
+    
+    /* Single column grid */
     .dashboard-grid {
         grid-template-columns: 1fr;
+        gap: 12px;
     }
     
     .oshi-card, .trades-card, .brain-card {
         grid-column: span 1;
     }
     
-    .header {
+    /* Compact cards */
+    .card {
+        padding: 16px;
+        border-radius: 12px;
+    }
+    
+    .card h3 {
+        font-size: 0.85rem;
+        margin-bottom: 12px;
+    }
+    
+    /* Smaller Oshi on mobile */
+    .oshi-card {
+        padding: 20px;
+    }
+    
+    .oshi-avatar {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 12px;
+    }
+    
+    .oshi-glow {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .oshi-info h2 {
+        font-size: 1.4rem;
+    }
+    
+    .oshi-title {
+        font-size: 0.85rem;
+        margin-bottom: 12px;
+    }
+    
+    .oshi-stats {
+        gap: 20px;
+    }
+    
+    .oshi-stat .label {
+        font-size: 0.7rem;
+    }
+    
+    .oshi-stat .value {
+        font-size: 0.95rem;
+    }
+    
+    /* Compact PnL */
+    .pnl-value {
+        font-size: 2rem;
+    }
+    
+    .pnl-percent {
+        font-size: 1rem;
+    }
+    
+    .pnl-stats {
+        font-size: 0.9rem;
+    }
+    
+    /* Better touch targets for trades */
+    .trade-item {
+        padding: 14px 12px;
+        min-height: 60px;
+    }
+    
+    .trade-side {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+    }
+    
+    .trade-ticker {
+        font-size: 0.8rem;
+    }
+    
+    .trades-list {
+        max-height: 250px;
+    }
+    
+    /* Compact board items */
+    .board-item {
+        padding: 10px 8px;
+    }
+    
+    .board-item .rank {
+        font-size: 1rem;
+        min-width: 25px;
+    }
+    
+    .board-item .ticker {
+        font-size: 0.75rem;
+    }
+    
+    .board-list {
+        max-height: 180px;
+    }
+    
+    /* Brain section */
+    .brain-section ul {
+        max-height: 80px;
+    }
+    
+    .brain-section li {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
+    
+    /* Footer */
+    .footer {
         flex-direction: column;
-        gap: 15px;
+        gap: 8px;
+        padding: 16px;
         text-align: center;
+        font-size: 0.8rem;
+    }
+}
+
+/* ==================== */
+/* RESPONSIVE - SMALL   */
+/* ==================== */
+@media (max-width: 400px) {
+    .container {
+        padding: 8px;
+    }
+    
+    .header {
+        padding: 12px;
     }
     
     .logo-text h1 {
-        font-size: 2rem;
+        font-size: 1.3rem;
+    }
+    
+    .card {
+        padding: 12px;
+    }
+    
+    .oshi-avatar {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .oshi-info h2 {
+        font-size: 1.2rem;
+    }
+    
+    .pnl-value {
+        font-size: 1.6rem;
+    }
+    
+    .oshi-stats {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+}
+
+/* Pull-to-refresh feel */
+@media (max-width: 768px) {
+    body {
+        overscroll-behavior-y: contain;
     }
 }

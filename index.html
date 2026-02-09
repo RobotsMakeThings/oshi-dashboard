@@ -2,7 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="OSHI">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#00e5c3">
+<meta name="msapplication-TileColor" content="#060918">
+<meta name="application-name" content="OSHI">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>OSHI — Kalshi Prediction Trader</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
@@ -804,8 +813,18 @@ body {
   .lessons-row { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
-  .header { padding: 12px 16px; flex-wrap: wrap; gap: 12px; }
-  .dashboard { grid-template-columns: 1fr; padding: 12px; gap: 12px; }
+  .header { 
+    padding: 12px 16px; 
+    padding-top: calc(12px + env(safe-area-inset-top, 0px));
+    flex-wrap: wrap; 
+    gap: 12px; 
+  }
+  .dashboard { 
+    grid-template-columns: 1fr; 
+    padding: 12px; 
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 20px));
+    gap: 12px; 
+  }
   .pnl-row { grid-template-columns: 1fr; }
   .boards-grid { grid-template-columns: 1fr; }
   .leaderboard-container { grid-column: 1 / -1; }
@@ -815,8 +834,26 @@ body {
   .lb-column:last-child { border-bottom: none; }
   .leaderboard-tabs { justify-content: center; }
   .oshi-sidebar { flex-direction: column; }
-  .oshi-portrait { height: 280px; min-width: auto; }
+  .oshi-portrait { height: 220px; min-width: auto; }
   .pnl-value { font-size: 28px; }
+  .card { padding: 16px; }
+  .card-title { font-size: 12px; }
+  .stat-value { font-size: 20px; }
+  .header-title { font-size: 20px; }
+  .subtitle { font-size: 10px; }
+  
+  /* Hide particles on mobile for performance */
+  #particles { display: none; }
+  .bg-orbs::before, .bg-orbs::after { filter: blur(80px); opacity: 0.1; }
+}
+
+/* Extra small screens */
+@media (max-width: 380px) {
+  .header { padding: 8px 12px; padding-top: calc(8px + env(safe-area-inset-top, 0px)); }
+  .dashboard { padding: 8px; gap: 8px; }
+  .card { padding: 12px; }
+  .pnl-value { font-size: 24px; }
+  .stat-value { font-size: 18px; }
 }
 
 /* Particle canvas */
@@ -1633,6 +1670,13 @@ setInterval(fetchBrain, 60000);   // Every 60s
 setInterval(fetchLeaderboard, 30000); // Every 30s
 setInterval(fetchPnL, 15000); // Every 15s
 setInterval(updateUptime, 60000); // Update uptime every minute
+
+// Register Service Worker for PWA
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js')
+    .then(() => console.log('OSHI PWA ready'))
+    .catch(err => console.log('SW registration failed:', err));
+}
 </script>
 </body>
 </html>
