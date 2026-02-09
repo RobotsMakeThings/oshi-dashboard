@@ -166,3 +166,86 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchData();
     setInterval(fetchData, REFRESH_INTERVAL);
 });
+
+// Update version P&L section
+const updateVersions = async () => {
+    try {
+        const res = await fetch(`${API_BASE}/versions`);
+        if (!res.ok) return;
+        const data = await res.json();
+        
+        const container = document.getElementById('versionStats');
+        if (!container) return;
+        
+        const versions = data.versions || {};
+        const overall = data.overall || {};
+        
+        let html = `
+            <div class="version-card overall">
+                <div class="version-header">
+                    <span class="version-name">📊 Overall</span>
+                    <span class="version-badge">ALL TIME</span>
+                </div>
+                <div class="version-stats">
+                    <div class="stat">
+                        <span class="stat-value ${overall.pnl >= 0 ? 'positive' : 'negative'}">${fmt(overall.pnl)}</span>
+                        <span class="stat-label">P&L</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">${overall.win_rate}%</span>
+                        <span class="stat-label">Win Rate</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">${overall.trades}</span>
+                        <span class="stat-label">Trades</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Sort versions (newest first)
+        const sortedVersions = Object.entries(versions).sort((a, b) => b[0].localeCompare(a[0]));
+        
+        for (const [vid, v] of sortedVersions) {
+            const isCurrent = v.is_current;
+            html += `
+                <div class="version-card ${isCurrent ? 'current' : ''}">
+                    <div class="version-header">
+                        <span class="version-name">${v.name}</span>
+                        ${isCurrent ? '<span class="version-badge current">ACTIVE</span>' : '<span class="version-badge">ARCHIVED</span>'}
+                    </div>
+                    <p class="version-desc">${v.description}</p>
+                    <div class="version-stats">
+                        <div class="stat">
+                            <span class="stat-value ${v.pnl >= 0 ? 'positive' : 'negative'}">${fmt(v.pnl)}</span>
+                            <span class="stat-label">P&L</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">${v.win_rate}%</span>
+                            <span class="stat-label">Win Rate</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value">${v.trades}</span>
+                            <span class="stat-label">Trades</span>
+                        </div>
+                    </div>
+                    <div class="version-details">
+                        <span class="detail">Best: ${fmt(v.best_trade)}</span>
+                        <span class="detail">Worst: ${fmt(v.worst_trade)}</span>
+                        <span class="detail">Avg Win: ${fmt(v.avg_win)}</span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        container.innerHTML = html;
+    } catch (err) {
+        console.error('Version fetch error:', err);
+    }
+};
+
+// Call version update on load and periodically
+document.addEventListener('DOMContentLoaded', () => {
+    updateVersions();
+    setInterval(updateVersions, 30000); // Update every 30s
+});
