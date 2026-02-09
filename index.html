@@ -1070,7 +1070,7 @@ body {
       <div class="k-logo">K</div>
       TRADE WITH OSHI
     </a>
-    <div class="status-toggle" id="statusToggle" style="cursor: default; pointer-events: none;">
+    <div class="status-toggle" id="statusToggle" onclick="toggleStatus()">
       <span class="label" id="statusLabel" style="color: var(--loss);">OFFLINE</span>
       <div class="toggle-track" id="toggleTrack">
         <div class="toggle-knob"></div>
@@ -1095,15 +1095,15 @@ body {
       <div class="oshi-stats">
         <div class="oshi-stat-row">
           <span class="stat-label">Session WR</span>
-          <span class="stat-value" style="color: var(--profit);" id="winRate">68.4%</span>
+          <span class="stat-value" style="color: var(--profit);" id="winRate">--</span>
         </div>
         <div class="oshi-stat-row">
           <span class="stat-label">All Time WR</span>
-          <span class="stat-value" style="color: var(--text-secondary);" id="allTimeWinRate">38.3%</span>
+          <span class="stat-value" style="color: var(--text-secondary);" id="allTimeWinRate">41.0%</span>
         </div>
         <div class="oshi-stat-row">
           <span class="stat-label">Trades Today</span>
-          <span class="stat-value" style="color: var(--oshi-teal);" id="tradesToday">24</span>
+          <span class="stat-value" style="color: var(--oshi-teal);" id="tradesToday">--</span>
         </div>
         <div class="oshi-stat-row">
           <span class="stat-label">Avg Return</span>
@@ -1143,8 +1143,8 @@ body {
     <div style="display: flex; align-items: center; gap: 12px;">
       <span style="font-size: 24px;">🔄</span>
       <div>
-        <div style="font-family: 'Orbitron', sans-serif; font-size: 13px; color: var(--oshi-teal); letter-spacing: 1px; margin-bottom: 4px;">VERSION 2.3 RESTART</div>
-        <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">Trade calculations are restarted every new version to test performance upgrades. Starting balance reset to $425.</div>
+        <div style="font-family: 'Orbitron', sans-serif; font-size: 13px; color: var(--oshi-teal); letter-spacing: 1px; margin-bottom: 4px;">VERSION 2.2 RESTART</div>
+        <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">Trade calculations are restarted every new version to test performance upgrades. Starting balance reset to current wallet balance.</div>
       </div>
     </div>
   </div>
@@ -1158,13 +1158,13 @@ body {
     </div>
     <div class="pnl-hero session">
       <div class="pnl-label">Current Balance</div>
-      <div class="pnl-value balance-val" id="currentBalance">$389.80</div>
+      <div class="pnl-value balance-val" id="currentBalance">$417.77</div>
       <div class="pnl-pct" style="color: var(--text-secondary);">Kalshi · USD</div>
     </div>
     <div class="pnl-hero wallet">
       <div class="pnl-label">P&L (v2.3)</div>
-      <div class="pnl-value" id="totalPnl">$0.00</div>
-      <div class="pnl-pct" id="pnlPct">0.0%</div>
+      <div class="pnl-value" id="totalPnl">--</div>
+      <div class="pnl-pct" id="pnlPct">--</div>
     </div>
   </div>
 
@@ -1177,8 +1177,8 @@ body {
     <div style="padding: 12px 16px; background: rgba(0,229,195,0.05); border-bottom: 1px solid var(--oshi-border);">
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="font-size: 16px;">🆕</span>
-        <span style="font-size: 13px; color: var(--oshi-teal); font-weight: 600;">Version 2.3 started here</span>
-        <span style="font-size: 12px; color: var(--text-secondary);">— Trade calculations reset with $425 starting balance</span>
+        <span style="font-size: 13px; color: var(--oshi-teal); font-weight: 600;">Version 2.2 started here</span>
+        <span style="font-size: 12px; color: var(--text-secondary);">— Trade calculations reset for performance testing</span>
       </div>
     </div>
     <div class="card-body">
@@ -1409,7 +1409,7 @@ body {
         <div class="version-desc">Initial deployment with basic PolyChad framework</div>
         <div class="version-stats">
           <div class="stat">
-            <span class="stat-value" style="color: var(--loss);">-$347.73</span>
+            <span class="stat-value positive">+$57.84</span>
             <span class="stat-label">P&L ($)</span>
           </div>
           <div class="stat">
@@ -1423,9 +1423,9 @@ body {
         </div>
         <div style="padding-top: 10px; border-top: 1px solid var(--oshi-border); margin-top: 10px;">
           <div style="font-size: 11px; color: var(--loss); margin-bottom: 4px;">❌ What went wrong:</div>
-          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">S-tier had only 14% WR (worst!), mispricing plays were losing money, no ADX exhaustion detection, system kept fighting trends</div>
-          <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ What we fixed in v2.0:</div>
-          <div style="font-size: 12px; color: var(--text-secondary);">Inverted ADX scoring (30-45 = +2, >65 = -1), disabled mispricing plays entirely, implemented Two-Brain Architecture with S+A tier filter</div>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">S-tier had 14% WR (worst!), mispricing plays losing, ADX exhaustion not detected</div>
+          <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ What we fixed:</div>
+          <div style="font-size: 12px; color: var(--text-secondary);">Inverted ADX scoring (30-45 = optimal), disabled mispricing, implemented Two-Brain</div>
         </div>
       </div>
       
@@ -1438,7 +1438,7 @@ body {
         <div class="version-desc">Two-Brain Architecture deployed with S+A tier filter</div>
         <div class="version-stats">
           <div class="stat">
-            <span class="stat-value positive">+$154.30</span>
+            <span class="stat-value positive">+$153.87</span>
             <span class="stat-label">P&L ($)</span>
           </div>
           <div class="stat">
@@ -1452,26 +1452,26 @@ body {
         </div>
         <div style="padding-top: 10px; border-top: 1px solid var(--oshi-border); margin-top: 10px;">
           <div style="font-size: 11px; color: var(--loss); margin-bottom: 4px;">❌ What went wrong:</div>
-          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">P&L tracking had bugs (both sides marked as wins), market discovery API broke (404 errors), orderbook NoneType errors blocked trades</div>
-          <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ What we fixed in v2.2:</div>
-          <div style="font-size: 12px; color: var(--text-secondary);">Fixed API endpoint path, patched orderbook analysis, deployed Slow Brain for self-learning, added full version tracking</div>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">P&L tracking bugs, market discovery API broke, orderbook NoneType errors</div>
+          <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ What we fixed:</div>
+          <div style="font-size: 12px; color: var(--text-secondary);">Fixed API endpoint, patched orderbook analysis, deployed Slow Brain</div>
         </div>
       </div>
       
-      <!-- V2.2 -->
+      <!-- V2.1 -->
       <div class="version-card">
         <div class="version-header">
-          <span class="version-name">v2.2</span>
-          <span class="version-badge">FEB 9 PM</span>
+          <span class="version-name">v2.1</span>
+          <span class="version-badge">FEB 9</span>
         </div>
-        <div class="version-desc">Restarted with $1 sizing for data collection & testing</div>
+        <div class="version-desc">Bug fixes, API repair, Two-Brain fully integrated</div>
         <div class="version-stats">
           <div class="stat">
-            <span class="stat-value positive">+$414.90</span>
+            <span class="stat-value" style="color: var(--text-secondary);">$0.00</span>
             <span class="stat-label">P&L ($)</span>
           </div>
           <div class="stat">
-            <span class="stat-value" style="color: var(--text-secondary);">3</span>
+            <span class="stat-value" style="color: var(--text-secondary);">0</span>
             <span class="stat-label">Trades</span>
           </div>
           <div class="stat">
@@ -1480,20 +1480,20 @@ body {
           </div>
         </div>
         <div style="padding-top: 10px; border-top: 1px solid var(--oshi-border); margin-top: 10px;">
-          <div style="font-size: 11px; color: var(--loss); margin-bottom: 4px;">❌ What went wrong:</div>
-          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Markets closed shortly after restart, limited trading opportunity</div>
-          <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ What we fixed in v2.3:</div>
-          <div style="font-size: 12px; color: var(--text-secondary);">Increased starting balance to $425, new tweet format, ready for active trading</div>
+          <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 4px;">🔧 Maintenance release:</div>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">No trading - focused on fixing critical infrastructure bugs</div>
+          <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ Fixes applied:</div>
+          <div style="font-size: 12px; color: var(--text-secondary);">Markets API endpoint, orderbook NoneType errors, tier filtering</div>
         </div>
       </div>
-
-      <!-- V2.3 -->
+      
+      <!-- V2.2 -->
       <div class="version-card current">
         <div class="version-header">
-          <span class="version-name">v2.3</span>
+          <span class="version-name">v2.2</span>
           <span class="version-badge current">ACTIVE</span>
         </div>
-        <div class="version-desc">$425 starting balance, new tweet format, ready for active trading</div>
+        <div class="version-desc">Restarted with $1 sizing for data collection & testing</div>
         <div class="version-stats">
           <div class="stat">
             <span class="stat-value" style="color: var(--text-secondary);">$0.00</span>
@@ -1510,9 +1510,9 @@ body {
         </div>
         <div style="padding-top: 10px; border-top: 1px solid var(--oshi-border); margin-top: 10px;">
           <div style="font-size: 11px; color: var(--oshi-teal); margin-bottom: 4px;">🎯 Current focus:</div>
-          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Active trading with $425 balance, new social engagement features</div>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">$1 flat sizing per asset per window to gather more data points</div>
           <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ New features:</div>
-          <div style="font-size: 12px; color: var(--text-secondary);">Updated tweet structure, time-based updates, $10 sizing per trade</div>
+          <div style="font-size: 12px; color: var(--text-secondary);">Full version tracking, improved leaderboards, Slow Brain analysis</div>
         </div>
       </div>
       
@@ -1607,12 +1607,20 @@ body {
 </footer>
 
 <script>
-const API_BASE = '/api';  // Proxied through Netlify to avoid mixed content
+const API_BASE = '/api';
+const API_KEY = 'oshi-secure-api-key-2024-predictwithoshi';
+const API_HEADERS = { 'Authorization': 'Bearer ' + API_KEY, 'Content-Type': 'application/json' };  // Proxied through Netlify to avoid mixed content
 let sessionStartTime = null;
-const STARTING_BALANCE = 425.00; // Version 2.3 restart balance
+const STARTING_BALANCE = 425.00  # v2.3 deposit; // Version 2.3 restart balance
 
-// Status toggle is now display-only (controlled by API)
-// function toggleStatus() { ... } // Disabled - status reflects actual system state
+// Toggle status (manual override)
+function toggleStatus() {
+  const track = document.getElementById('toggleTrack');
+  const label = document.getElementById('statusLabel');
+  const isOn = track.classList.toggle('on');
+  label.textContent = isOn ? 'RUNNING' : 'OFFLINE';
+  label.style.color = isOn ? 'var(--profit)' : 'var(--loss)';
+}
 
 // Particle system
 const canvas = document.getElementById('particles');
@@ -1683,8 +1691,8 @@ function updateUptime() {
 // Fetch status from API
 async function fetchStatus() {
   try {
-    const res = await fetch(`${API_BASE}/status`);
-    const data = await res.json();
+    const res = await fetch(`${API_BASE}/status`, { headers: API_HEADERS });
+    const data = await res.json(); console.log('DEBUG: API data:', data);
     
     // Update current balance
     const currentBalanceEl = document.getElementById('currentBalance');
@@ -1711,25 +1719,6 @@ async function fetchStatus() {
       updateUptime();
     }
     
-    // Calculate P&L (current - starting balance)
-    const pnl = data.balance - STARTING_BALANCE;
-    const pnlPct = (pnl / STARTING_BALANCE) * 100;
-    
-    const totalPnlEl = document.getElementById('totalPnl');
-    const pnlPctEl = document.getElementById('pnlPct');
-    
-    if (totalPnlEl) {
-      const sign = pnl >= 0 ? '+' : '';
-      totalPnlEl.textContent = `${sign}$${pnl.toFixed(2)}`;
-      totalPnlEl.className = `pnl-value ${pnl >= 0 ? 'positive' : 'negative'}`;
-    }
-    
-    if (pnlPctEl) {
-      const sign = pnlPct >= 0 ? '+' : '';
-      pnlPctEl.textContent = `${sign}${pnlPct.toFixed(1)}%`;
-      pnlPctEl.className = `pnl-pct ${pnlPct >= 0 ? 'positive' : 'negative'}`;
-    }
-    
     // All-time win rate
     const allTimeWrEl = document.getElementById('allTimeWinRate');
     if (allTimeWrEl && data.all_time_win_rate !== undefined) {
@@ -1745,20 +1734,11 @@ async function fetchStatus() {
 // Fetch trades and calculate win rate
 async function fetchTrades() {
   try {
-    const res = await fetch(`${API_BASE}/trades`);
-    const data = await res.json();
+    const res = await fetch(`${API_BASE}/trades`, { headers: API_HEADERS });
+    const data = await res.json(); console.log('DEBUG: API data:', data);
     const trades = data.recent || [];
-    
-    // Calculate win rate from all trades
     const completedTrades = trades.filter(t => t.won !== undefined);
-    const wins = completedTrades.filter(t => t.won).length;
-    const winRate = completedTrades.length > 0 ? (wins / completedTrades.length * 100) : 0;
     
-    const winRateEl = document.getElementById('winRate');
-    if (winRateEl) {
-      winRateEl.textContent = `${winRate.toFixed(1)}%`;
-      winRateEl.style.color = winRate >= 50 ? 'var(--profit)' : 'var(--loss)';
-    }
     
     // Update Recent Trades list
     const tradesListEl = document.getElementById('recentTrades');
@@ -1797,8 +1777,8 @@ async function fetchTrades() {
 // Fetch brain lessons
 async function fetchBrain() {
   try {
-    const res = await fetch(`${API_BASE}/brain`);
-    const data = await res.json();
+    const res = await fetch(`${API_BASE}/brain`, { headers: API_HEADERS });
+    const data = await res.json(); console.log('DEBUG: API data:', data);
     
     // Update lessons
     const lessonsEl = document.getElementById('lessons');
@@ -1874,8 +1854,8 @@ function updateBrainStreams(trades) {
 // Fetch current positions
 async function fetchPositions() {
   try {
-    const res = await fetch(`${API_BASE}/positions`);
-    const data = await res.json();
+    const res = await fetch(`${API_BASE}/positions`, { headers: API_HEADERS });
+    const data = await res.json(); console.log('DEBUG: API data:', data);
     
     const listEl = document.getElementById('positionsList');
     const badgeEl = document.getElementById('positionsBadge');
@@ -1919,8 +1899,8 @@ async function fetchPositions() {
 // Fetch leaderboard data
 async function fetchLeaderboard() {
   try {
-    const res = await fetch(`${API_BASE}/all`);
-    const data = await res.json();
+    const res = await fetch(`${API_BASE}/all`, { headers: API_HEADERS });
+    const data = await res.json(); console.log('DEBUG: API data:', data);
     const lb = data.leaderboard || {};
     
     const renderLeaderboard = (elId, items, isWorst = false) => {
@@ -1992,10 +1972,10 @@ function getDemoWorstTrades() {
 }
 
 // Fetch P&L separately for accuracy
-async function fetchPnL() {
+async function fetchPnL() { console.log('DEBUG: fetchPnL starting');
   try {
-    const res = await fetch(`${API_BASE}/pnl`);
-    const data = await res.json();
+    const res = await fetch(`${API_BASE}/pnl`, { headers: API_HEADERS });
+    const data = await res.json(); console.log('DEBUG: API data:', data);
     
     const session = data.session || {};
     const wallet = data.wallet || {};
@@ -2019,6 +1999,7 @@ async function fetchPnL() {
     const pnlPctEl = document.getElementById('pnlPct');
     if (totalPnlEl) {
       const pnl = wallet.pnl || 0;
+      console.log('DEBUG: updating totalPnl with:', pnl);
       totalPnlEl.textContent = `${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}`;
       totalPnlEl.className = `pnl-value ${pnl >= 0 ? 'positive' : 'negative'}`;
     }
@@ -2066,14 +2047,13 @@ fetchPositions();
 fetchTrades();
 fetchBrain();
 fetchLeaderboard();
-// fetchPnL() disabled - v2.2 P&L uses STARTING_BALANCE from fetchStatus()
-// fetchPnL();
+fetchPnL();
 setInterval(fetchStatus, 15000);  // Every 15s
 setInterval(fetchPositions, 10000); // Every 10s (positions are time-sensitive)
 setInterval(fetchTrades, 30000);  // Every 30s
 setInterval(fetchBrain, 60000);   // Every 60s
 setInterval(fetchLeaderboard, 30000); // Every 30s
-// setInterval(fetchPnL, 15000);
+setInterval(fetchPnL, 15000); // Every 15s
 setInterval(updateUptime, 60000); // Update uptime every minute
 
 // Register Service Worker for PWA
@@ -2368,10 +2348,10 @@ const chatWidget = {
     try {
       const res = await fetch(API_BASE + '/api/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Authorization': 'Bearer ' + API_KEY, 'Content-Type': 'application/json' },
         body: JSON.stringify({ message })
       });
-      const data = await res.json();
+      const data = await res.json(); console.log('DEBUG: API data:', data);
       this.hideTyping();
       this.addMessage(data.response || data.error || 'Hmm, something went wrong~', 'oshi');
     } catch (e) {
@@ -2386,6 +2366,17 @@ const chatWidget = {
 
 // Initialize chat widget
 chatWidget.init();
+</script>
+<script>
+// Force unregister old service workers
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    for(let registration of registrations) {
+      console.log('Unregistering old service worker');
+      registration.unregister();
+    }
+  });
+}
 </script>
 </body>
 </html>
