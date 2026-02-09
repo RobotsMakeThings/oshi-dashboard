@@ -531,14 +531,21 @@ body {
         height: 8px;
     }
     
-    /* Single column grid with better spacing */
+    /* FORCE single column grid on mobile */
     .dashboard-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
     }
     
-    .oshi-card, .trades-card, .brain-card {
-        grid-column: span 1;
+    /* Force ALL cards to single column */
+    .dashboard-grid > * {
+        grid-column: span 1 !important;
+        grid-row: span 1 !important;
+    }
+    
+    .oshi-card, .trades-card, .brain-card, .pnl-card, .positions-card, .leaderboard-card {
+        grid-column: span 1 !important;
+        grid-row: span 1 !important;
     }
     
     /* Cards with more breathing room */
