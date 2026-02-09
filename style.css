@@ -486,20 +486,21 @@ body {
 @media (max-width: 768px) {
     body {
         background: #050810;
+        font-size: 16px; /* Prevent browser zoom */
     }
     
     .container {
-        padding: 10px;
+        padding: 16px;
     }
     
-    /* Compact header */
+    /* Clean header */
     .header {
-        flex-direction: column;
-        gap: 10px;
-        padding: 12px 14px;
-        text-align: center;
-        border-radius: 10px;
-        margin-bottom: 10px;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        border-radius: 12px;
+        margin-bottom: 16px;
     }
     
     .logo-section {
@@ -508,22 +509,21 @@ body {
     }
     
     .logo-icon {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
     }
     
     .logo-text h1 {
-        font-size: 1.3rem;
-        letter-spacing: 0.08em;
+        font-size: 1.4rem;
+        letter-spacing: 0.05em;
     }
     
     .subtitle {
-        font-size: 0.65rem;
-        letter-spacing: 0.1em;
+        display: none; /* Hide subtitle on mobile for cleaner look */
     }
     
     .status-badge {
-        padding: 6px 12px;
-        font-size: 0.7rem;
+        padding: 8px 14px;
+        font-size: 0.75rem;
     }
     
     .status-dot {
@@ -531,158 +531,194 @@ body {
         height: 8px;
     }
     
-    /* Single column grid */
+    /* Single column grid with better spacing */
     .dashboard-grid {
         grid-template-columns: 1fr;
-        gap: 10px;
+        gap: 16px;
     }
     
     .oshi-card, .trades-card, .brain-card {
         grid-column: span 1;
     }
     
-    /* Compact cards */
+    /* Cards with more breathing room */
     .card {
-        padding: 14px;
-        border-radius: 10px;
+        padding: 18px;
+        border-radius: 12px;
     }
     
     .card h3 {
-        font-size: 0.75rem;
-        margin-bottom: 10px;
+        font-size: 0.9rem;
+        margin-bottom: 14px;
+        font-weight: 700;
     }
     
-    /* Compact Oshi */
+    /* Oshi card - larger and more prominent */
     .oshi-card {
-        padding: 16px;
-        flex-direction: row;
+        padding: 20px;
+        flex-direction: column;
         gap: 16px;
+        min-height: auto;
+        grid-row: span 1;
     }
     
     .oshi-container {
         display: flex;
+        flex-direction: row;
         align-items: center;
-        gap: 16px;
+        gap: 20px;
         text-align: left;
+        width: 100%;
     }
     
     .oshi-avatar {
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 100px;
         margin: 0;
         flex-shrink: 0;
+        border-radius: 50%;
+        border: 3px solid var(--secondary);
+        box-shadow: 0 0 20px rgba(255, 107, 157, 0.3);
     }
     
     .oshi-glow {
-        width: 100px;
-        height: 100px;
+        display: none;
+    }
+    
+    .oshi-info {
+        flex: 1;
     }
     
     .oshi-info h2 {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
+        margin-bottom: 4px;
     }
     
     .oshi-title {
-        font-size: 0.75rem;
-        margin-bottom: 8px;
+        font-size: 0.85rem;
+        margin-bottom: 12px;
     }
     
     .oshi-stats {
-        gap: 16px;
+        display: flex;
+        gap: 20px;
         justify-content: flex-start;
+        flex-wrap: wrap;
     }
     
     .oshi-stat .label {
-        font-size: 0.6rem;
+        font-size: 0.7rem;
     }
     
     .oshi-stat .value {
-        font-size: 0.85rem;
+        font-size: 1rem;
+        font-weight: 700;
     }
     
-    /* Compact PnL */
+    /* PnL card - readable values */
     .pnl-value {
-        font-size: 1.8rem;
+        font-size: 2.2rem;
+        font-weight: 900;
     }
     
     .pnl-percent {
-        font-size: 0.85rem;
-        margin-bottom: 8px;
+        font-size: 1rem;
+        margin-bottom: 12px;
     }
     
     .pnl-stats {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
+        line-height: 1.6;
     }
     
     .wallet-balance {
-        font-size: 0.9rem;
+        font-size: 1rem;
+        margin-top: 12px;
     }
     
-    /* Compact trades */
+    /* Trades - better touch targets */
     .trade-item {
-        padding: 10px 6px;
+        padding: 14px 12px;
+        margin-bottom: 8px;
+        border-radius: 8px;
     }
     
     .trade-side {
-        padding: 3px 6px;
-        font-size: 0.65rem;
+        padding: 4px 10px;
+        font-size: 0.75rem;
+        font-weight: 700;
     }
     
     .trade-ticker {
-        font-size: 0.7rem;
-    }
-    
-    .trade-pnl {
         font-size: 0.85rem;
     }
     
-    .trades-list {
-        max-height: 200px;
+    .trade-pnl {
+        font-size: 1rem;
+        font-weight: 700;
     }
     
-    /* Compact leaderboard */
+    .trades-list {
+        max-height: 280px;
+    }
+    
+    /* Leaderboard - readable */
     .board-item {
-        padding: 6px;
+        padding: 10px 8px;
     }
     
     .board-item .rank {
-        font-size: 0.9rem;
-        min-width: 20px;
+        font-size: 1rem;
+        min-width: 28px;
     }
     
     .board-item .ticker {
-        font-size: 0.7rem;
+        font-size: 0.85rem;
     }
     
     .board-item .pnl {
-        font-size: 0.8rem;
+        font-size: 0.95rem;
+        font-weight: 700;
     }
     
     .board-list {
-        max-height: 150px;
+        max-height: 200px;
     }
     
-    /* Compact brain */
+    /* Brain activity - visible */
     .brain-section ul {
-        max-height: 70px;
+        max-height: 100px;
     }
     
     .brain-section li {
-        padding: 5px 8px;
-        font-size: 0.75rem;
+        padding: 8px 12px;
+        font-size: 0.85rem;
     }
     
     .brain-section h4 {
-        font-size: 0.75rem;
+        font-size: 0.85rem;
+        margin-bottom: 10px;
     }
     
-    /* Footer */
+    /* Footer - clean */
     .footer {
         flex-direction: column;
-        gap: 6px;
-        padding: 12px;
+        gap: 10px;
+        padding: 16px;
         text-align: center;
-        font-size: 0.7rem;
+        font-size: 0.8rem;
+        margin-top: 16px;
+    }
+    
+    /* Tab navigation - larger touch targets */
+    .leaderboard-tabs {
+        gap: 8px;
+    }
+    
+    .leaderboard-tabs button {
+        padding: 10px 16px;
+        font-size: 0.8rem;
+        min-height: 44px; /* iOS touch target */
     }
 }
 
@@ -691,37 +727,68 @@ body {
 /* ====================== */
 @media (max-width: 400px) {
     .container {
-        padding: 8px;
-    }
-    
-    .header {
-        padding: 10px 12px;
-    }
-    
-    .logo-text h1 {
-        font-size: 1.1rem;
-    }
-    
-    .card {
         padding: 12px;
     }
     
-    .oshi-avatar {
-        width: 70px;
-        height: 70px;
-    }
-    
-    .oshi-info h2 {
-        font-size: 1rem;
-    }
-    
-    .oshi-stats {
-        flex-wrap: wrap;
+    .header {
+        padding: 12px 14px;
+        flex-direction: column;
         gap: 10px;
     }
     
+    .logo-text h1 {
+        font-size: 1.2rem;
+    }
+    
+    .card {
+        padding: 16px;
+    }
+    
+    .card h3 {
+        font-size: 0.85rem;
+    }
+    
+    .oshi-container {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .oshi-avatar {
+        width: 90px;
+        height: 90px;
+    }
+    
+    .oshi-info {
+        text-align: center;
+    }
+    
+    .oshi-info h2 {
+        font-size: 1.3rem;
+    }
+    
+    .oshi-stats {
+        justify-content: center;
+        gap: 16px;
+    }
+    
     .pnl-value {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
+    }
+    
+    .pnl-percent {
+        font-size: 0.9rem;
+    }
+    
+    .trade-item {
+        padding: 12px 10px;
+    }
+    
+    .trade-ticker {
+        font-size: 0.8rem;
+    }
+    
+    .trade-pnl {
+        font-size: 0.9rem;
     }
 }
 
