@@ -808,3 +808,307 @@ body {
         padding-right: max(10px, env(safe-area-inset-right));
     }
 }
+/* Oshi Avatar & Chat Styles */
+
+.oshi-avatar-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.oshi-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid var(--oshi-teal);
+  box-shadow: 0 0 30px var(--oshi-glow), 0 4px 15px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, var(--oshi-navy), var(--oshi-deep));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.oshi-avatar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 50px var(--oshi-glow), 0 6px 20px rgba(0,0,0,0.4);
+}
+
+.oshi-avatar::before {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(0,229,195,0.1) 50%,
+    transparent 70%
+  );
+  animation: avatarShine 3s infinite;
+}
+
+@keyframes avatarShine {
+  0% { transform: rotate(0deg) translateX(-100%); }
+  100% { transform: rotate(360deg) translateX(100%); }
+}
+
+.oshi-avatar.pulse {
+  animation: avatarPulse 2s infinite;
+}
+
+@keyframes avatarPulse {
+  0%, 100% { box-shadow: 0 0 30px var(--oshi-glow); }
+  50% { box-shadow: 0 0 50px var(--oshi-teal), 0 0 80px var(--oshi-glow); }
+}
+
+/* Mood-based avatar colors */
+.oshi-avatar.mood-excited { border-color: #00ff88; box-shadow: 0 0 30px rgba(0,255,136,0.5); }
+.oshi-avatar.mood-happy { border-color: #00e5c3; box-shadow: 0 0 30px rgba(0,229,195,0.5); }
+.oshi-avatar.mood-determined { border-color: #ffd700; box-shadow: 0 0 30px rgba(255,215,0,0.5); }
+.oshi-avatar.mood-focused { border-color: #ff6b6b; box-shadow: 0 0 30px rgba(255,107,107,0.5); }
+
+/* Chat Widget */
+.oshi-chat-widget {
+  width: 350px;
+  max-height: 500px;
+  background: rgba(10, 14, 39, 0.95);
+  border: 1px solid var(--oshi-border);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 30px rgba(0,229,195,0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+  transition: all 0.3s ease;
+  transform-origin: bottom right;
+}
+
+.oshi-chat-widget.hidden {
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.oshi-chat-header {
+  padding: 16px;
+  background: linear-gradient(135deg, var(--oshi-navy), var(--oshi-mid));
+  border-bottom: 1px solid var(--oshi-border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.oshi-chat-avatar-small {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--oshi-teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: var(--oshi-deep);
+}
+
+.oshi-chat-info {
+  flex: 1;
+}
+
+.oshi-chat-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--oshi-teal);
+}
+
+.oshi-chat-status {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.oshi-chat-status.online::before {
+  content: '● ';
+  color: var(--profit);
+}
+
+.oshi-chat-close {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--oshi-border);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.oshi-chat-close:hover {
+  background: var(--loss);
+  color: white;
+  border-color: var(--loss);
+}
+
+.oshi-chat-messages {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 300px;
+}
+
+.oshi-chat-message {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.oshi-chat-message.user {
+  flex-direction: row-reverse;
+}
+
+.oshi-chat-message-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--oshi-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  background: var(--oshi-mid);
+}
+
+.oshi-chat-message.user .oshi-chat-message-avatar {
+  background: var(--oshi-blue);
+}
+
+.oshi-chat-message-bubble {
+  padding: 10px 14px;
+  border-radius: 16px;
+  max-width: 240px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.oshi-chat-message.oshi .oshi-chat-message-bubble {
+  background: var(--oshi-mid);
+  border: 1px solid var(--oshi-border);
+  color: var(--text-primary);
+  border-bottom-left-radius: 4px;
+}
+
+.oshi-chat-message.user .oshi-chat-message-bubble {
+  background: var(--oshi-teal);
+  color: var(--oshi-deep);
+  border-bottom-right-radius: 4px;
+}
+
+.oshi-chat-input-container {
+  padding: 12px 16px;
+  border-top: 1px solid var(--oshi-border);
+  background: var(--oshi-navy);
+  display: flex;
+  gap: 8px;
+}
+
+.oshi-chat-input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--oshi-border);
+  background: var(--oshi-mid);
+  color: var(--text-primary);
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.oshi-chat-input:focus {
+  border-color: var(--oshi-teal);
+  box-shadow: 0 0 10px rgba(0,229,195,0.2);
+}
+
+.oshi-chat-input::placeholder {
+  color: var(--text-dim);
+}
+
+.oshi-chat-send {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--oshi-teal);
+  border: none;
+  color: var(--oshi-deep);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.oshi-chat-send:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px var(--oshi-glow);
+}
+
+.oshi-chat-disclaimer {
+  padding: 8px 16px;
+  font-size: 10px;
+  color: var(--text-dim);
+  text-align: center;
+  border-top: 1px solid var(--oshi-border);
+  background: rgba(0,0,0,0.2);
+}
+
+/* Typing indicator */
+.oshi-chat-typing {
+  display: flex;
+  gap: 4px;
+  padding: 12px 16px;
+  align-items: center;
+}
+
+.oshi-chat-typing-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--oshi-teal);
+  animation: typingDot 1.4s infinite;
+}
+
+.oshi-chat-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.oshi-chat-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-10px); opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .oshi-chat-widget {
+    width: calc(100vw - 40px);
+    max-height: 60vh;
+  }
+  
+  .oshi-avatar {
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+  }
+}

@@ -249,3 +249,203 @@ document.addEventListener('DOMContentLoaded', () => {
     updateVersions();
     setInterval(updateVersions, 30000); // Update every 30s
 });
+// Oshi Avatar & Chat Widget
+class OshiAvatar {
+    constructor() {
+        this.container = null;
+        this.chatWidget = null;
+        this.isOpen = false;
+        this.messages = [];
+        this.apiBase = '/api';
+        this.init();
+    }
+
+    init() {
+        this.createAvatar();
+        this.createChatWidget();
+        this.loadAvatarState();
+        // Update every 30 seconds
+        setInterval(() => this.loadAvatarState(), 30000);
+    }
+
+    createAvatar() {
+        this.container = document.createElement('div');
+        this.container.className = 'oshi-avatar-container';
+        
+        this.avatar = document.createElement('div');
+        this.avatar.className = 'oshi-avatar';
+        this.avatar.innerHTML = '🤖';
+        this.avatar.title = 'Chat with Oshi!';
+        
+        this.avatar.addEventListener('click', () => this.toggleChat());
+        
+        this.container.appendChild(this.avatar);
+        document.body.appendChild(this.container);
+    }
+
+    createChatWidget() {
+        this.chatWidget = document.createElement('div');
+        this.chatWidget.className = 'oshi-chat-widget hidden';
+        
+        this.chatWidget.innerHTML = `
+            <div class="oshi-chat-header">
+                <div class="oshi-chat-avatar-small" id="chatAvatar">🤖</div>
+                <div class="oshi-chat-info">
+                    <div class="oshi-chat-name">Oshi</div>
+                    <div class="oshi-chat-status online">Online - v2.0</div>
+                </div>
+                <button class="oshi-chat-close" onclick="oshiAvatar.toggleChat()">✕</button>
+            </div>
+            <div class="oshi-chat-messages" id="chatMessages">
+                <div class="oshi-chat-message oshi">
+                    <div class="oshi-chat-message-avatar">🤖</div>
+                    <div class="oshi-chat-message-bubble">
+                        Hey there! I'm Oshi, your friendly trading AI! Ask me about my balance, strategy, or just say hi! 👋
+                    </div>
+                </div>
+            </div>
+            <div class="oshi-chat-input-container">
+                <input type="text" class="oshi-chat-input" id="chatInput" 
+                       placeholder="Ask me anything..." 
+                       onkeypress="if(event.key==='Enter')oshiAvatar.sendMessage()">
+                <button class="oshi-chat-send" onclick="oshiAvatar.sendMessage()">➤</button>
+            </div>
+            <div class="oshi-chat-disclaimer">
+                For entertainment only. Not trading advice.
+            </div>
+        `;
+        
+        this.container.appendChild(this.chatWidget);
+    }
+
+    async loadAvatarState() {
+        try {
+            const res = await fetch(`${this.apiBase}/avatar`);
+            if (!res.ok) return;
+            
+            const state = await res.json();
+            this.updateAvatar(state);
+        } catch (e) {
+            console.error('Avatar load error:', e);
+        }
+    }
+
+    updateAvatar(state) {
+        // Update mood/color
+        this.avatar.className = `oshi-avatar mood-${state.mood}`;
+        
+        // Update emoji based on mood
+        const emojis = {
+            'excited': '✨',
+            'happy': '😊',
+            'determined': '💪',
+            'focused': '🎯'
+        };
+        this.avatar.innerHTML = emojis[state.mood] || '🤖';
+        
+        // Update chat header avatar
+        const chatAvatar = document.getElementById('chatAvatar');
+        if (chatAvatar) {
+            chatAvatar.innerHTML = emojis[state.mood] || '🤖';
+            chatAvatar.style.borderColor = state.color;
+        }
+        
+        // Add pulse if significant change
+        if (Math.abs(state.pnl) > 10) {
+            this.avatar.classList.add('pulse');
+        } else {
+            this.avatar.classList.remove('pulse');
+        }
+        
+        // Store state
+        this.state = state;
+    }
+
+    toggleChat() {
+        this.isOpen = !this.isOpen;
+        if (this.isOpen) {
+            this.chatWidget.classList.remove('hidden');
+            document.getElementById('chatInput').focus();
+        } else {
+            this.chatWidget.classList.add('hidden');
+        }
+    }
+
+    async sendMessage() {
+        const input = document.getElementById('chatInput');
+        const message = input.value.trim();
+        if (!message) return;
+        
+        // Add user message
+        this.addMessage(message, 'user');
+        input.value = '';
+        
+        // Show typing
+        this.showTyping();
+        
+        // Get response from API
+        try {
+            const res = await fetch(`${this.apiBase}/chat`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message })
+            });
+            
+            const data = await res.json();
+            this.hideTyping();
+            this.addMessage(data.response, 'oshi');
+        } catch (e) {
+            this.hideTyping();
+            this.addMessage('Oops! My brain glitched. Try again? 🧠💥', 'oshi');
+        }
+    }
+
+    addMessage(text, sender) {
+        const container = document.getElementById('chatMessages');
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `oshi-chat-message ${sender}`;
+        
+        const emoji = sender === 'oshi' 
+            ? (this.state ? {excited:'✨',happy:'😊',determined:'💪',focused:'🎯'}[this.state.mood] : '🤖')
+            : '👤';
+        
+        msgDiv.innerHTML = `
+            <div class="oshi-chat-message-avatar">${emoji}</div>
+            <div class="oshi-chat-message-bubble">${this.escapeHtml(text)}</div>
+        `;
+        
+        container.appendChild(msgDiv);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    showTyping() {
+        const container = document.getElementById('chatMessages');
+        const typing = document.createElement('div');
+        typing.className = 'oshi-chat-typing';
+        typing.id = 'typingIndicator';
+        typing.innerHTML = `
+            <div class="oshi-chat-message-avatar">🤖</div>
+            <div class="oshi-chat-typing-dot"></div>
+            <div class="oshi-chat-typing-dot"></div>
+            <div class="oshi-chat-typing-dot"></div>
+        `;
+        container.appendChild(typing);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    hideTyping() {
+        const typing = document.getElementById('typingIndicator');
+        if (typing) typing.remove();
+    }
+
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+}
+
+// Initialize when DOM loaded
+document.addEventListener('DOMContentLoaded', () => {
+    window.oshiAvatar = new OshiAvatar();
+});
