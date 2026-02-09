@@ -1000,8 +1000,12 @@ body {
       </div>
       <div class="oshi-stats">
         <div class="oshi-stat-row">
-          <span class="stat-label">Win Rate</span>
+          <span class="stat-label">Session WR</span>
           <span class="stat-value" style="color: var(--profit);" id="winRate">68.4%</span>
+        </div>
+        <div class="oshi-stat-row">
+          <span class="stat-label">All Time WR</span>
+          <span class="stat-value" style="color: var(--text-secondary);" id="allTimeWinRate">38.3%</span>
         </div>
         <div class="oshi-stat-row">
           <span class="stat-label">Trades Today</span>
@@ -1454,6 +1458,14 @@ async function fetchStatus() {
       const sign = pnlPct >= 0 ? '+' : '';
       pnlPctEl.textContent = `${sign}${pnlPct.toFixed(1)}%`;
       pnlPctEl.className = `pnl-pct ${pnlPct >= 0 ? 'positive' : 'negative'}`;
+    }
+    
+    // All-time win rate
+    const allTimeWrEl = document.getElementById('allTimeWinRate');
+    if (allTimeWrEl && data.all_time_win_rate !== undefined) {
+      const wr = data.all_time_win_rate;
+      allTimeWrEl.textContent = `${wr.toFixed(1)}%`;
+      allTimeWrEl.style.color = wr >= 50 ? 'var(--profit)' : 'var(--loss)';
     }
   } catch (e) {
     console.error('Status fetch failed:', e);
