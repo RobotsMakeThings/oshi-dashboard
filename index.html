@@ -1395,15 +1395,119 @@ async function fetchPositions() {
   }
 }
 
+// Fetch leaderboard data
+async function fetchLeaderboard() {
+  try {
+    const res = await fetch(`${API_BASE}/all`);
+    const data = await res.json();
+    const lb = data.leaderboard || {};
+    
+    const renderLeaderboard = (elId, items, isWorst = false) => {
+      const el = document.getElementById(elId);
+      if (!el || !items?.length) return;
+      
+      el.innerHTML = items.slice(0, 5).map((t, i) => {
+        const asset = t.ticker?.includes('BTC') ? 'BTC' : t.ticker?.includes('SOL') ? 'SOL' : 'ETH';
+        const side = (t.side || '').toUpperCase();
+        const pnl = t.pnl || 0;
+        const pnlPct = t.pnl_pct || ((pnl / (t.size_usd || 1)) * 100);
+        const pnlClass = pnl >= 0 ? 'positive' : 'negative';
+        const pnlSign = pnl >= 0 ? '+' : '';
+        const rankClass = isWorst 
+          ? `style="background:rgba(255,59,92,${0.12 - i*0.03});color:var(--loss);"`
+          : (i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : 'normal');
+        const rankAttr = isWorst ? rankClass : `class="rank ${rankClass}"`;
+        
+        return `
+          <li class="leader-item">
+            <span ${rankAttr}>${i + 1}</span>
+            <span class="trade-name">${asset} ${side} @ ${t.price || t.entry_price || 0}¢</span>
+            <span class="trade-pct">${pnlSign}${pnlPct.toFixed(1)}%</span>
+            <span class="trade-pnl ${pnlClass}">${pnlSign}$${Math.abs(pnl).toFixed(2)}</span>
+          </li>
+        `;
+      }).join('');
+    };
+    
+    renderLeaderboard('sessionTop', lb.session_top, false);
+    renderLeaderboard('sessionWorst', lb.session_bottom, true);
+    renderLeaderboard('allTimeTop', lb.all_time_top, false);
+    renderLeaderboard('allTimeWorst', lb.all_time_bottom, true);
+    
+  } catch (e) {
+    console.error('Leaderboard fetch failed:', e);
+  }
+}
+
+// Fetch P&L separately for accuracy
+async function fetchPnL() {
+  try {
+    const res = await fetch(`${API_BASE}/pnl`);
+    const data = await res.json();
+    
+    const session = data.session || {};
+    const wallet = data.wallet || {};
+    
+    // Session P&L
+    const sessionPnlEl = document.getElementById('sessionPnl');
+    const sessionPctEl = document.getElementById('sessionPct');
+    if (sessionPnlEl) {
+      const pnl = session.pnl || 0;
+      sessionPnlEl.textContent = `${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}`;
+      sessionPnlEl.className = `pnl-value ${pnl >= 0 ? 'positive' : 'negative'}`;
+    }
+    if (sessionPctEl) {
+      const pct = session.pct || 0;
+      sessionPctEl.textContent = `${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%`;
+      sessionPctEl.className = `pnl-pct ${pct >= 0 ? 'positive' : 'negative'}`;
+    }
+    
+    // Total P&L from wallet
+    const totalPnlEl = document.getElementById('totalPnl');
+    const pnlPctEl = document.getElementById('pnlPct');
+    if (totalPnlEl) {
+      const pnl = wallet.pnl || 0;
+      totalPnlEl.textContent = `${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}`;
+      totalPnlEl.className = `pnl-value ${pnl >= 0 ? 'positive' : 'negative'}`;
+    }
+    if (pnlPctEl) {
+      const pct = wallet.pct || 0;
+      pnlPctEl.textContent = `${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%`;
+      pnlPctEl.className = `pnl-pct ${pct >= 0 ? 'positive' : 'negative'}`;
+    }
+    
+    // Win rate from session
+    const winRateEl = document.getElementById('winRate');
+    if (winRateEl) {
+      const wr = session.win_rate || 0;
+      winRateEl.textContent = `${wr.toFixed(1)}%`;
+      winRateEl.style.color = wr >= 50 ? 'var(--profit)' : 'var(--loss)';
+    }
+    
+    // Trades today
+    const tradesTodayEl = document.getElementById('tradesToday');
+    if (tradesTodayEl) {
+      tradesTodayEl.textContent = (session.wins || 0) + (session.losses || 0);
+    }
+    
+  } catch (e) {
+    console.error('P&L fetch failed:', e);
+  }
+}
+
 // Initial fetch and refresh loop
 fetchStatus();
 fetchPositions();
 fetchTrades();
 fetchBrain();
+fetchLeaderboard();
+fetchPnL();
 setInterval(fetchStatus, 15000);  // Every 15s
 setInterval(fetchPositions, 10000); // Every 10s (positions are time-sensitive)
 setInterval(fetchTrades, 30000);  // Every 30s
 setInterval(fetchBrain, 60000);   // Every 60s
+setInterval(fetchLeaderboard, 30000); // Every 30s
+setInterval(fetchPnL, 15000); // Every 15s
 setInterval(updateUptime, 60000); // Update uptime every minute
 </script>
 </body>
