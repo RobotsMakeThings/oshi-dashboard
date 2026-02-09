@@ -637,6 +637,115 @@ body {
   padding: 8px 0 0 4px;
 }
 
+/* === LEADERBOARD TABBED INTERFACE === */
+.leaderboard-container {
+  grid-column: 2 / 5;
+  display: grid;
+}
+
+.leaderboard-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.lb-tab {
+  background: transparent;
+  border: 1px solid var(--oshi-border);
+  color: var(--text-secondary);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lb-tab:hover {
+  border-color: var(--oshi-teal);
+  color: var(--oshi-teal);
+}
+
+.lb-tab.active {
+  background: linear-gradient(135deg, rgba(0,229,195,0.15), rgba(57,255,20,0.1));
+  border-color: var(--oshi-teal);
+  color: var(--oshi-teal);
+  box-shadow: 0 0 12px rgba(0,229,195,0.2);
+}
+
+.lb-content {
+  display: none;
+}
+
+.lb-content.active {
+  display: block;
+}
+
+.lb-split {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  align-items: start;
+}
+
+.lb-divider {
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--oshi-border), transparent);
+  margin: 0 20px;
+  min-height: 150px;
+  align-self: stretch;
+}
+
+.lb-column {
+  padding: 8px 0;
+}
+
+.lb-column-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 0 12px 0;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.lb-winners .lb-column-header {
+  color: var(--profit);
+}
+
+.lb-losers .lb-column-header {
+  color: var(--loss);
+}
+
+.lb-icon {
+  font-size: 16px;
+}
+
+.trade-list.compact {
+  gap: 6px;
+}
+
+.trade-list.compact .leader-item {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.trade-list.compact .trade-name {
+  font-size: 12px;
+}
+
+.trade-list.compact .trade-pct,
+.trade-list.compact .trade-pnl {
+  font-size: 12px;
+}
+
+.rank.loss {
+  background: rgba(255,59,92,0.12);
+  color: var(--loss);
+}
+
 /* === RECENT TRADES FULL WIDTH === */
 .recent-trades {
   grid-column: 2 / 5;
@@ -699,6 +808,12 @@ body {
   .dashboard { grid-template-columns: 1fr; padding: 12px; gap: 12px; }
   .pnl-row { grid-template-columns: 1fr; }
   .boards-grid { grid-template-columns: 1fr; }
+  .leaderboard-container { grid-column: 1 / -1; }
+  .lb-split { grid-template-columns: 1fr; gap: 16px; }
+  .lb-divider { display: none; }
+  .lb-column { border-bottom: 1px solid var(--oshi-border); padding-bottom: 16px; }
+  .lb-column:last-child { border-bottom: none; }
+  .leaderboard-tabs { justify-content: center; }
   .oshi-sidebar { flex-direction: column; }
   .oshi-portrait { height: 280px; min-width: auto; }
   .pnl-value { font-size: 28px; }
@@ -864,69 +979,65 @@ body {
     </div>
   </div>
 
-  <!-- SESSION BOARDS -->
-  <div class="boards-grid">
-    <span class="boards-section-title">This Session</span>
-
-    <div class="card">
-      <div class="card-header">
-        <h3>🏆 Top Trades</h3>
-        <span class="badge badge-session">SESSION</span>
+  <!-- LEADERBOARDS - Tabbed Interface -->
+  <div class="leaderboard-container">
+    <div class="card" style="grid-column: 1 / -1;">
+      <div class="card-header" style="justify-content: space-between;">
+        <h3>📊 Trade Leaderboards</h3>
+        <div class="leaderboard-tabs">
+          <button class="lb-tab active" data-tab="session" onclick="switchLeaderboardTab('session')">This Session</button>
+          <button class="lb-tab" data-tab="alltime" onclick="switchLeaderboardTab('alltime')">All Time</button>
+        </div>
       </div>
       <div class="card-body">
-        <ul class="trade-list" id="sessionTop">
-          <li class="leader-item"><span class="rank gold">1</span><span class="trade-name">ETH above $3K by Feb 10</span><span class="trade-pct">+31.2%</span><span class="trade-pnl positive">+$62.40</span></li>
-          <li class="leader-item"><span class="rank silver">2</span><span class="trade-name">BTC above $105K by Feb 14</span><span class="trade-pct">+22.5%</span><span class="trade-pnl positive">+$45.00</span></li>
-          <li class="leader-item"><span class="rank bronze">3</span><span class="trade-name">Trump exec order crypto</span><span class="trade-pct">+18.0%</span><span class="trade-pnl positive">+$36.00</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <h3>💀 Worst Trades</h3>
-        <span class="badge badge-session">SESSION</span>
-      </div>
-      <div class="card-body">
-        <ul class="trade-list" id="sessionWorst">
-          <li class="leader-item"><span class="rank" style="background:rgba(255,59,92,0.12);color:var(--loss);">1</span><span class="trade-name">CPI above 3.0% January</span><span class="trade-pct">-12.5%</span><span class="trade-pnl negative">-$25.00</span></li>
-          <li class="leader-item"><span class="rank" style="background:rgba(255,59,92,0.08);color:var(--loss);">2</span><span class="trade-name">S&P 500 closes green today</span><span class="trade-pct">-8.3%</span><span class="trade-pnl negative">-$16.60</span></li>
-          <li class="leader-item"><span class="rank" style="background:rgba(255,59,92,0.05);color:var(--loss);">3</span><span class="trade-name">Oil below $70 by Feb 7</span><span class="trade-pct">-5.1%</span><span class="trade-pnl negative">-$10.20</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <span class="boards-section-title" style="margin-top: 4px;">All Time</span>
-
-    <div class="card">
-      <div class="card-header">
-        <h3>👑 Top Trades Overall</h3>
-        <span class="badge badge-all">ALL TIME</span>
-      </div>
-      <div class="card-body">
-        <ul class="trade-list" id="allTimeTop">
-          <li class="leader-item"><span class="rank gold">1</span><span class="trade-name">SOL above $200 Dec 2025</span><span class="trade-pct">+68.3%</span><span class="trade-pnl positive">+$341.50</span></li>
-          <li class="leader-item"><span class="rank silver">2</span><span class="trade-name">BTC hits $100K in 2024</span><span class="trade-pct">+55.0%</span><span class="trade-pnl positive">+$275.00</span></li>
-          <li class="leader-item"><span class="rank bronze">3</span><span class="trade-name">Fed cuts rate December</span><span class="trade-pct">+42.1%</span><span class="trade-pnl positive">+$210.50</span></li>
-          <li class="leader-item"><span class="rank normal">4</span><span class="trade-name">ETH ETF approval</span><span class="trade-pct">+38.7%</span><span class="trade-pnl positive">+$193.50</span></li>
-          <li class="leader-item"><span class="rank normal">5</span><span class="trade-name">NVIDIA earnings beat Q3</span><span class="trade-pct">+35.0%</span><span class="trade-pnl positive">+$175.00</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <h3>☠️ Worst Trades Overall</h3>
-        <span class="badge badge-all">ALL TIME</span>
-      </div>
-      <div class="card-body">
-        <ul class="trade-list" id="allTimeWorst">
-          <li class="leader-item"><span class="rank" style="background:rgba(255,59,92,0.15);color:var(--loss);">1</span><span class="trade-name">Biden drops out July</span><span class="trade-pct">-45.0%</span><span class="trade-pnl negative">-$225.00</span></li>
-          <li class="leader-item"><span class="rank" style="background:rgba(255,59,92,0.12);color:var(--loss);">2</span><span class="trade-name">BTC below $50K Sept</span><span class="trade-pct">-32.5%</span><span class="trade-pnl negative">-$162.50</span></li>
-          <li class="leader-item"><span class="rank" style="background:rgba(255,59,92,0.08);color:var(--loss);">3</span><span class="trade-name">Recession declared Q2</span><span class="trade-pct">-28.0%</span><span class="trade-pnl negative">-$140.00</span></li>
-          <li class="leader-item"><span class="rank" style="background:rgba(255,59,92,0.06);color:var(--loss);">4</span><span class="trade-name">Gas above $4 avg Nov</span><span class="trade-pct">-22.3%</span><span class="trade-pnl negative">-$111.50</span></li>
-          <li class="leader-item"><span class="rank" style="background:rgba(255,59,92,0.04);color:var(--loss);">5</span><span class="trade-name">TSLA below $150 Oct</span><span class="trade-pct">-18.0%</span><span class="trade-pnl negative">-$90.00</span></li>
-        </ul>
+        <!-- Session Tab Content -->
+        <div class="lb-content active" id="lb-session">
+          <div class="lb-split">
+            <div class="lb-column lb-winners">
+              <div class="lb-column-header">
+                <span class="lb-icon">🏆</span>
+                <span>Best Trades</span>
+              </div>
+              <ul class="trade-list compact" id="sessionTop">
+                <li class="leader-item"><span class="rank gold">1</span><span class="trade-name">Loading...</span></li>
+              </ul>
+            </div>
+            <div class="lb-divider"></div>
+            <div class="lb-column lb-losers">
+              <div class="lb-column-header">
+                <span class="lb-icon">💀</span>
+                <span>Worst Trades</span>
+              </div>
+              <ul class="trade-list compact" id="sessionWorst">
+                <li class="leader-item"><span class="rank loss">1</span><span class="trade-name">Loading...</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- All Time Tab Content -->
+        <div class="lb-content" id="lb-alltime">
+          <div class="lb-split">
+            <div class="lb-column lb-winners">
+              <div class="lb-column-header">
+                <span class="lb-icon">👑</span>
+                <span>Best Trades</span>
+              </div>
+              <ul class="trade-list compact" id="allTimeTop">
+                <li class="leader-item"><span class="rank gold">1</span><span class="trade-name">Loading...</span></li>
+              </ul>
+            </div>
+            <div class="lb-divider"></div>
+            <div class="lb-column lb-losers">
+              <div class="lb-column-header">
+                <span class="lb-icon">☠️</span>
+                <span>Worst Trades</span>
+              </div>
+              <ul class="trade-list compact" id="allTimeWorst">
+                <li class="leader-item"><span class="rank loss">1</span><span class="trade-name">Loading...</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1493,6 +1604,19 @@ async function fetchPnL() {
   } catch (e) {
     console.error('P&L fetch failed:', e);
   }
+}
+
+// Leaderboard tab switching
+function switchLeaderboardTab(tab) {
+  // Update tab buttons
+  document.querySelectorAll('.lb-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tab);
+  });
+  
+  // Update content panels
+  document.querySelectorAll('.lb-content').forEach(panel => {
+    panel.classList.toggle('active', panel.id === `lb-${tab}`);
+  });
 }
 
 // Initial fetch and refresh loop
