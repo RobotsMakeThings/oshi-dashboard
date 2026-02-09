@@ -1,7 +1,7 @@
 {
-  "name": "OSHI v2.0 — Kalshi Trader",
-  "short_name": "OSHI v2.0",
-  "description": "OSHI v2.0 - Enhanced prediction market trading with fixed confidence scoring",
+  "name": "OSHI v2.2 — Kalshi Trader",
+  "short_name": "OSHI v2.2",
+  "description": "OSHI v2.2 - Version tracking & performance testing with restart capabilities",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#060918",
