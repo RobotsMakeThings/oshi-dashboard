@@ -1070,7 +1070,7 @@ body {
       <div class="k-logo">K</div>
       TRADE WITH OSHI
     </a>
-    <div class="status-toggle" id="statusToggle" onclick="toggleStatus()">
+    <div class="status-toggle" id="statusToggle" style="cursor: default; pointer-events: none;">
       <span class="label" id="statusLabel" style="color: var(--loss);">OFFLINE</span>
       <div class="toggle-track" id="toggleTrack">
         <div class="toggle-knob"></div>
@@ -1582,14 +1582,8 @@ const API_BASE = '/api';  // Proxied through Netlify to avoid mixed content
 let sessionStartTime = null;
 const STARTING_BALANCE = 10.87; // Version 2.2 restart balance
 
-// Toggle status (manual override)
-function toggleStatus() {
-  const track = document.getElementById('toggleTrack');
-  const label = document.getElementById('statusLabel');
-  const isOn = track.classList.toggle('on');
-  label.textContent = isOn ? 'RUNNING' : 'OFFLINE';
-  label.style.color = isOn ? 'var(--profit)' : 'var(--loss)';
-}
+// Status toggle is now display-only (controlled by API)
+// function toggleStatus() { ... } // Disabled - status reflects actual system state
 
 // Particle system
 const canvas = document.getElementById('particles');
