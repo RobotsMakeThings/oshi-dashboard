@@ -1692,9 +1692,7 @@ function updateUptime() {
 async function fetchStatus() {
   try {
     const res = await fetch(`${API_BASE}/status`, { headers: API_HEADERS });
-    const data = await res.json(); console.log('DEBUG: API data:', data);
-    
-    // Update current balance
+    const data = await res.json(); // Update current balance
     const currentBalanceEl = document.getElementById('currentBalance');
     if (currentBalanceEl) {
       currentBalanceEl.textContent = `$${data.balance.toFixed(2)}`;
@@ -1735,8 +1733,7 @@ async function fetchStatus() {
 async function fetchTrades() {
   try {
     const res = await fetch(`${API_BASE}/trades`, { headers: API_HEADERS });
-    const data = await res.json(); console.log('DEBUG: API data:', data);
-    const trades = data.recent || [];
+    const data = await res.json(); const trades = data.recent || [];
     const completedTrades = trades.filter(t => t.won !== undefined);
     
     
@@ -1778,9 +1775,7 @@ async function fetchTrades() {
 async function fetchBrain() {
   try {
     const res = await fetch(`${API_BASE}/brain`, { headers: API_HEADERS });
-    const data = await res.json(); console.log('DEBUG: API data:', data);
-    
-    // Update lessons
+    const data = await res.json(); // Update lessons
     const lessonsEl = document.getElementById('lessons');
     if (lessonsEl && data.lessons?.length) {
       lessonsEl.innerHTML = data.lessons.slice(0, 5).map(l => `
@@ -1855,9 +1850,7 @@ function updateBrainStreams(trades) {
 async function fetchPositions() {
   try {
     const res = await fetch(`${API_BASE}/positions`, { headers: API_HEADERS });
-    const data = await res.json(); console.log('DEBUG: API data:', data);
-    
-    const listEl = document.getElementById('positionsList');
+    const data = await res.json(); const listEl = document.getElementById('positionsList');
     const badgeEl = document.getElementById('positionsBadge');
     
     if (!listEl) return;
@@ -1900,8 +1893,7 @@ async function fetchPositions() {
 async function fetchLeaderboard() {
   try {
     const res = await fetch(`${API_BASE}/all`, { headers: API_HEADERS });
-    const data = await res.json(); console.log('DEBUG: API data:', data);
-    const lb = data.leaderboard || {};
+    const data = await res.json(); const lb = data.leaderboard || {};
     
     const renderLeaderboard = (elId, items, isWorst = false) => {
       const el = document.getElementById(elId);
@@ -1972,12 +1964,9 @@ function getDemoWorstTrades() {
 }
 
 // Fetch P&L separately for accuracy
-async function fetchPnL() { console.log('DEBUG: fetchPnL starting');
-  try {
+async function fetchPnL() { try {
     const res = await fetch(`${API_BASE}/pnl`, { headers: API_HEADERS });
-    const data = await res.json(); console.log('DEBUG: API data:', data);
-    
-    const session = data.session || {};
+    const data = await res.json(); const session = data.session || {};
     const wallet = data.wallet || {};
     
     // Session P&L
@@ -1999,7 +1988,6 @@ async function fetchPnL() { console.log('DEBUG: fetchPnL starting');
     const pnlPctEl = document.getElementById('pnlPct');
     if (totalPnlEl) {
       const pnl = wallet.pnl || 0;
-      console.log('DEBUG: updating totalPnl with:', pnl);
       totalPnlEl.textContent = `${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}`;
       totalPnlEl.className = `pnl-value ${pnl >= 0 ? 'positive' : 'negative'}`;
     }
@@ -2351,8 +2339,7 @@ const chatWidget = {
         headers: { 'Authorization': 'Bearer ' + API_KEY, 'Content-Type': 'application/json' },
         body: JSON.stringify({ message })
       });
-      const data = await res.json(); console.log('DEBUG: API data:', data);
-      this.hideTyping();
+      const data = await res.json(); this.hideTyping();
       this.addMessage(data.response || data.error || 'Hmm, something went wrong~', 'oshi');
     } catch (e) {
       this.hideTyping();
@@ -2367,6 +2354,15 @@ const chatWidget = {
 // Initialize chat widget
 chatWidget.init();
 </script>
+// Security: HTML escape function to prevent XSS
+function escapeHtml(text) {
+    if (typeof text !== 'string') return text;
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+
 <script>
 // Force unregister old service workers
 if ('serviceWorker' in navigator) {
