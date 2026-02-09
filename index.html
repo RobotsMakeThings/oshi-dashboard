@@ -1780,6 +1780,310 @@ if ('serviceWorker' in navigator) {
     .then(() => console.log('OSHI PWA ready'))
     .catch(err => console.log('SW registration failed:', err));
 }
+
+// === OSHI CHAT WIDGET ===
+const chatWidget = {
+  isOpen: false,
+  messages: [],
+  
+  init() {
+    this.addStyles();
+    this.addHTML();
+    this.bindEvents();
+    this.addWelcome();
+  },
+  
+  addStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+      .oshi-chat-bubble {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--oshi-teal), #00b89c);
+        border: 2px solid var(--oshi-teal);
+        cursor: pointer;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 20px var(--oshi-glow), 0 0 40px rgba(0,229,195,0.2);
+        transition: all 0.3s ease;
+        animation: pulse-glow 2s infinite;
+      }
+      .oshi-chat-bubble:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 30px var(--oshi-glow);
+      }
+      .oshi-chat-bubble img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+      }
+      .oshi-chat-bubble .chat-icon {
+        font-size: 28px;
+      }
+      @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 4px 20px var(--oshi-glow), 0 0 40px rgba(0,229,195,0.2); }
+        50% { box-shadow: 0 4px 30px var(--oshi-glow), 0 0 60px rgba(0,229,195,0.3); }
+      }
+      
+      .oshi-chat-modal {
+        position: fixed;
+        bottom: 100px;
+        right: 24px;
+        width: 360px;
+        max-width: calc(100vw - 48px);
+        height: 480px;
+        max-height: calc(100vh - 140px);
+        background: var(--oshi-card);
+        border: 1px solid var(--oshi-border);
+        border-radius: 16px;
+        z-index: 999;
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 60px var(--oshi-glow);
+        backdrop-filter: blur(20px);
+      }
+      .oshi-chat-modal.open { display: flex; animation: slideUp 0.3s ease; }
+      @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      .oshi-chat-header {
+        padding: 16px;
+        background: linear-gradient(135deg, rgba(0,229,195,0.1), transparent);
+        border-bottom: 1px solid var(--oshi-border);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .oshi-chat-header .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--oshi-teal);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+      }
+      .oshi-chat-header .info h3 {
+        font-family: 'Orbitron', monospace;
+        font-size: 14px;
+        color: var(--oshi-teal);
+        margin: 0;
+      }
+      .oshi-chat-header .info span {
+        font-size: 11px;
+        color: var(--text-secondary);
+      }
+      .oshi-chat-header .close-btn {
+        margin-left: auto;
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        font-size: 20px;
+        cursor: pointer;
+        padding: 4px 8px;
+      }
+      .oshi-chat-header .close-btn:hover { color: var(--oshi-teal); }
+      
+      .oshi-chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .oshi-chat-messages::-webkit-scrollbar { width: 4px; }
+      .oshi-chat-messages::-webkit-scrollbar-thumb { background: var(--oshi-border); border-radius: 4px; }
+      
+      .chat-msg {
+        max-width: 85%;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+      .chat-msg.user {
+        align-self: flex-end;
+        background: var(--oshi-teal);
+        color: var(--oshi-deep);
+        border-bottom-right-radius: 4px;
+      }
+      .chat-msg.oshi {
+        align-self: flex-start;
+        background: var(--oshi-mid);
+        border: 1px solid var(--oshi-border);
+        border-bottom-left-radius: 4px;
+      }
+      .chat-msg.typing {
+        background: var(--oshi-mid);
+        border: 1px solid var(--oshi-border);
+      }
+      .typing-dots { display: flex; gap: 4px; }
+      .typing-dots span {
+        width: 6px; height: 6px; border-radius: 50%;
+        background: var(--oshi-teal);
+        animation: bounce 1.4s infinite;
+      }
+      .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+      .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+      @keyframes bounce {
+        0%, 60%, 100% { transform: translateY(0); }
+        30% { transform: translateY(-4px); }
+      }
+      
+      .oshi-chat-input {
+        padding: 12px 16px;
+        border-top: 1px solid var(--oshi-border);
+        display: flex;
+        gap: 8px;
+      }
+      .oshi-chat-input input {
+        flex: 1;
+        background: var(--oshi-mid);
+        border: 1px solid var(--oshi-border);
+        border-radius: 8px;
+        padding: 10px 14px;
+        color: var(--text-primary);
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 14px;
+        outline: none;
+      }
+      .oshi-chat-input input:focus { border-color: var(--oshi-teal); }
+      .oshi-chat-input input::placeholder { color: var(--text-dim); }
+      .oshi-chat-input button {
+        background: var(--oshi-teal);
+        border: none;
+        border-radius: 8px;
+        width: 40px;
+        cursor: pointer;
+        color: var(--oshi-deep);
+        font-size: 16px;
+        transition: all 0.2s;
+      }
+      .oshi-chat-input button:hover { background: #00ffda; }
+      .oshi-chat-input button:disabled { opacity: 0.5; cursor: not-allowed; }
+      
+      @media (max-width: 480px) {
+        .oshi-chat-modal {
+          bottom: 80px;
+          right: 12px;
+          left: 12px;
+          width: auto;
+          height: calc(100vh - 100px);
+        }
+        .oshi-chat-bubble { bottom: 12px; right: 12px; }
+      }
+    `;
+    document.head.appendChild(style);
+  },
+  
+  addHTML() {
+    const html = `
+      <div class="oshi-chat-bubble" onclick="chatWidget.toggle()">
+        <span class="chat-icon">💬</span>
+      </div>
+      <div class="oshi-chat-modal" id="oshiChatModal">
+        <div class="oshi-chat-header">
+          <div class="avatar">🧠</div>
+          <div class="info">
+            <h3>OSHI</h3>
+            <span>Ask me anything~</span>
+          </div>
+          <button class="close-btn" onclick="chatWidget.toggle()">✕</button>
+        </div>
+        <div class="oshi-chat-messages" id="oshiChatMessages"></div>
+        <div class="oshi-chat-input">
+          <input type="text" id="oshiChatInput" placeholder="Ask Oshi something..." maxlength="500">
+          <button onclick="chatWidget.send()" id="oshiSendBtn">➤</button>
+        </div>
+      </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', html);
+  },
+  
+  bindEvents() {
+    const input = document.getElementById('oshiChatInput');
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') this.send();
+    });
+  },
+  
+  addWelcome() {
+    this.addMessage("Hey! I'm Oshi~ Ask me about my trading strategy, how I'm doing today, or anything else! 💜", 'oshi');
+  },
+  
+  toggle() {
+    this.isOpen = !this.isOpen;
+    document.getElementById('oshiChatModal').classList.toggle('open', this.isOpen);
+  },
+  
+  addMessage(text, sender) {
+    const container = document.getElementById('oshiChatMessages');
+    const msg = document.createElement('div');
+    msg.className = `chat-msg ${sender}`;
+    msg.textContent = text;
+    container.appendChild(msg);
+    container.scrollTop = container.scrollHeight;
+  },
+  
+  showTyping() {
+    const container = document.getElementById('oshiChatMessages');
+    const typing = document.createElement('div');
+    typing.className = 'chat-msg oshi typing';
+    typing.id = 'typingIndicator';
+    typing.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+    container.appendChild(typing);
+    container.scrollTop = container.scrollHeight;
+  },
+  
+  hideTyping() {
+    const typing = document.getElementById('typingIndicator');
+    if (typing) typing.remove();
+  },
+  
+  async send() {
+    const input = document.getElementById('oshiChatInput');
+    const btn = document.getElementById('oshiSendBtn');
+    const message = input.value.trim();
+    
+    if (!message) return;
+    
+    this.addMessage(message, 'user');
+    input.value = '';
+    btn.disabled = true;
+    this.showTyping();
+    
+    try {
+      const res = await fetch(API_BASE + '/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      });
+      const data = await res.json();
+      this.hideTyping();
+      this.addMessage(data.response || data.error || 'Hmm, something went wrong~', 'oshi');
+    } catch (e) {
+      this.hideTyping();
+      this.addMessage('Oops, couldn\'t connect to my brain right now. Try again? 🧠', 'oshi');
+    }
+    
+    btn.disabled = false;
+    input.focus();
+  }
+};
+
+// Initialize chat widget
+chatWidget.init();
 </script>
 </body>
 </html>
