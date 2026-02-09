@@ -1,7 +1,7 @@
 {
-  "name": "OSHI v2.2 — Kalshi Trader",
-  "short_name": "OSHI v2.2",
-  "description": "OSHI v2.2 - Version tracking & performance testing with restart capabilities",
+  "name": "OSHI v2.3 — Kalshi Trader",
+  "short_name": "OSHI v2.3",
+  "description": "OSHI v2.3 - Active trading with enhanced social features & $425 starting balance",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#060918",

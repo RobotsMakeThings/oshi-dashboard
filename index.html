@@ -12,7 +12,7 @@
 <meta name="application-name" content="OSHI">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>OSHI v2.2 — Kalshi Prediction Trader</title>
+<title>OSHI v2.3 — Kalshi Prediction Trader</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -1089,7 +1089,7 @@ body {
         <img src="oshi-new.png" alt="Oshi - Kalshi Prediction Agent" id="oshiPortrait">
         <div class="oshi-nameplate">
           <h2>OSHI</h2>
-          <p>Prediction Agent v2.2</p>
+          <p>Prediction Agent v2.3</p>
         </div>
       </div>
       <div class="oshi-stats">
@@ -1143,8 +1143,8 @@ body {
     <div style="display: flex; align-items: center; gap: 12px;">
       <span style="font-size: 24px;">🔄</span>
       <div>
-        <div style="font-family: 'Orbitron', sans-serif; font-size: 13px; color: var(--oshi-teal); letter-spacing: 1px; margin-bottom: 4px;">VERSION 2.2 RESTART</div>
-        <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">Trade calculations are restarted every new version to test performance upgrades. Starting balance reset to current wallet balance.</div>
+        <div style="font-family: 'Orbitron', sans-serif; font-size: 13px; color: var(--oshi-teal); letter-spacing: 1px; margin-bottom: 4px;">VERSION 2.3 RESTART</div>
+        <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">Trade calculations are restarted every new version to test performance upgrades. Starting balance reset to $425.</div>
       </div>
     </div>
   </div>
@@ -1152,9 +1152,9 @@ body {
   <!-- PNL HERO ROW -->
   <div class="pnl-row">
     <div class="pnl-hero balance">
-      <div class="pnl-label">Starting Balance (v2.2)</div>
-      <div class="pnl-value balance-val">$10.87</div>
-      <div class="pnl-pct" style="color: var(--text-secondary);">Version 2.2 Baseline</div>
+      <div class="pnl-label">Starting Balance (v2.3)</div>
+      <div class="pnl-value balance-val">$425.00</div>
+      <div class="pnl-pct" style="color: var(--text-secondary);">Version 2.3 Baseline</div>
     </div>
     <div class="pnl-hero session">
       <div class="pnl-label">Current Balance</div>
@@ -1177,8 +1177,8 @@ body {
     <div style="padding: 12px 16px; background: rgba(0,229,195,0.05); border-bottom: 1px solid var(--oshi-border);">
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="font-size: 16px;">🆕</span>
-        <span style="font-size: 13px; color: var(--oshi-teal); font-weight: 600;">Version 2.2 started here</span>
-        <span style="font-size: 12px; color: var(--text-secondary);">— Trade calculations reset for performance testing</span>
+        <span style="font-size: 13px; color: var(--oshi-teal); font-weight: 600;">Version 2.3 started here</span>
+        <span style="font-size: 12px; color: var(--text-secondary);">— Trade calculations reset with $425 starting balance</span>
       </div>
     </div>
     <div class="card-body">
@@ -1459,12 +1459,41 @@ body {
       </div>
       
       <!-- V2.2 -->
-      <div class="version-card current">
+      <div class="version-card">
         <div class="version-header">
           <span class="version-name">v2.2</span>
-          <span class="version-badge current">ACTIVE</span>
+          <span class="version-badge">FEB 9 PM</span>
         </div>
         <div class="version-desc">Restarted with $1 sizing for data collection & testing</div>
+        <div class="version-stats">
+          <div class="stat">
+            <span class="stat-value positive">+$414.90</span>
+            <span class="stat-label">P&L ($)</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" style="color: var(--text-secondary);">3</span>
+            <span class="stat-label">Trades</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" style="color: var(--text-secondary);">—</span>
+            <span class="stat-label">Win Rate</span>
+          </div>
+        </div>
+        <div style="padding-top: 10px; border-top: 1px solid var(--oshi-border); margin-top: 10px;">
+          <div style="font-size: 11px; color: var(--loss); margin-bottom: 4px;">❌ What went wrong:</div>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Markets closed shortly after restart, limited trading opportunity</div>
+          <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ What we fixed in v2.3:</div>
+          <div style="font-size: 12px; color: var(--text-secondary);">Increased starting balance to $425, new tweet format, ready for active trading</div>
+        </div>
+      </div>
+
+      <!-- V2.3 -->
+      <div class="version-card current">
+        <div class="version-header">
+          <span class="version-name">v2.3</span>
+          <span class="version-badge current">ACTIVE</span>
+        </div>
+        <div class="version-desc">$425 starting balance, new tweet format, ready for active trading</div>
         <div class="version-stats">
           <div class="stat">
             <span class="stat-value" style="color: var(--text-secondary);">$0.00</span>
@@ -1481,9 +1510,9 @@ body {
         </div>
         <div style="padding-top: 10px; border-top: 1px solid var(--oshi-border); margin-top: 10px;">
           <div style="font-size: 11px; color: var(--oshi-teal); margin-bottom: 4px;">🎯 Current focus:</div>
-          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">$1 flat sizing per asset per window to gather more data points while minimizing risk</div>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Active trading with $425 balance, new social engagement features</div>
           <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ New features:</div>
-          <div style="font-size: 12px; color: var(--text-secondary);">Full version tracking, improved leaderboards with % ranking, transparent version history with lessons learned</div>
+          <div style="font-size: 12px; color: var(--text-secondary);">Updated tweet structure, time-based updates, $10 sizing per trade</div>
         </div>
       </div>
       
@@ -1574,13 +1603,13 @@ body {
 
 <!-- FOOTER -->
 <footer class="footer">
-  <span>OSHI v2.2 · <a href="https://x.com/PredictwithOshi" target="_blank" class="footer-oshi-x">𝕏 @PredictwithOshi</a></span>
+  <span>OSHI v2.3 · <a href="https://x.com/PredictwithOshi" target="_blank" class="footer-oshi-x">𝕏 @PredictwithOshi</a></span>
 </footer>
 
 <script>
 const API_BASE = '/api';  // Proxied through Netlify to avoid mixed content
 let sessionStartTime = null;
-const STARTING_BALANCE = 10.87; // Version 2.2 restart balance
+const STARTING_BALANCE = 425.00; // Version 2.3 restart balance
 
 // Status toggle is now display-only (controlled by API)
 // function toggleStatus() { ... } // Disabled - status reflects actual system state
