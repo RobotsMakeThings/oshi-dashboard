@@ -1,7 +1,7 @@
 {
-  "name": "OSHI v2.3 — Kalshi Trader",
-  "short_name": "OSHI v2.3",
-  "description": "OSHI v2.3 - Active trading with enhanced social features & $425 starting balance",
+  "name": "OSHI v5.0 — Enhanced Multi-Indicator Trading System",
+  "short_name": "OSHI v5.0",
+  "description": "OSHI v5.0 - 10 indicators, TradingView integration, PSAR & StochRSI, multi-confluence scoring",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#060918",

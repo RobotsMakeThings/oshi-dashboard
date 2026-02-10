@@ -12,7 +12,7 @@
 <meta name="application-name" content="OSHI">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>OSHI v2.3 — Kalshi Prediction Trader</title>
+<title>OSHI v5.0 — Enhanced Multi-Indicator Trading System</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -1089,7 +1089,7 @@ body {
         <img src="oshi-new.png" alt="Oshi - Kalshi Prediction Agent" id="oshiPortrait">
         <div class="oshi-nameplate">
           <h2>OSHI</h2>
-          <p>Prediction Agent v2.3</p>
+          <p>Prediction Agent v5.0</p>
         </div>
       </div>
       <div class="oshi-stats">
@@ -1152,7 +1152,7 @@ body {
   <!-- PNL HERO ROW -->
   <div class="pnl-row">
     <div class="pnl-hero balance">
-      <div class="pnl-label">Starting Balance (v2.3)</div>
+      <div class="pnl-label">Starting Balance (v5.0)</div>
       <div class="pnl-value balance-val">$425.00</div>
       <div class="pnl-pct" style="color: var(--text-secondary);">Version 2.3 Baseline</div>
     </div>
@@ -1162,7 +1162,7 @@ body {
       <div class="pnl-pct" style="color: var(--text-secondary);">Kalshi · USD</div>
     </div>
     <div class="pnl-hero wallet">
-      <div class="pnl-label">P&L (v2.3)</div>
+      <div class="pnl-label">P&L (v5.0)</div>
       <div class="pnl-value" id="totalPnl">--</div>
       <div class="pnl-pct" id="pnlPct">--</div>
     </div>
@@ -1487,11 +1487,69 @@ body {
         </div>
       </div>
       
-      <!-- V2.2 -->
+      <!-- V5.0 -->
       <div class="version-card current">
         <div class="version-header">
-          <span class="version-name">v2.2 (migrated to v2.3)</span>
-          <span class="version-badge current">ACTIVE</span>
+          <span class="version-name">v5.0</span>
+          <span class="version-badge current" style="background: var(--oshi-teal); color: var(--oshi-deep);">ACTIVE</span>
+        </div>
+        <div class="version-desc">Enhanced Multi-Indicator System with 10 indicators & TradingView integration</div>
+        <div class="version-stats">
+          <div class="stat">
+            <span class="stat-value" id="v5Pnl" style="color: var(--text-secondary);">$0.00</span>
+            <span class="stat-label">P&L ($)</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="v5Trades" style="color: var(--text-secondary);">0</span>
+            <span class="stat-label">Trades</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="v5Wr" style="color: var(--text-secondary);">—</span>
+            <span class="stat-label">Win Rate</span>
+          </div>
+        </div>
+        <div style="padding-top: 10px; border-top: 1px solid var(--oshi-border); margin-top: 10px;">
+          <div style="font-size: 11px; color: var(--oshi-teal); margin-bottom: 4px;">🚀 New in v5.0:</div>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">10 indicators, PSAR, StochRSI, TradingView webhooks, confluence scoring</div>
+          <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ Features:</div>
+          <div style="font-size: 12px; color: var(--text-secondary);">Multi-indicator confluence (92% accuracy target), ATR sizing, TV signals</div>
+        </div>
+      </div>
+      
+      <!-- V2.3 -->
+      <div class="version-card">
+        <div class="version-header">
+          <span class="version-name">v2.3</span>
+          <span class="version-badge">FEB 9-10</span>
+        </div>
+        <div class="version-desc">Sizing fix, mispricing cap, $20 max per window</div>
+        <div class="version-stats">
+          <div class="stat">
+            <span class="stat-value" style="color: var(--text-secondary);">See overall</span>
+            <span class="stat-label">P&L ($)</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" style="color: var(--text-secondary);">—</span>
+            <span class="stat-label">Trades</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" style="color: var(--text-secondary);">—</span>
+            <span class="stat-label">Win Rate</span>
+          </div>
+        </div>
+        <div style="padding-top: 10px; border-top: 1px solid var(--oshi-border); margin-top: 10px;">
+          <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 4px;">🔧 Improvements:</div>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">Fixed sizing cap bug, corrected mispricing size limits</div>
+          <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ Deployed:</div>
+          <div style="font-size: 12px; color: var(--text-secondary);">$425 starting balance, proper position sizing controls</div>
+        </div>
+      </div>
+      
+      <!-- V2.2 -->
+      <div class="version-card">
+        <div class="version-header">
+          <span class="version-name">v2.2</span>
+          <span class="version-badge">COMPLETED</span>
         </div>
         <div class="version-desc">Restarted with $1 sizing for data collection & testing</div>
         <div class="version-stats">
@@ -1509,9 +1567,9 @@ body {
           </div>
         </div>
         <div style="padding-top: 10px; border-top: 1px solid var(--oshi-border); margin-top: 10px;">
-          <div style="font-size: 11px; color: var(--oshi-teal); margin-bottom: 4px;">🎯 Current focus:</div>
+          <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 4px;">🎯 Focus:</div>
           <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">$1 flat sizing per asset per window to gather more data points</div>
-          <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ New features:</div>
+          <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">✅ Features:</div>
           <div style="font-size: 12px; color: var(--text-secondary);">Full version tracking, improved leaderboards, Slow Brain analysis</div>
         </div>
       </div>
@@ -1603,7 +1661,7 @@ body {
 
 <!-- FOOTER -->
 <footer class="footer">
-  <span>OSHI v2.3 · <a href="https://x.com/PredictwithOshi" target="_blank" class="footer-oshi-x">𝕏 @PredictwithOshi</a></span>
+  <span>OSHI v5.0 · Enhanced Multi-Indicator System · <a href="https://x.com/PredictwithOshi" target="_blank" class="footer-oshi-x">𝕏 @PredictwithOshi</a></span>
 </footer>
 
 <script>
