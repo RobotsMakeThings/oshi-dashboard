@@ -12,7 +12,7 @@
 <meta name="application-name" content="OSHI">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>OSHI v7.1 — Stricter Tiers, Higher Conviction</title>
+<title>OSHI v7.2 — A-tier Confluence Experiment</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -1384,13 +1384,13 @@ body {
   <div class="pnl-row">
     <!-- Balance Stats -->
     <div class="pnl-hero balance">
-      <div class="pnl-label">Starting Balance (v7.1)</div>
-      <div class="pnl-value balance-val">$177.00</div>
+      <div class="pnl-label">Starting Balance (v7.2)</div>
+      <div class="pnl-value balance-val">$82.29</div>
       <div class="pnl-pct" style="color: var(--text-secondary);">v7.1 Baseline</div>
     </div>
     <div class="pnl-hero session">
       <div class="pnl-label">Current Balance</div>
-      <div class="pnl-value balance-val" id="currentBalance">$177.00</div>
+      <div class="pnl-value balance-val" id="currentBalance">$82.29</div>
       <div class="pnl-pct" style="color: var(--text-secondary);">Kalshi · USD</div>
     </div>
     <div class="pnl-hero wallet">
@@ -1956,7 +1956,7 @@ const API_BASE = '/api';
 const API_KEY = 'oshi-secure-api-key-2024-predictwithoshi';
 const API_HEADERS = { 'Authorization': 'Bearer ' + API_KEY, 'Content-Type': 'application/json' };  // Proxied through Netlify to avoid mixed content
 let sessionStartTime = null;
-const STARTING_BALANCE = 177.00  // v7.1 starting balance (Feb 10)
+const STARTING_BALANCE = 82.29  // v7.2 starting balance (Feb 11)
 
 // Version config - ordered oldest to newest, last 5 shown
 const VERSION_CONFIG = [
