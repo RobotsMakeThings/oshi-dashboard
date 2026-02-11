@@ -1320,7 +1320,7 @@ body {
         <img src="oshi-new.png" alt="Oshi - Kalshi Prediction Agent" id="oshiPortrait">
         <div class="oshi-nameplate">
           <h2>OSHI</h2>
-          <p>Prediction Agent v7.1</p>
+          <p>Prediction Agent v7.2</p>
         </div>
       </div>
       <div class="oshi-stats">
@@ -1386,7 +1386,7 @@ body {
     <div class="pnl-hero balance">
       <div class="pnl-label">Starting Balance (v7.2)</div>
       <div class="pnl-value balance-val">$82.29</div>
-      <div class="pnl-pct" style="color: var(--text-secondary);">v7.1 Baseline</div>
+      <div class="pnl-pct" style="color: var(--text-secondary);">v7.2 Baseline</div>
     </div>
     <div class="pnl-hero session">
       <div class="pnl-label">Current Balance</div>
@@ -1394,7 +1394,7 @@ body {
       <div class="pnl-pct" style="color: var(--text-secondary);">Kalshi · USD</div>
     </div>
     <div class="pnl-hero wallet">
-      <div class="pnl-label">P&L (v7.1)</div>
+      <div class="pnl-label">P&L (v7.2)</div>
       <div class="pnl-value" id="totalPnl">--</div>
       <div class="pnl-pct" id="pnlPct">--</div>
     </div>
@@ -1948,7 +1948,7 @@ body {
 
 <!-- FOOTER -->
 <footer class="footer">
-  <span>OSHI v7.1 · Left Brain + Right Brain + Body + Heart + Spirit · <a href="https://x.com/PredictwithOshi" target="_blank" class="footer-oshi-x">𝕏 @PredictwithOshi</a></span>
+  <span>OSHI v7.2 · Left Brain + Right Brain + Body + Heart + Spirit · <a href="https://x.com/PredictwithOshi" target="_blank" class="footer-oshi-x">𝕏 @PredictwithOshi</a></span>
 </footer>
 
 <script>
@@ -2033,19 +2033,34 @@ const VERSION_CONFIG = [
   },
   {
     version: 'v7.1',
-    badge: 'ACTIVE',
-    isCurrent: true,
+    badge: 'ENDED',
+    isCurrent: false,
     desc: 'Stricter B-tier (3 conf), raised C-tier threshold (ADX<20)',
-    pnl: null, // Dynamic from API
-    pnlId: 'v7Pnl',
-    trades: null,
-    tradesId: 'v7Trades',
-    winRate: null,
-    winRateId: 'v7Wr',
+    pnl: '-$94.71',
+    pnlPositive: false,
+    trades: '81',
+    winRate: '50.6%',
+    winRateColor: 'text-secondary',
     newLabel: '🚀 New in v7.1:',
     newText: 'C-tier: ADX 0-20 (was 0-15) • B-tier: needs 3/3 confluence (was 2) • Fixed metadata tracking',
-    fixedLabel: '✅ Key Features:',
-    fixedText: 'Skip weak trends • Higher conviction B trades • Heart gets full ADX/confluence data'
+    fixedLabel: '📊 Result:',
+    fixedText: 'A-tier had 42% WR - needed more filtering'
+  },
+  {
+    version: 'v7.2',
+    badge: 'ACTIVE',
+    isCurrent: true,
+    desc: 'A-tier requires 2+ confluence (experiment)',
+    pnl: null, // Dynamic from API
+    pnlId: 'v72Pnl',
+    trades: null,
+    tradesId: 'v72Trades',
+    winRate: null,
+    winRateId: 'v72Wr',
+    newLabel: '🧪 Experiment v7.2:',
+    newText: 'S-tier: 1+ conf • A-tier: 2+ conf (was 1+) • B-tier: 3/3 conf',
+    fixedLabel: '🎯 Hypothesis:',
+    fixedText: 'Requiring more A-tier confirmation should filter weak setups'
   }
 ];
 
@@ -2563,29 +2578,29 @@ async function fetchVersions() {
   try {
     const res = await fetch(`${API_BASE}/versions`, { headers: API_HEADERS });
     const data = await res.json();
-    const current = data.current_version || 'v7.1';
+    const current = data.current_version || 'v7.2';
     const versions = data.versions || {};
     const currentStats = versions[current] || {};
     
-    // Update current version stats (v7)
-    const v7PnlEl = document.getElementById('v7Pnl');
-    const v7TradesEl = document.getElementById('v7Trades');
-    const v7WrEl = document.getElementById('v7Wr');
+    // Update current version stats (v7.2)
+    const v72PnlEl = document.getElementById('v72Pnl');
+    const v72TradesEl = document.getElementById('v72Trades');
+    const v72WrEl = document.getElementById('v72Wr');
     
-    if (v7PnlEl) {
+    if (v72PnlEl) {
       const pnl = currentStats.pnl || 0;
-      v7PnlEl.textContent = `${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}`;
-      v7PnlEl.style.color = pnl >= 0 ? 'var(--profit)' : 'var(--loss)';
-      v7PnlEl.classList.toggle('positive', pnl >= 0);
-      v7PnlEl.classList.toggle('negative', pnl < 0);
+      v72PnlEl.textContent = `${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}`;
+      v72PnlEl.style.color = pnl >= 0 ? 'var(--profit)' : 'var(--loss)';
+      v72PnlEl.classList.toggle('positive', pnl >= 0);
+      v72PnlEl.classList.toggle('negative', pnl < 0);
     }
-    if (v7TradesEl) {
-      v7TradesEl.textContent = currentStats.trades || 0;
+    if (v72TradesEl) {
+      v72TradesEl.textContent = currentStats.trades || 0;
     }
-    if (v7WrEl) {
+    if (v72WrEl) {
       const wr = currentStats.win_rate || 0;
-      v7WrEl.textContent = wr > 0 ? `${wr.toFixed(1)}%` : '—';
-      v7WrEl.style.color = wr >= 50 ? 'var(--profit)' : (wr > 0 ? 'var(--loss)' : 'var(--text-secondary)');
+      v72WrEl.textContent = wr > 0 ? `${wr.toFixed(1)}%` : '—';
+      v72WrEl.style.color = wr >= 50 ? 'var(--profit)' : (wr > 0 ? 'var(--loss)' : 'var(--text-secondary)');
     }
     
     console.log(`✅ v${current} stats updated: ${currentStats.trades} trades, ${currentStats.win_rate}% WR`);
