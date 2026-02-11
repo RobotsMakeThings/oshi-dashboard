@@ -2044,7 +2044,7 @@ async function fetchPositions() {
         <div class="position-item">
           <span class="position-asset">${p.asset}</span>
           <span class="position-side ${p.side}">${p.side.toUpperCase()}</span>
-          <span class="position-entry">${p.contracts}x @ ${p.entry_price}¢</span>
+          <span class="position-entry">${p.contracts} shares @ ${p.entry_price}¢</span>
           <span class="position-current">Now: ${p.current_price}¢</span>
           <span class="position-size">$${p.size_usd.toFixed(2)}</span>
           <span class="position-pnl ${pnlClass}">${pnlSign}$${p.unrealized_pnl.toFixed(2)}</span>
