@@ -702,6 +702,43 @@ body {
   background: var(--oshi-mid);
   padding: 4px 8px; border-radius: 4px;
 }
+/* === SPIRIT VISUAL === */
+.spirit-visual-section {
+  grid-column: 1 / -1;
+  margin-top: 24px;
+  background: linear-gradient(135deg, rgba(6,9,24,0.95), rgba(15,25,50,0.9));
+  border: 1px solid rgba(0,229,195,0.15);
+  border-radius: 16px;
+  padding: 20px;
+  overflow: hidden;
+}
+.spirit-visual-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.spirit-visual-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--oshi-teal);
+  letter-spacing: 1px;
+  margin: 0;
+}
+.spirit-visual-container {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.spirit-visual-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
 /* === BRAIN ACTIVITY === */
 .brain-section {
   grid-column: 1 / -1;
@@ -1555,6 +1592,17 @@ body {
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- SPIRIT SYSTEM VISUALIZATION -->
+  <div class="spirit-visual-section">
+    <div class="spirit-visual-header">
+      <h2 class="spirit-visual-title">✨ Spirit System Architecture</h2>
+      <span class="badge badge-live">● NEURAL FLOW</span>
+    </div>
+    <div class="spirit-visual-container">
+      <img src="spirit-system.jpg" alt="Oshi Spirit System - Left Brain, Right Brain, Body, Heart" class="spirit-visual-img">
     </div>
   </div>
 
