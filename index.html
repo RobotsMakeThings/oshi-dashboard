@@ -2072,7 +2072,7 @@ async function fetchLeaderboard() {
       if (!items?.length) {
         if (isSession) {
           // Show "no trades yet" for current session
-          el.innerHTML = `<li class="leader-item" style="justify-content:center;opacity:0.6;">No ${version} trades closed yet</li>`;
+          el.innerHTML = `<li class="leader-item" style="display:flex;justify-content:center;text-align:center;opacity:0.5;">No ${version} trades closed yet</li>`;
         } else {
           // Show demo data for all-time if truly empty
           el.innerHTML = isWorst ? getDemoWorstTrades() : getDemoBestTrades();
