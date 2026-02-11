@@ -1,5 +1,5 @@
 // OSHI Service Worker - Minimal caching for PWA
-const CACHE_NAME = 'oshi-v1';
+const CACHE_NAME = 'oshi-v5.5';
 
 // Install - cache basic shell
 self.addEventListener('install', (event) => {

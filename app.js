@@ -174,11 +174,25 @@ const updateVersions = async () => {
         if (!res.ok) return;
         const data = await res.json();
         
-        const container = document.getElementById('versionStats');
-        if (!container) return;
-        
         const versions = data.versions || {};
         const overall = data.overall || {};
+        const current = data.current_version || 'v5.5';
+        
+        // Update v5.5 stats in the hero section
+        const currentStats = versions[current] || {};
+        const v5Pnl = document.getElementById('v5Pnl');
+        const v5Trades = document.getElementById('v5Trades');
+        const v5Wr = document.getElementById('v5Wr');
+        
+        if (v5Pnl) {
+            v5Pnl.textContent = fmt(currentStats.pnl || 0);
+            v5Pnl.style.color = (currentStats.pnl || 0) >= 0 ? 'var(--profit)' : 'var(--loss)';
+        }
+        if (v5Trades) v5Trades.textContent = currentStats.trades || 0;
+        if (v5Wr) v5Wr.textContent = currentStats.win_rate ? `${currentStats.win_rate}%` : '—';
+        
+        const container = document.getElementById('versionStats');
+        if (!container) return;
         
         let html = `
             <div class="version-card overall">
