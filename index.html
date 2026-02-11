@@ -12,7 +12,7 @@
 <meta name="application-name" content="OSHI">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>OSHI v7.2 — A-tier Confluence Experiment</title>
+<title>OSHI v7.3 — Thesis-Based Stop Loss</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -1187,7 +1187,7 @@ body {
         <img src="oshi-new.png" alt="Oshi - Kalshi Prediction Agent" id="oshiPortrait">
         <div class="oshi-nameplate">
           <h2>OSHI</h2>
-          <p>Prediction Agent v7.2</p>
+          <p>Prediction Agent v7.3</p>
         </div>
       </div>
       <div class="oshi-stats">
@@ -1251,17 +1251,17 @@ body {
   <div class="pnl-row">
     <!-- Balance Stats -->
     <div class="pnl-hero balance">
-      <div class="pnl-label">Starting Balance (v7.2)</div>
-      <div class="pnl-value balance-val">$82.29</div>
-      <div class="pnl-pct" style="color: var(--text-secondary);">v7.2 Baseline</div>
+      <div class="pnl-label">Starting Balance (v7.3)</div>
+      <div class="pnl-value balance-val">$125.75</div>
+      <div class="pnl-pct" style="color: var(--text-secondary);">v7.3 Baseline</div>
     </div>
     <div class="pnl-hero session">
       <div class="pnl-label">Current Balance</div>
-      <div class="pnl-value balance-val" id="currentBalance">$82.29</div>
+      <div class="pnl-value balance-val" id="currentBalance">$125.75</div>
       <div class="pnl-pct" style="color: var(--text-secondary);">Kalshi · USD</div>
     </div>
     <div class="pnl-hero wallet">
-      <div class="pnl-label">P&L (v7.2)</div>
+      <div class="pnl-label">P&L (v7.3)</div>
       <div class="pnl-value" id="totalPnl">--</div>
       <div class="pnl-pct" id="pnlPct">--</div>
     </div>
@@ -1610,7 +1610,7 @@ body {
 
 <!-- FOOTER -->
 <footer class="footer">
-  <span>OSHI v7.2 · Left Brain + Right Brain + Body + Heart + Spirit · <a href="https://x.com/PredictwithOshi" target="_blank" class="footer-oshi-x">𝕏 @PredictwithOshi</a></span>
+  <span>OSHI v7.3 · Left Brain + Right Brain + Body + Heart + Spirit · <a href="https://x.com/PredictwithOshi" target="_blank" class="footer-oshi-x">𝕏 @PredictwithOshi</a></span>
 </footer>
 
 <script>
@@ -1618,7 +1618,7 @@ const API_BASE = '/api';
 const API_KEY = 'oshi-secure-api-key-2024-predictwithoshi';
 const API_HEADERS = { 'Authorization': 'Bearer ' + API_KEY, 'Content-Type': 'application/json' };  // Proxied through Netlify to avoid mixed content
 let sessionStartTime = null;
-const STARTING_BALANCE = 82.29  // v7.2 starting balance (Feb 11)
+const STARTING_BALANCE = 125.75  // v7.3 starting balance (Feb 11)
 
 // Version config - ordered oldest to newest, last 5 shown
 const VERSION_CONFIG = [
@@ -1709,7 +1709,7 @@ const VERSION_CONFIG = [
     fixedText: 'A-tier had 42% WR - needed more filtering'
   },
   {
-    version: 'v7.2',
+    version: 'v7.3',
     badge: 'ACTIVE',
     isCurrent: true,
     desc: 'A-tier requires 2+ confluence (experiment)',
@@ -1719,7 +1719,7 @@ const VERSION_CONFIG = [
     tradesId: 'v72Trades',
     winRate: null,
     winRateId: 'v72Wr',
-    newLabel: '🧪 Experiment v7.2:',
+    newLabel: '🧪 Thesis SL v7.3:',
     newText: 'S-tier: 1+ conf • A-tier: 2+ conf (was 1+) • B-tier: 3/3 conf',
     fixedLabel: '🎯 Hypothesis:',
     fixedText: 'Requiring more A-tier confirmation should filter weak setups'
@@ -2240,11 +2240,11 @@ async function fetchVersions() {
   try {
     const res = await fetch(`${API_BASE}/versions`, { headers: API_HEADERS });
     const data = await res.json();
-    const current = data.current_version || 'v7.2';
+    const current = data.current_version || 'v7.3';
     const versions = data.versions || {};
     const currentStats = versions[current] || {};
     
-    // Update current version stats (v7.2)
+    // Update current version stats (v7.3)
     const v72PnlEl = document.getElementById('v72Pnl');
     const v72TradesEl = document.getElementById('v72Trades');
     const v72WrEl = document.getElementById('v72Wr');
