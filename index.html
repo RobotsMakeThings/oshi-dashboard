@@ -2063,11 +2063,20 @@ async function fetchLeaderboard() {
     const res = await fetch(`${API_BASE}/all`, { headers: API_HEADERS });
     const data = await res.json(); const lb = data.leaderboard || {};
     
-    const renderLeaderboard = (elId, items, isWorst = false) => {
+    const renderLeaderboard = (elId, items, isWorst = false, version = 'v7.3') => {
       const el = document.getElementById(elId);
-      if (!el || !items?.length) {
-        // Show static demo data if no items
-        el.innerHTML = isWorst ? getDemoWorstTrades() : getDemoBestTrades();
+      if (!el) return;
+      
+      // Check if this is session leaderboard with no trades
+      const isSession = elId.startsWith('session');
+      if (!items?.length) {
+        if (isSession) {
+          // Show "no trades yet" for current session
+          el.innerHTML = `<li class="leader-item" style="justify-content:center;opacity:0.6;">No ${version} trades closed yet</li>`;
+        } else {
+          // Show demo data for all-time if truly empty
+          el.innerHTML = isWorst ? getDemoWorstTrades() : getDemoBestTrades();
+        }
         return;
       }
       
@@ -2095,8 +2104,9 @@ async function fetchLeaderboard() {
       }).join('');
     };
     
-    renderLeaderboard('sessionTop', lb.session_top, false);
-    renderLeaderboard('sessionWorst', lb.session_worst, true);
+    const sessionVer = lb.session_version || 'v7.3';
+    renderLeaderboard('sessionTop', lb.session_top, false, sessionVer);
+    renderLeaderboard('sessionWorst', lb.session_worst, true, sessionVer);
     renderLeaderboard('allTimeTop', lb.all_time_top, false);
     renderLeaderboard('allTimeWorst', lb.all_time_worst, true);
     
