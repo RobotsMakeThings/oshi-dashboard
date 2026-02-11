@@ -777,146 +777,111 @@ body {
 .role-name { font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; color: var(--text-primary); display: block; margin-bottom: 4px; }
 .role-desc { font-size: 11px; color: var(--text-dim); }
 
-/* === ORBITAL CONSTELLATION FLOW === */
+/* === SIMPLE LINEAR FLOW === */
 .flow-diagram {
   margin-top: 24px;
-  background: linear-gradient(180deg, rgba(6,9,24,0.95) 0%, rgba(10,20,40,0.9) 50%, rgba(6,9,24,0.95) 100%);
+  background: linear-gradient(135deg, rgba(6,9,24,0.95), rgba(15,25,45,0.9));
   border: 1px solid rgba(0,229,195,0.1);
-  border-radius: 20px;
-  padding: 28px;
+  border-radius: 16px;
+  padding: 24px 28px;
   position: relative;
-  overflow: hidden;
 }
-.flow-stars {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.3), transparent),
-    radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.25), transparent),
-    radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.2), transparent),
-    radial-gradient(1px 1px at 300px 150px, rgba(255,255,255,0.2), transparent),
-    radial-gradient(2px 2px at 400px 60px, rgba(255,255,255,0.25), transparent),
-    radial-gradient(1px 1px at 550px 180px, rgba(255,255,255,0.15), transparent),
-    radial-gradient(1px 1px at 680px 130px, rgba(255,255,255,0.25), transparent);
-  background-size: 700px 300px;
-  animation: twinkle 8s ease-in-out infinite;
-  pointer-events: none;
-  opacity: 0.5;
+.flow-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 24px;
 }
-@keyframes twinkle { 0%, 100% { opacity: 0.5; } 50% { opacity: 0.3; } }
-
-.flow-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; position: relative; z-index: 5; }
-.flow-logo {
-  background: rgba(0,229,195,0.15);
-  border: 1px solid rgba(0,229,195,0.3);
-  border-radius: 6px;
-  padding: 4px 8px;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 10px; font-weight: 800;
-  color: var(--oshi-teal);
-  letter-spacing: 2px;
+.flow-badge {
+  background: rgba(0,229,195,0.12); border: 1px solid rgba(0,229,195,0.25);
+  border-radius: 6px; padding: 4px 10px;
+  font-family: 'Orbitron', sans-serif; font-size: 10px; font-weight: 700;
+  color: var(--oshi-teal); letter-spacing: 1.5px;
 }
 .flow-title {
+  font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 700;
+  color: var(--oshi-teal); margin: 0; letter-spacing: 1px;
+}
+.flow-subtitle { font-size: 12px; color: var(--text-dim); margin-left: auto; }
+
+/* Pipeline Container */
+.flow-pipeline {
+  display: flex; flex-direction: column; gap: 0;
+  max-width: 700px; margin: 0 auto;
+}
+
+/* Each Stage Row */
+.flow-stage {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px 0;
+  position: relative;
+}
+.flow-stage:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 32px; bottom: -8px;
+  width: 2px; height: 16px;
+  background: linear-gradient(to bottom, var(--oshi-teal), transparent);
+}
+
+/* Stage Icon */
+.flow-stage-icon {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+.flow-stage-icon.market { background: rgba(100,116,139,0.15); border: 2px solid rgba(100,116,139,0.5); }
+.flow-stage-icon.left { background: rgba(236,72,153,0.15); border: 2px solid rgba(236,72,153,0.5); }
+.flow-stage-icon.right { background: rgba(99,102,241,0.15); border: 2px solid rgba(99,102,241,0.5); }
+.flow-stage-icon.body { background: rgba(251,191,36,0.15); border: 2px solid rgba(251,191,36,0.5); }
+.flow-stage-icon.heart { background: rgba(239,68,68,0.15); border: 2px solid rgba(239,68,68,0.5); }
+
+/* Stage Content */
+.flow-stage-content { flex: 1; }
+.flow-stage-name {
   font-family: 'Orbitron', sans-serif;
-  font-size: 16px; font-weight: 700; letter-spacing: 2px;
-  color: var(--oshi-teal); margin: 0;
+  font-size: 13px; font-weight: 700; letter-spacing: 1px;
+  color: var(--text-primary); margin-bottom: 4px;
 }
-.flow-subtitle { font-size: 12px; color: var(--text-dim); margin-left: auto; font-style: italic; }
-
-.orbital-hub { position: relative; width: 100%; max-width: 600px; height: 520px; margin: 0 auto 20px; }
-.orbital-lines { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100%; height: 100%; max-width: 600px; pointer-events: none; z-index: 1; }
-
-.orbital-center {
-  position: absolute; left: 50%; top: 42%; transform: translate(-50%, -50%);
-  width: 105px; height: 105px;
-  background: radial-gradient(circle, rgba(0,229,195,0.15) 0%, rgba(0,229,195,0.03) 70%, transparent 100%);
-  border: 2.5px solid var(--oshi-teal); border-radius: 50%;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  z-index: 10;
-  box-shadow: 0 0 50px rgba(0,229,195,0.25), 0 0 100px rgba(0,229,195,0.1), inset 0 0 30px rgba(0,229,195,0.1);
+.flow-stage-role {
+  font-size: 11px; color: var(--text-dim); margin-bottom: 6px;
+  text-transform: uppercase; letter-spacing: 0.5px;
 }
-.orbital-center-icon { font-size: 34px; filter: drop-shadow(0 0 8px rgba(0,229,195,0.5)); }
-.orbital-center-name {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 13px; font-weight: 900; letter-spacing: 4px;
-  color: var(--oshi-teal); margin-top: 4px;
-  text-shadow: 0 0 10px rgba(0,229,195,0.5);
+.flow-stage-desc {
+  font-size: 12px; color: var(--text-secondary); line-height: 1.5;
 }
 
-.orbital-node {
-  position: absolute; width: 90px; height: 90px;
-  background: rgba(0,0,0,0.7); border-radius: 50%;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  transition: all 0.3s ease; z-index: 5; backdrop-filter: blur(10px); padding: 6px;
+/* Arrow between stages */
+.flow-arrow {
+  display: flex; align-items: center; justify-content: center;
+  padding: 4px 0 4px 24px;
+  color: var(--oshi-teal); font-size: 18px; opacity: 0.6;
 }
-.orbital-node:hover { transform: scale(1.12); z-index: 15; }
-.orbital-node-icon { font-size: 26px; margin-bottom: 2px; }
-.orbital-node-name {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 8px; font-weight: 800; letter-spacing: 0.5px;
-  color: var(--text-primary); text-transform: uppercase; text-align: center; line-height: 1.2;
-}
-.orbital-node-role { font-size: 7px; font-weight: 500; color: var(--text-dim); margin-top: 1px; letter-spacing: 0.3px; text-align: center; }
 
-.orbital-node.market { top: 2%; left: 50%; transform: translateX(-130%); border: 2.5px solid rgba(100,116,139,0.7); }
-.orbital-node.kalshi { top: 2%; left: 50%; transform: translateX(30%); border: 2.5px solid rgba(99,102,241,0.7); }
-.orbital-node.left-brain { top: 30%; left: 6%; border: 2.5px solid rgba(236,72,153,0.7); }
-.orbital-node.right-brain { top: 30%; right: 6%; border: 2.5px solid rgba(244,114,182,0.7); }
-.orbital-node.heart { top: 62%; left: 6%; border: 2.5px solid rgba(239,68,68,0.7); }
-.orbital-node.body { top: 62%; right: 6%; border: 2.5px solid rgba(251,191,36,0.7); }
-
-.orbital-node.market:hover { border-color: rgba(100,116,139,1); box-shadow: 0 0 30px rgba(100,116,139,0.5); }
-.orbital-node.kalshi:hover { border-color: rgba(99,102,241,1); box-shadow: 0 0 30px rgba(99,102,241,0.5); }
-.orbital-node.left-brain:hover { border-color: rgba(236,72,153,1); box-shadow: 0 0 30px rgba(236,72,153,0.5); }
-.orbital-node.right-brain:hover { border-color: rgba(244,114,182,1); box-shadow: 0 0 30px rgba(244,114,182,0.5); }
-.orbital-node.heart:hover { border-color: rgba(239,68,68,1); box-shadow: 0 0 30px rgba(239,68,68,0.5); }
-.orbital-node.body:hover { border-color: rgba(251,191,36,1); box-shadow: 0 0 30px rgba(251,191,36,0.5); }
-
-.crystal-heart {
-  position: absolute; bottom: 1%; left: 50%; transform: translateX(-50%);
-  width: 70px; height: 70px;
-  display: flex; align-items: center; justify-content: center; z-index: 8;
-}
-.crystal-glow {
-  position: absolute; width: 100px; height: 100px;
-  background: radial-gradient(circle, rgba(239,68,68,0.3) 0%, rgba(236,72,153,0.15) 40%, transparent 70%);
-  border-radius: 50%; animation: crystalPulse 3s ease-in-out infinite;
-}
-@keyframes crystalPulse { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.15); opacity: 0.9; } }
-.crystal-icon {
-  font-size: 36px; position: relative; z-index: 2;
-  filter: drop-shadow(0 0 15px rgba(239,68,68,0.6));
-  animation: crystalFloat 4s ease-in-out infinite;
-}
-@keyframes crystalFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-
-.orbital-legend {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
-  max-width: 850px; margin: 0 auto; position: relative; z-index: 5;
-}
-@media (max-width: 700px) { .orbital-legend { grid-template-columns: 1fr; gap: 10px; } }
-.orbital-legend-item {
+/* Output indicator */
+.flow-output {
   display: flex; align-items: center; gap: 12px;
-  background: rgba(0,0,0,0.4); border-radius: 12px; padding: 12px 16px;
-  border: 1px solid rgba(255,255,255,0.06); backdrop-filter: blur(5px);
+  margin-top: 8px; padding: 12px 16px;
+  background: rgba(0,229,195,0.05);
+  border: 1px solid rgba(0,229,195,0.15);
+  border-radius: 10px;
 }
-.orbital-legend-icons { display: flex; align-items: center; gap: 5px; font-size: 16px; min-width: 45px; }
-.orbital-legend-text { font-size: 11px; color: var(--text-secondary); line-height: 1.4; }
-.orbital-legend-title {
+.flow-output-icon { font-size: 20px; }
+.flow-output-text { font-size: 11px; color: var(--text-secondary); }
+.flow-output-label {
   font-family: 'Orbitron', sans-serif;
-  font-size: 9px; font-weight: 700;
-  color: var(--text-primary); letter-spacing: 0.5px; display: block; margin-bottom: 2px;
+  font-size: 9px; font-weight: 700; color: var(--oshi-teal);
+  letter-spacing: 0.5px; display: block; margin-bottom: 2px;
 }
 
 @media (max-width: 600px) {
-  .orbital-hub { height: 420px; }
-  .orbital-node { width: 70px; height: 70px; }
-  .orbital-node-icon { font-size: 20px; }
-  .orbital-node-name { font-size: 7px; }
-  .orbital-center { width: 85px; height: 85px; }
-  .orbital-center-icon { font-size: 26px; }
-  .orbital-center-name { font-size: 10px; }
+  .flow-stage-icon { width: 50px; height: 50px; font-size: 22px; }
+  .flow-stage-name { font-size: 12px; }
+  .flow-stage-desc { font-size: 11px; }
 }
+
+
 
 .brain-card-header {
   display: flex; align-items: center; gap: 12px;
@@ -1698,141 +1663,79 @@ body {
       </div>
     </div>
 
-        <!-- FLOW DIAGRAM - ORBITAL CONSTELLATION -->
+            <!-- FLOW DIAGRAM - SIMPLE PIPELINE -->
     <div class="flow-diagram">
       <div class="flow-header">
-        <span class="flow-logo">OSI</span>
-        <h3 class="flow-title">Information & Decision Flow</h3>
-        <span class="flow-subtitle">How Oshi's components communicate</span>
+        <span class="flow-badge">FLOW</span>
+        <h3 class="flow-title">How Oshi Makes Decisions</h3>
+        <span class="flow-subtitle">5-step pipeline</span>
       </div>
 
-      <div class="flow-stars"></div>
-
-      <div class="orbital-hub">
-        <svg class="orbital-lines" viewBox="0 0 600 520" preserveAspectRatio="xMidYMid meet">
-          <defs>
-            <marker id="arrowTeal" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
-              <polygon points="0 0, 6 2.5, 0 5" fill="rgba(0,229,195,0.8)" />
-            </marker>
-            <marker id="arrowOrange" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
-              <polygon points="0 0, 6 2.5, 0 5" fill="rgba(251,146,60,0.8)" />
-            </marker>
-            <linearGradient id="orbitalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="rgba(0,229,195,0.2)" />
-              <stop offset="50%" stop-color="rgba(139,92,246,0.2)" />
-              <stop offset="100%" stop-color="rgba(251,146,60,0.2)" />
-            </linearGradient>
-          </defs>
-          
-          <!-- Outer orbital ring -->
-          <circle cx="300" cy="220" r="170" stroke="url(#orbitalGrad)" stroke-width="1" fill="none" stroke-dasharray="8,4" opacity="0.4"/>
-          
-          <!-- Market → Left Brain -->
-          <path d="M 175 55 C 100 100, 55 150, 75 190" stroke="rgba(100,116,139,0.5)" stroke-width="2" fill="none" stroke-dasharray="5,3" marker-end="url(#arrowTeal)"/>
-          
-          <!-- Kalshi → Right Brain -->
-          <path d="M 425 55 C 500 100, 545 150, 525 190" stroke="rgba(99,102,241,0.5)" stroke-width="2" fill="none" stroke-dasharray="5,3" marker-end="url(#arrowTeal)"/>
-          
-          <!-- Left Brain → OSHI -->
-          <path d="M 130 220 L 240 230" stroke="rgba(236,72,153,0.6)" stroke-width="2.5" fill="none" marker-end="url(#arrowTeal)"/>
-          
-          <!-- Right Brain → OSHI -->
-          <path d="M 470 220 L 360 230" stroke="rgba(244,114,182,0.6)" stroke-width="2.5" fill="none" marker-end="url(#arrowTeal)"/>
-          
-          <!-- OSHI → Body -->
-          <path d="M 360 260 L 470 340" stroke="rgba(0,229,195,0.6)" stroke-width="2.5" fill="none" marker-end="url(#arrowTeal)"/>
-          
-          <!-- OSHI → Heart -->
-          <path d="M 240 260 L 130 340" stroke="rgba(0,229,195,0.6)" stroke-width="2.5" fill="none" marker-end="url(#arrowTeal)"/>
-          
-          <!-- Body → Right Brain feedback -->
-          <path d="M 530 350 C 570 280, 555 210, 510 195" stroke="rgba(251,146,60,0.4)" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arrowOrange)"/>
-          
-          <!-- Heart → Crystal -->
-          <path d="M 95 400 C 150 450, 240 480, 290 480" stroke="rgba(239,68,68,0.4)" stroke-width="2" fill="none"/>
-          
-          <!-- Left ↔ Right coordination -->
-          <path d="M 150 205 L 450 205" stroke="rgba(0,229,195,0.15)" stroke-width="1" fill="none" stroke-dasharray="6,4"/>
-        </svg>
-
-        <div class="orbital-center">
-          <span class="orbital-center-icon">🔮</span>
-          <span class="orbital-center-name">OSHI</span>
-        </div>
-
-        <div class="orbital-node market">
-          <span class="orbital-node-icon">📊</span>
-          <span class="orbital-node-name">MARKET</span>
-          <span class="orbital-node-role">RSI/ADX/ETC</span>
-        </div>
-
-        <div class="orbital-node kalshi">
-          <span class="orbital-node-icon">🎯</span>
-          <span class="orbital-node-name">KALSHI</span>
-          <span class="orbital-node-role">EXCHANGE</span>
-        </div>
-
-        <div class="orbital-node left-brain">
-          <span class="orbital-node-icon">🧠</span>
-          <span class="orbital-node-name">LEFT BRAIN</span>
-          <span class="orbital-node-role">ANALYST</span>
-        </div>
-
-        <div class="orbital-node right-brain">
-          <span class="orbital-node-icon">⚖️</span>
-          <span class="orbital-node-name">RIGHT BRAIN</span>
-          <span class="orbital-node-role">ORCHESTRATOR</span>
-        </div>
-
-        <div class="orbital-node heart">
-          <span class="orbital-node-icon">❤️</span>
-          <span class="orbital-node-name">HEART</span>
-          <span class="orbital-node-role">ANALYZER & LEARNING</span>
-        </div>
-
-        <div class="orbital-node body">
-          <span class="orbital-node-icon">💪</span>
-          <span class="orbital-node-name">BODY</span>
-          <span class="orbital-node-role">EXECUTOR</span>
-        </div>
-
-        <div class="crystal-heart">
-          <div class="crystal-glow"></div>
-          <span class="crystal-icon">💎</span>
-        </div>
-      </div>
-
-      <div class="orbital-legend">
-        <div class="orbital-legend-item">
-          <div class="orbital-legend-icons">
-            <span>📊</span>
-            <span>📈</span>
-          </div>
-          <div class="orbital-legend-text">
-            <span class="orbital-legend-title">Market → Left Brain</span>
-            RSI, ADX, PSAR BB, StochRSI indicators for analysis
+      <div class="flow-pipeline">
+        <!-- Stage 1: Market Data -->
+        <div class="flow-stage">
+          <div class="flow-stage-icon market">📊</div>
+          <div class="flow-stage-content">
+            <div class="flow-stage-name">Market Data</div>
+            <div class="flow-stage-role">Input</div>
+            <div class="flow-stage-desc">TAAPI.IO provides RSI, ADX, PSAR, BB, StochRSI every 15 seconds</div>
           </div>
         </div>
 
-        <div class="orbital-legend-item">
-          <div class="orbital-legend-icons">
-            <span>🧠</span>
-            <span>⚖️</span>
-          </div>
-          <div class="orbital-legend-text">
-            <span class="orbital-legend-title">LEFT → Right Brain</span>
-            Direction (Y/N), tier (S/A/B), confluence count
+        <div class="flow-arrow">↓</div>
+
+        <!-- Stage 2: Left Brain -->
+        <div class="flow-stage">
+          <div class="flow-stage-icon left">🧠</div>
+          <div class="flow-stage-content">
+            <div class="flow-stage-name">Left Brain</div>
+            <div class="flow-stage-role">Analyst</div>
+            <div class="flow-stage-desc">Decides direction (YES/NO) from PSAR, counts how many indicators agree, assigns tier (S/A/B) from ADX strength</div>
           </div>
         </div>
 
-        <div class="orbital-legend-item">
-          <div class="orbital-legend-icons">
-            <span>⚖️</span>
-            <span>💪</span>
+        <div class="flow-arrow">↓</div>
+
+        <!-- Stage 3: Right Brain -->
+        <div class="flow-stage">
+          <div class="flow-stage-icon right">⚖️</div>
+          <div class="flow-stage-content">
+            <div class="flow-stage-name">Right Brain</div>
+            <div class="flow-stage-role">Orchestrator</div>
+            <div class="flow-stage-desc">Validates entry zone (30-70¢), calculates size ($10 max), monitors positions for TP/SL/time exits</div>
           </div>
-          <div class="orbital-legend-text">
-            <span class="orbital-legend-title">Right Brain → Body</span>
-            Order commands: buy/sell with size and price
+        </div>
+
+        <div class="flow-arrow">↓</div>
+
+        <!-- Stage 4: Body -->
+        <div class="flow-stage">
+          <div class="flow-stage-icon body">💪</div>
+          <div class="flow-stage-content">
+            <div class="flow-stage-name">Body</div>
+            <div class="flow-stage-role">Executor</div>
+            <div class="flow-stage-desc">Places orders on Kalshi with aggressive pricing (+3¢ spread), waits for fills, handles retries</div>
+          </div>
+        </div>
+
+        <div class="flow-arrow">↓</div>
+
+        <!-- Stage 5: Heart -->
+        <div class="flow-stage">
+          <div class="flow-stage-icon heart">❤️</div>
+          <div class="flow-stage-content">
+            <div class="flow-stage-name">Heart</div>
+            <div class="flow-stage-role">Learning</div>
+            <div class="flow-stage-desc">Records every trade with full metadata, analyzes patterns, tracks tier performance, feeds insights to Spirit for Twitter</div>
+          </div>
+        </div>
+
+        <!-- Output -->
+        <div class="flow-output">
+          <span class="flow-output-icon">🎯</span>
+          <div class="flow-output-text">
+            <span class="flow-output-label">Current Rules (v7.2)</span>
+            S-tier: 1+ conf | A-tier: 2+ conf | B-tier: 3/3 conf | SL only ≤7m left
           </div>
         </div>
       </div>
