@@ -2161,16 +2161,16 @@ async function fetchPnL() { try {
       sessionPctEl.className = `pnl-pct ${pct >= 0 ? 'positive' : 'negative'}`;
     }
     
-    // Total P&L from wallet
+    // v7.4 FIX: Use SESSION P&L (not wallet) since label says "P&L (v7.4)"
     const totalPnlEl = document.getElementById('totalPnl');
     const pnlPctEl = document.getElementById('pnlPct');
     if (totalPnlEl) {
-      const pnl = wallet.pnl || 0;
+      const pnl = session.pnl || 0;  // Changed from wallet.pnl to session.pnl
       totalPnlEl.textContent = `${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}`;
       totalPnlEl.className = `pnl-value ${pnl >= 0 ? 'positive' : 'negative'}`;
     }
     if (pnlPctEl) {
-      const pct = wallet.pct || 0;
+      const pct = session.pct || 0;  // Changed from wallet.pct to session.pct
       pnlPctEl.textContent = `${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%`;
       pnlPctEl.className = `pnl-pct ${pct >= 0 ? 'positive' : 'negative'}`;
     }
