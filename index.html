@@ -777,174 +777,145 @@ body {
 .role-name { font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; color: var(--text-primary); display: block; margin-bottom: 4px; }
 .role-desc { font-size: 11px; color: var(--text-dim); }
 
-/* === HEXAGONAL HUB FLOW === */
+/* === ORBITAL CONSTELLATION FLOW === */
 .flow-diagram {
   margin-top: 24px;
-  background: linear-gradient(135deg, rgba(0,20,30,0.9), rgba(10,30,40,0.7));
-  border: 1px solid rgba(0,229,195,0.15);
-  border-radius: 16px;
-  padding: 24px;
+  background: linear-gradient(180deg, rgba(6,9,24,0.95) 0%, rgba(10,20,40,0.9) 50%, rgba(6,9,24,0.95) 100%);
+  border: 1px solid rgba(0,229,195,0.1);
+  border-radius: 20px;
+  padding: 28px;
   position: relative;
   overflow: hidden;
 }
-.flow-header {
-  display: flex; align-items: center; gap: 12px;
-  margin-bottom: 20px;
+.flow-stars {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.25), transparent),
+    radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.2), transparent),
+    radial-gradient(1px 1px at 300px 150px, rgba(255,255,255,0.2), transparent),
+    radial-gradient(2px 2px at 400px 60px, rgba(255,255,255,0.25), transparent),
+    radial-gradient(1px 1px at 550px 180px, rgba(255,255,255,0.15), transparent),
+    radial-gradient(1px 1px at 680px 130px, rgba(255,255,255,0.25), transparent);
+  background-size: 700px 300px;
+  animation: twinkle 8s ease-in-out infinite;
+  pointer-events: none;
+  opacity: 0.5;
+}
+@keyframes twinkle { 0%, 100% { opacity: 0.5; } 50% { opacity: 0.3; } }
+
+.flow-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; position: relative; z-index: 5; }
+.flow-logo {
+  background: rgba(0,229,195,0.15);
+  border: 1px solid rgba(0,229,195,0.3);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px; font-weight: 800;
+  color: var(--oshi-teal);
+  letter-spacing: 2px;
 }
 .flow-title {
   font-family: 'Orbitron', sans-serif;
-  font-size: 14px; font-weight: 700; letter-spacing: 2px;
+  font-size: 16px; font-weight: 700; letter-spacing: 2px;
   color: var(--oshi-teal); margin: 0;
 }
-.flow-subtitle { font-size: 12px; color: var(--text-dim); margin-left: auto; }
+.flow-subtitle { font-size: 12px; color: var(--text-dim); margin-left: auto; font-style: italic; }
 
-/* Hexagonal Hub */
-.hex-hub {
-  position: relative;
-  width: 100%;
-  max-width: 700px;
-  height: 500px;
-  margin: 0 auto 24px;
-}
+.orbital-hub { position: relative; width: 100%; max-width: 600px; height: 520px; margin: 0 auto 20px; }
+.orbital-lines { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100%; height: 100%; max-width: 600px; pointer-events: none; z-index: 1; }
 
-/* Central Oshi Node */
-.hex-center {
-  position: absolute;
-  left: 50%; top: 50%;
-  transform: translate(-50%, -50%);
-  width: 100px; height: 100px;
-  background: radial-gradient(circle, rgba(0,229,195,0.2), rgba(0,229,195,0.05));
-  border: 2px solid var(--oshi-teal);
-  border-radius: 50%;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
+.orbital-center {
+  position: absolute; left: 50%; top: 42%; transform: translate(-50%, -50%);
+  width: 105px; height: 105px;
+  background: radial-gradient(circle, rgba(0,229,195,0.15) 0%, rgba(0,229,195,0.03) 70%, transparent 100%);
+  border: 2.5px solid var(--oshi-teal); border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
   z-index: 10;
-  box-shadow: 0 0 40px rgba(0,229,195,0.2);
+  box-shadow: 0 0 50px rgba(0,229,195,0.25), 0 0 100px rgba(0,229,195,0.1), inset 0 0 30px rgba(0,229,195,0.1);
 }
-.hex-center-icon { font-size: 32px; }
-.hex-center-name {
+.orbital-center-icon { font-size: 34px; filter: drop-shadow(0 0 8px rgba(0,229,195,0.5)); }
+.orbital-center-name {
   font-family: 'Orbitron', sans-serif;
-  font-size: 12px; font-weight: 900; letter-spacing: 3px;
+  font-size: 13px; font-weight: 900; letter-spacing: 4px;
   color: var(--oshi-teal); margin-top: 4px;
+  text-shadow: 0 0 10px rgba(0,229,195,0.5);
 }
 
-/* Orbital Nodes */
-.hex-node {
-  position: absolute;
-  width: 80px; height: 80px;
-  background: rgba(0,0,0,0.6);
-  border-radius: 50%;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  transition: all 0.3s;
-  z-index: 5;
-  backdrop-filter: blur(8px);
+.orbital-node {
+  position: absolute; width: 90px; height: 90px;
+  background: rgba(0,0,0,0.7); border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  transition: all 0.3s ease; z-index: 5; backdrop-filter: blur(10px); padding: 6px;
 }
-.hex-node:hover {
-  transform: scale(1.1);
-  z-index: 15;
-}
-.hex-node-icon { font-size: 24px; }
-.hex-node-name {
+.orbital-node:hover { transform: scale(1.12); z-index: 15; }
+.orbital-node-icon { font-size: 26px; margin-bottom: 2px; }
+.orbital-node-name {
   font-family: 'Orbitron', sans-serif;
-  font-size: 8px; font-weight: 700; letter-spacing: 1px;
-  color: var(--text-primary); margin-top: 4px;
-  text-transform: uppercase;
+  font-size: 8px; font-weight: 800; letter-spacing: 0.5px;
+  color: var(--text-primary); text-transform: uppercase; text-align: center; line-height: 1.2;
 }
-.hex-node-sub {
-  font-size: 7px; color: var(--text-dim); margin-top: 2px;
-}
+.orbital-node-role { font-size: 7px; font-weight: 500; color: var(--text-dim); margin-top: 1px; letter-spacing: 0.3px; text-align: center; }
 
-/* Node Colors - Symmetrical Layout */
-.hex-node.market { border: 2px solid rgba(100,116,139,0.6); top: 5%; left: 50%; transform: translateX(-120%); }
-.hex-node.kalshi { border: 2px solid rgba(99,102,241,0.6); top: 5%; left: 50%; transform: translateX(20%); }
-.hex-node.left { border: 2px solid rgba(0,180,216,0.6); top: 30%; left: 50%; transform: translateX(-220%); }
-.hex-node.right { border: 2px solid rgba(244,114,182,0.6); top: 30%; left: 50%; transform: translateX(120%); }
-.hex-node.body { border: 2px solid rgba(251,191,36,0.6); top: 60%; left: 50%; transform: translateX(120%); }
-.hex-node.heart { border: 2px solid rgba(239,68,68,0.6); top: 60%; left: 50%; transform: translateX(-220%); }
-.hex-node.spirit { border: 2px solid rgba(139,92,246,0.6); bottom: 5%; left: 50%; transform: translateX(-120%); }
-.hex-node.output { border: 2px solid rgba(34,197,94,0.6); bottom: 5%; left: 50%; transform: translateX(20%); }
+.orbital-node.market { top: 2%; left: 50%; transform: translateX(-130%); border: 2.5px solid rgba(100,116,139,0.7); }
+.orbital-node.kalshi { top: 2%; left: 50%; transform: translateX(30%); border: 2.5px solid rgba(99,102,241,0.7); }
+.orbital-node.left-brain { top: 30%; left: 6%; border: 2.5px solid rgba(236,72,153,0.7); }
+.orbital-node.right-brain { top: 30%; right: 6%; border: 2.5px solid rgba(244,114,182,0.7); }
+.orbital-node.heart { top: 62%; left: 6%; border: 2.5px solid rgba(239,68,68,0.7); }
+.orbital-node.body { top: 62%; right: 6%; border: 2.5px solid rgba(251,191,36,0.7); }
 
-.hex-node.market:hover { border-color: rgba(100,116,139,1); box-shadow: 0 0 20px rgba(100,116,139,0.4); }
-.hex-node.kalshi:hover { border-color: rgba(99,102,241,1); box-shadow: 0 0 20px rgba(99,102,241,0.4); }
-.hex-node.left:hover { border-color: rgba(0,180,216,1); box-shadow: 0 0 20px rgba(0,180,216,0.4); }
-.hex-node.right:hover { border-color: rgba(244,114,182,1); box-shadow: 0 0 20px rgba(244,114,182,0.4); }
-.hex-node.body:hover { border-color: rgba(251,191,36,1); box-shadow: 0 0 20px rgba(251,191,36,0.4); }
-.hex-node.heart:hover { border-color: rgba(239,68,68,1); box-shadow: 0 0 20px rgba(239,68,68,0.4); }
-.hex-node.spirit:hover { border-color: rgba(139,92,246,1); box-shadow: 0 0 20px rgba(139,92,246,0.4); }
-.hex-node.output:hover { border-color: rgba(34,197,94,1); box-shadow: 0 0 20px rgba(34,197,94,0.4); }
+.orbital-node.market:hover { border-color: rgba(100,116,139,1); box-shadow: 0 0 30px rgba(100,116,139,0.5); }
+.orbital-node.kalshi:hover { border-color: rgba(99,102,241,1); box-shadow: 0 0 30px rgba(99,102,241,0.5); }
+.orbital-node.left-brain:hover { border-color: rgba(236,72,153,1); box-shadow: 0 0 30px rgba(236,72,153,0.5); }
+.orbital-node.right-brain:hover { border-color: rgba(244,114,182,1); box-shadow: 0 0 30px rgba(244,114,182,0.5); }
+.orbital-node.heart:hover { border-color: rgba(239,68,68,1); box-shadow: 0 0 30px rgba(239,68,68,0.5); }
+.orbital-node.body:hover { border-color: rgba(251,191,36,1); box-shadow: 0 0 30px rgba(251,191,36,0.5); }
 
-/* Connection Lines (SVG) */
-.hex-lines {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  pointer-events: none;
+.crystal-heart {
+  position: absolute; bottom: 1%; left: 50%; transform: translateX(-50%);
+  width: 70px; height: 70px;
+  display: flex; align-items: center; justify-content: center; z-index: 8;
 }
+.crystal-glow {
+  position: absolute; width: 100px; height: 100px;
+  background: radial-gradient(circle, rgba(239,68,68,0.3) 0%, rgba(236,72,153,0.15) 40%, transparent 70%);
+  border-radius: 50%; animation: crystalPulse 3s ease-in-out infinite;
+}
+@keyframes crystalPulse { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.15); opacity: 0.9; } }
+.crystal-icon {
+  font-size: 36px; position: relative; z-index: 2;
+  filter: drop-shadow(0 0 15px rgba(239,68,68,0.6));
+  animation: crystalFloat 4s ease-in-out infinite;
+}
+@keyframes crystalFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
-/* Connection Labels */
-.hex-label {
-  position: absolute;
-  font-size: 8px;
-  color: var(--text-dim);
-  background: rgba(0,0,0,0.7);
-  padding: 3px 8px;
-  border-radius: 10px;
-  white-space: nowrap;
-  letter-spacing: 0.5px;
+.orbital-legend {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+  max-width: 850px; margin: 0 auto; position: relative; z-index: 5;
 }
-
-/* Connection Legend */
-.hex-legend {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 20px;
-  max-width: 900px;
-  margin-left: auto;
-  margin-right: auto;
+@media (max-width: 700px) { .orbital-legend { grid-template-columns: 1fr; gap: 10px; } }
+.orbital-legend-item {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(0,0,0,0.4); border-radius: 12px; padding: 12px 16px;
+  border: 1px solid rgba(255,255,255,0.06); backdrop-filter: blur(5px);
 }
-@media (max-width: 800px) {
-  .hex-legend { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 500px) {
-  .hex-legend { grid-template-columns: 1fr; }
-}
-.hex-legend-item {
-  display: flex; align-items: center; gap: 10px;
-  background: rgba(0,0,0,0.3);
-  border-radius: 10px;
-  padding: 10px 14px;
-  border: 1px solid rgba(255,255,255,0.05);
-}
-.hex-legend-icons {
-  display: flex; align-items: center; gap: 4px;
-  font-size: 16px;
-}
-.hex-legend-arrow { color: var(--oshi-teal); font-size: 12px; }
-.hex-legend-text {
-  font-size: 11px;
-  color: var(--text-secondary);
-  line-height: 1.4;
-}
-.hex-legend-title {
+.orbital-legend-icons { display: flex; align-items: center; gap: 5px; font-size: 16px; min-width: 45px; }
+.orbital-legend-text { font-size: 11px; color: var(--text-secondary); line-height: 1.4; }
+.orbital-legend-title {
   font-family: 'Orbitron', sans-serif;
   font-size: 9px; font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: 0.5px;
-  display: block;
-  margin-bottom: 2px;
+  color: var(--text-primary); letter-spacing: 0.5px; display: block; margin-bottom: 2px;
 }
 
-/* Responsive */
-@media (max-width: 700px) {
-  .hex-hub { height: 400px; }
-  .hex-center { width: 70px; height: 70px; }
-  .hex-center-icon { font-size: 24px; }
-  .hex-center-name { font-size: 9px; }
-  .hex-node { width: 60px; height: 60px; }
-  .hex-node-icon { font-size: 18px; }
-  .hex-node-name { font-size: 7px; }
-  .hex-label { font-size: 7px; }
+@media (max-width: 600px) {
+  .orbital-hub { height: 420px; }
+  .orbital-node { width: 70px; height: 70px; }
+  .orbital-node-icon { font-size: 20px; }
+  .orbital-node-name { font-size: 7px; }
+  .orbital-center { width: 85px; height: 85px; }
+  .orbital-center-icon { font-size: 26px; }
+  .orbital-center-name { font-size: 10px; }
 }
 
 .brain-card-header {
@@ -1727,217 +1698,141 @@ body {
       </div>
     </div>
 
-    <!-- FLOW DIAGRAM - HEXAGONAL HUB -->
+        <!-- FLOW DIAGRAM - ORBITAL CONSTELLATION -->
     <div class="flow-diagram">
       <div class="flow-header">
-        <span style="font-size: 20px;">🔄</span>
+        <span class="flow-logo">OSI</span>
         <h3 class="flow-title">Information & Decision Flow</h3>
         <span class="flow-subtitle">How Oshi's components communicate</span>
       </div>
 
-      <!-- Hexagonal Hub Visualization -->
-      <div class="hex-hub">
-        <!-- SVG Connection Lines - Centered Symmetric Layout -->
-        <svg class="hex-lines" viewBox="0 0 700 500" preserveAspectRatio="xMidYMid meet">
+      <div class="flow-stars"></div>
+
+      <div class="orbital-hub">
+        <svg class="orbital-lines" viewBox="0 0 600 520" preserveAspectRatio="xMidYMid meet">
           <defs>
-            <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-              <polygon points="0 0, 8 3, 0 6" fill="rgba(0,229,195,0.7)" />
+            <marker id="arrowTeal" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+              <polygon points="0 0, 6 2.5, 0 5" fill="rgba(0,229,195,0.8)" />
             </marker>
-            <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-              <polygon points="0 0, 8 3, 0 6" fill="rgba(239,68,68,0.7)" />
+            <marker id="arrowOrange" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+              <polygon points="0 0, 6 2.5, 0 5" fill="rgba(251,146,60,0.8)" />
             </marker>
-            <marker id="arrowPurple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-              <polygon points="0 0, 8 3, 0 6" fill="rgba(139,92,246,0.7)" />
-            </marker>
-            <marker id="arrowYellow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-              <polygon points="0 0, 8 3, 0 6" fill="rgba(251,191,36,0.7)" />
-            </marker>
+            <linearGradient id="orbitalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="rgba(0,229,195,0.2)" />
+              <stop offset="50%" stop-color="rgba(139,92,246,0.2)" />
+              <stop offset="100%" stop-color="rgba(251,146,60,0.2)" />
+            </linearGradient>
           </defs>
           
-          <!-- Market → Left Brain (top-left data input) -->
-          <path d="M 270 70 Q 200 120 150 175" stroke="rgba(100,116,139,0.5)" stroke-width="2" fill="none" marker-end="url(#arrow)" stroke-dasharray="5,3"/>
+          <!-- Outer orbital ring -->
+          <circle cx="300" cy="220" r="170" stroke="url(#orbitalGrad)" stroke-width="1" fill="none" stroke-dasharray="8,4" opacity="0.4"/>
           
-          <!-- Kalshi → Right Brain (top-right data input) -->
-          <path d="M 430 70 Q 500 120 550 175" stroke="rgba(99,102,241,0.5)" stroke-width="2" fill="none" marker-end="url(#arrow)" stroke-dasharray="5,3"/>
+          <!-- Market → Left Brain -->
+          <path d="M 175 55 C 100 100, 55 150, 75 190" stroke="rgba(100,116,139,0.5)" stroke-width="2" fill="none" stroke-dasharray="5,3" marker-end="url(#arrowTeal)"/>
           
-          <!-- Left Brain → Center (signal) -->
-          <path d="M 180 210 Q 260 235 310 250" stroke="rgba(0,180,216,0.5)" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+          <!-- Kalshi → Right Brain -->
+          <path d="M 425 55 C 500 100, 545 150, 525 190" stroke="rgba(99,102,241,0.5)" stroke-width="2" fill="none" stroke-dasharray="5,3" marker-end="url(#arrowTeal)"/>
           
-          <!-- Right Brain → Center (validate) -->
-          <path d="M 520 210 Q 440 235 390 250" stroke="rgba(244,114,182,0.5)" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+          <!-- Left Brain → OSHI -->
+          <path d="M 130 220 L 240 230" stroke="rgba(236,72,153,0.6)" stroke-width="2.5" fill="none" marker-end="url(#arrowTeal)"/>
           
-          <!-- Center → Body (execute) -->
-          <path d="M 390 280 Q 460 310 530 340" stroke="rgba(0,229,195,0.5)" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+          <!-- Right Brain → OSHI -->
+          <path d="M 470 220 L 360 230" stroke="rgba(244,114,182,0.6)" stroke-width="2.5" fill="none" marker-end="url(#arrowTeal)"/>
           
-          <!-- Center → Heart (record) -->
-          <path d="M 310 280 Q 240 310 170 340" stroke="rgba(0,229,195,0.5)" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+          <!-- OSHI → Body -->
+          <path d="M 360 260 L 470 340" stroke="rgba(0,229,195,0.6)" stroke-width="2.5" fill="none" marker-end="url(#arrowTeal)"/>
           
-          <!-- Body → Right Brain (feedback loop) -->
-          <path d="M 560 320 Q 580 260 560 200" stroke="rgba(251,191,36,0.4)" stroke-width="1.5" fill="none" marker-end="url(#arrowYellow)" stroke-dasharray="4,2"/>
+          <!-- OSHI → Heart -->
+          <path d="M 240 260 L 130 340" stroke="rgba(0,229,195,0.6)" stroke-width="2.5" fill="none" marker-end="url(#arrowTeal)"/>
           
-          <!-- Heart → Spirit (events) -->
-          <path d="M 170 390 Q 200 430 260 450" stroke="rgba(239,68,68,0.5)" stroke-width="2" fill="none" marker-end="url(#arrowRed)"/>
+          <!-- Body → Right Brain feedback -->
+          <path d="M 530 350 C 570 280, 555 210, 510 195" stroke="rgba(251,146,60,0.4)" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arrowOrange)"/>
           
-          <!-- Spirit → Socials (post) -->
-          <path d="M 330 460 Q 370 470 410 460" stroke="rgba(139,92,246,0.5)" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+          <!-- Heart → Crystal -->
+          <path d="M 95 400 C 150 450, 240 480, 290 480" stroke="rgba(239,68,68,0.4)" stroke-width="2" fill="none"/>
           
-          <!-- Left Brain ↔ Right Brain (bidirectional coordination) -->
-          <path d="M 210 190 L 490 190" stroke="rgba(0,229,195,0.25)" stroke-width="1.5" fill="none" stroke-dasharray="6,4"/>
+          <!-- Left ↔ Right coordination -->
+          <path d="M 150 205 L 450 205" stroke="rgba(0,229,195,0.15)" stroke-width="1" fill="none" stroke-dasharray="6,4"/>
         </svg>
 
-        <!-- Central Oshi Hub -->
-        <div class="hex-center">
-          <span class="hex-center-icon">🔮</span>
-          <span class="hex-center-name">OSHI</span>
+        <div class="orbital-center">
+          <span class="orbital-center-icon">🔮</span>
+          <span class="orbital-center-name">OSHI</span>
         </div>
 
-        <!-- Orbital Nodes -->
-        <div class="hex-node market">
-          <span class="hex-node-icon">📊</span>
-          <span class="hex-node-name">Market</span>
-          <span class="hex-node-sub">TAAPI.IO</span>
+        <div class="orbital-node market">
+          <span class="orbital-node-icon">📊</span>
+          <span class="orbital-node-name">MARKET</span>
+          <span class="orbital-node-role">RSI/ADX/ETC</span>
         </div>
 
-        <div class="hex-node kalshi">
-          <span class="hex-node-icon">🎯</span>
-          <span class="hex-node-name">Kalshi</span>
-          <span class="hex-node-sub">Exchange</span>
+        <div class="orbital-node kalshi">
+          <span class="orbital-node-icon">🎯</span>
+          <span class="orbital-node-name">KALSHI</span>
+          <span class="orbital-node-role">EXCHANGE</span>
         </div>
 
-        <div class="hex-node left">
-          <span class="hex-node-icon">🧠</span>
-          <span class="hex-node-name">Left Brain</span>
-          <span class="hex-node-sub">Signals</span>
+        <div class="orbital-node left-brain">
+          <span class="orbital-node-icon">🧠</span>
+          <span class="orbital-node-name">LEFT BRAIN</span>
+          <span class="orbital-node-role">ANALYST</span>
         </div>
 
-        <div class="hex-node right">
-          <span class="hex-node-icon">⚖️</span>
-          <span class="hex-node-name">Right Brain</span>
-          <span class="hex-node-sub">Decisions</span>
+        <div class="orbital-node right-brain">
+          <span class="orbital-node-icon">⚖️</span>
+          <span class="orbital-node-name">RIGHT BRAIN</span>
+          <span class="orbital-node-role">ORCHESTRATOR</span>
         </div>
 
-        <div class="hex-node body">
-          <span class="hex-node-icon">💪</span>
-          <span class="hex-node-name">Body</span>
-          <span class="hex-node-sub">Execution</span>
+        <div class="orbital-node heart">
+          <span class="orbital-node-icon">❤️</span>
+          <span class="orbital-node-name">HEART</span>
+          <span class="orbital-node-role">ANALYZER & LEARNING</span>
         </div>
 
-        <div class="hex-node heart">
-          <span class="hex-node-icon">❤️</span>
-          <span class="hex-node-name">Heart</span>
-          <span class="hex-node-sub">Learning</span>
+        <div class="orbital-node body">
+          <span class="orbital-node-icon">💪</span>
+          <span class="orbital-node-name">BODY</span>
+          <span class="orbital-node-role">EXECUTOR</span>
         </div>
 
-        <div class="hex-node spirit">
-          <span class="hex-node-icon">✨</span>
-          <span class="hex-node-name">Spirit</span>
-          <span class="hex-node-sub">Expression</span>
+        <div class="crystal-heart">
+          <div class="crystal-glow"></div>
+          <span class="crystal-icon">💎</span>
         </div>
-
-        <div class="hex-node output">
-          <span class="hex-node-icon">📱</span>
-          <span class="hex-node-name">Socials</span>
-          <span class="hex-node-sub">X / TG</span>
-        </div>
-
-        <!-- Labels removed for cleaner layout - info in legend below -->
       </div>
 
-      <!-- Connection Legend -->
-      <div class="hex-legend">
-        <div class="hex-legend-item">
-          <div class="hex-legend-icons">
+      <div class="orbital-legend">
+        <div class="orbital-legend-item">
+          <div class="orbital-legend-icons">
             <span>📊</span>
-            <span class="hex-legend-arrow">→</span>
-            <span>🧠</span>
+            <span>📈</span>
           </div>
-          <div class="hex-legend-text">
-            <span class="hex-legend-title">Market → Left Brain</span>
-            RSI, ADX, PSAR, BB, StochRSI indicators for analysis
-          </div>
-        </div>
-
-        <div class="hex-legend-item">
-          <div class="hex-legend-icons">
-            <span>🧠</span>
-            <span class="hex-legend-arrow">→</span>
-            <span>⚖️</span>
-          </div>
-          <div class="hex-legend-text">
-            <span class="hex-legend-title">Left → Right Brain</span>
-            Direction (YES/NO), tier (S/A/B), confluence count
+          <div class="orbital-legend-text">
+            <span class="orbital-legend-title">Market → Left Brain</span>
+            RSI, ADX, PSAR BB, StochRSI indicators for analysis
           </div>
         </div>
 
-        <div class="hex-legend-item">
-          <div class="hex-legend-icons">
+        <div class="orbital-legend-item">
+          <div class="orbital-legend-icons">
+            <span>🧠</span>
             <span>⚖️</span>
-            <span class="hex-legend-arrow">→</span>
+          </div>
+          <div class="orbital-legend-text">
+            <span class="orbital-legend-title">LEFT → Right Brain</span>
+            Direction (Y/N), tier (S/A/B), confluence count
+          </div>
+        </div>
+
+        <div class="orbital-legend-item">
+          <div class="orbital-legend-icons">
+            <span>⚖️</span>
             <span>💪</span>
           </div>
-          <div class="hex-legend-text">
-            <span class="hex-legend-title">Right Brain → Body</span>
+          <div class="orbital-legend-text">
+            <span class="orbital-legend-title">Right Brain → Body</span>
             Order commands: buy/sell with size and price
-          </div>
-        </div>
-
-        <div class="hex-legend-item">
-          <div class="hex-legend-icons">
-            <span>💪</span>
-            <span class="hex-legend-arrow">→</span>
-            <span>⚖️</span>
-          </div>
-          <div class="hex-legend-text">
-            <span class="hex-legend-title">Body → Right Brain</span>
-            Fill status: success, partial, or failed
-          </div>
-        </div>
-
-        <div class="hex-legend-item">
-          <div class="hex-legend-icons">
-            <span>⚖️</span>
-            <span class="hex-legend-arrow">→</span>
-            <span>❤️</span>
-          </div>
-          <div class="hex-legend-text">
-            <span class="hex-legend-title">Right Brain → Heart</span>
-            Complete trade records for learning
-          </div>
-        </div>
-
-        <div class="hex-legend-item">
-          <div class="hex-legend-icons">
-            <span>❤️</span>
-            <span class="hex-legend-arrow">→</span>
-            <span>✨</span>
-          </div>
-          <div class="hex-legend-text">
-            <span class="hex-legend-title">Heart → Spirit</span>
-            Events: streaks, milestones, notable trades
-          </div>
-        </div>
-
-        <div class="hex-legend-item">
-          <div class="hex-legend-icons">
-            <span>✨</span>
-            <span class="hex-legend-arrow">→</span>
-            <span>📱</span>
-          </div>
-          <div class="hex-legend-text">
-            <span class="hex-legend-title">Spirit → Socials</span>
-            Posts to X (Twitter) and Telegram
-          </div>
-        </div>
-
-        <div class="hex-legend-item" style="border: 1px solid rgba(139,92,246,0.3); background: rgba(139,92,246,0.05);">
-          <div class="hex-legend-icons">
-            <span>❤️</span>
-            <span class="hex-legend-arrow">⟲</span>
-            <span>🧠</span>
-          </div>
-          <div class="hex-legend-text">
-            <span class="hex-legend-title">Future: Learning Loop</span>
-            Heart adjusts Left Brain parameters over time
           </div>
         </div>
       </div>
