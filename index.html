@@ -513,6 +513,7 @@ body {
 .tier-hero.s-tier .pnl-label { color: #ffd700; }
 .tier-hero.a-tier .pnl-label { color: #c0c0c0; }
 .tier-hero.b-tier .pnl-label { color: #cd7f32; }
+.tier-hero.c-tier .pnl-label { color: #6b7280; }
 .tier-trades-label {
   font-size: 11px;
   color: var(--text-secondary);
@@ -1287,6 +1288,12 @@ body {
       <div class="pnl-value" id="bTierWR">--</div>
       <div class="pnl-pct tier-pnl" id="bTierPnl">$--</div>
       <div class="tier-trades-label" id="bTierTrades">-- trades</div>
+    </div>
+    <div class="pnl-hero tier-hero c-tier">
+      <div class="pnl-label">C-TIER</div>
+      <div class="pnl-value" id="cTierWR">--</div>
+      <div class="pnl-pct tier-pnl" id="cTierPnl">$--</div>
+      <div class="tier-trades-label" id="cTierTrades">-- trades</div>
     </div>
   </div>
 
@@ -2212,6 +2219,19 @@ async function fetchTiers() {
       bTierPnl.className = `tier-pnl ${pnl >= 0 ? 'positive' : 'negative'}`;
     }
     if (bTierTrades) bTierTrades.textContent = `${bTier.trades || 0} trades`;
+    
+    // C-Tier
+    const cTier = tiers['C'] || {};
+    const cTierWR = document.getElementById('cTierWR');
+    const cTierPnl = document.getElementById('cTierPnl');
+    const cTierTrades = document.getElementById('cTierTrades');
+    if (cTierWR) cTierWR.textContent = `${(cTier.win_rate || 0).toFixed(1)}%`;
+    if (cTierPnl) {
+      const pnl = cTier.pnl || 0;
+      cTierPnl.textContent = `${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}`;
+      cTierPnl.className = `tier-pnl ${pnl >= 0 ? 'positive' : 'negative'}`;
+    }
+    if (cTierTrades) cTierTrades.textContent = `${cTier.trades || 0} trades`;
     
   } catch (e) {
     console.error('Tiers fetch failed:', e);
