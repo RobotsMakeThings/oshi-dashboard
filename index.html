@@ -1026,14 +1026,16 @@ body {
     </div>
   </div>
 
-  <!-- Active Positions -->
+  <!-- Recent Trades (moved up) -->
   <div class="section-card">
     <div class="section-header">
-      <h3>📍 ACTIVE POSITIONS</h3>
-      <span class="section-badge" id="positionCount">0 OPEN</span>
+      <h3>📜 RECENT TRADES</h3>
     </div>
-    <div class="positions-grid" id="positionsList">
-      <div class="no-positions">✨ No active positions</div>
+    <div class="trades-list" id="tradesList">
+      <div class="loading">
+        <div class="loader"></div>
+        Loading trades...
+      </div>
     </div>
   </div>
 
@@ -1058,19 +1060,6 @@ body {
       <div class="insight-card">
         <div class="insight-value high" id="corrAdx">82%</div>
         <div class="insight-label">ADX>50 Win</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Recent Trades -->
-  <div class="section-card">
-    <div class="section-header">
-      <h3>📜 RECENT TRADES</h3>
-    </div>
-    <div class="trades-list" id="tradesList">
-      <div class="loading">
-        <div class="loader"></div>
-        Loading trades...
       </div>
     </div>
   </div>
@@ -1328,7 +1317,6 @@ const updateAll = async () => {
   await Promise.all([
     updateKalshi(),
     updatePolymarket(),
-    updatePositions(),
     updateTrades()
   ]);
   updateTimestamp();
