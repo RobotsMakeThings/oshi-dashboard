@@ -1047,8 +1047,8 @@ body {
           <div class="label">Win Rate</div>
         </div>
         <div class="stat-card">
-          <div class="value" id="kalshiPnL">$--</div>
-          <div class="label">P&L (v10)</div>
+          <div class="value neutral" id="kalshiPositions">--</div>
+          <div class="label">Open Positions</div>
         </div>
       </div>
     </div>
@@ -1086,8 +1086,8 @@ body {
           <div class="label">Win Rate</div>
         </div>
         <div class="stat-card">
-          <div class="value" id="polyPnL">$--</div>
-          <div class="label">P&L (v2)</div>
+          <div class="value neutral" id="polyPositions">--</div>
+          <div class="label">Open Positions</div>
         </div>
       </div>
     </div>
@@ -1357,7 +1357,19 @@ const updateKalshi = async () => {
     document.getElementById('kalshiLosses').textContent = losses;
     const total = wins + losses;
     document.getElementById('kalshiWinRate').textContent = total > 0 ? Math.round(wins / total * 100) + '%' : '--%';
-    fmtPnl(pnl, document.getElementById('kalshiPnL'));
+    
+    // Get open positions count
+    try {
+      const posRes = await fetch(`${API_BASE}/api/positions`);
+      if (posRes.ok) {
+        const posData = await posRes.json();
+        document.getElementById('kalshiPositions').textContent = posData.count || (posData.positions || []).length || 0;
+      } else {
+        document.getElementById('kalshiPositions').textContent = '0';
+      }
+    } catch (e) {
+      document.getElementById('kalshiPositions').textContent = '0';
+    }
     
     // Render trades
     const container = document.getElementById('kalshiTradesList');
@@ -1408,7 +1420,19 @@ const updatePolymarket = async () => {
     document.getElementById('polyLosses').textContent = losses;
     const total = wins + losses;
     document.getElementById('polyWinRate').textContent = total > 0 ? Math.round(wins / total * 100) + '%' : '--%';
-    fmtPnl(pnl, document.getElementById('polyPnL'));
+    
+    // Get open positions count
+    try {
+      const posRes = await fetch(`${POLY_API}/positions`);
+      if (posRes.ok) {
+        const posData = await posRes.json();
+        document.getElementById('polyPositions').textContent = posData.count || (posData.positions || []).length || 0;
+      } else {
+        document.getElementById('polyPositions').textContent = '0';
+      }
+    } catch (e) {
+      document.getElementById('polyPositions').textContent = '0';
+    }
     
     // Render trades
     const container = document.getElementById('polyTradesList');
