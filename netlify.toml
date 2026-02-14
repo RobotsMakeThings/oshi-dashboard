@@ -1,10 +1,17 @@
 [build]
   publish = "."
 
-# Proxy API calls to the backend server
+# Proxy Kalshi API calls
 [[redirects]]
   from = "/api/*"
-  to = "http://138.197.212.247:8080/api/:splat"
+  to = "http://209.38.37.63:5000/api/:splat"
+  status = 200
+  force = true
+
+# Proxy Polymarket API calls
+[[redirects]]
+  from = "/poly-api/*"
+  to = "http://134.122.86.195:8081/api/:splat"
   status = 200
   force = true
 

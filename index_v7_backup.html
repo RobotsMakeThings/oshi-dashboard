@@ -1,0 +1,2879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="OSHI">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#00e5c3">
+<meta name="msapplication-TileColor" content="#060918">
+<meta name="application-name" content="OSHI">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>OSHI v7.7 — Trailing Stop + Market Consensus SL</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --oshi-teal: #00e5c3;
+  --oshi-green: #39ff14;
+  --oshi-navy: #0a0e27;
+  --oshi-deep: #060918;
+  --oshi-blue: #1a3a6b;
+  --oshi-mid: #121a3a;
+  --oshi-card: rgba(16, 22, 58, 0.85);
+  --oshi-border: rgba(0, 229, 195, 0.15);
+  --oshi-glow: rgba(0, 229, 195, 0.4);
+  --profit: #39ff14;
+  --loss: #ff3b5c;
+  --gold: #ffd700;
+  --text-primary: #e8edf5;
+  --text-secondary: #8892b0;
+  --text-dim: #4a5578;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--oshi-deep);
+  color: var(--text-primary);
+  font-family: 'Rajdhani', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* === ANIMATED BACKGROUND === */
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,229,195,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,195,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: gridScroll 20s linear infinite;
+}
+@keyframes gridScroll {
+  0% { background-position: 0 0; }
+  100% { background-position: 40px 40px; }
+}
+
+.bg-orbs {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+}
+.bg-orbs::before, .bg-orbs::after {
+  content: ''; position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15;
+}
+.bg-orbs::before {
+  width: 600px; height: 600px; background: var(--oshi-teal); top: -200px; right: -100px;
+  animation: orbFloat 12s ease-in-out infinite;
+}
+.bg-orbs::after {
+  width: 500px; height: 500px; background: #6366f1; bottom: -150px; left: -100px;
+  animation: orbFloat 15s ease-in-out infinite reverse;
+}
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, -30px) scale(1.1); }
+}
+
+/* === HEADER === */
+.header {
+  position: relative; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 32px;
+  background: linear-gradient(180deg, rgba(10,14,39,0.98) 0%, rgba(10,14,39,0.85) 100%);
+  border-bottom: 1px solid var(--oshi-border);
+  backdrop-filter: blur(20px);
+}
+
+.header-left {
+  display: flex; align-items: center; gap: 16px;
+}
+
+.oshi-avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  border: 2px solid var(--oshi-teal);
+  box-shadow: 0 0 20px var(--oshi-glow), inset 0 0 10px rgba(0,229,195,0.1);
+  object-fit: cover; object-position: center 5%;
+  animation: avatarPulse 3s ease-in-out infinite;
+}
+@keyframes avatarPulse {
+  0%, 100% { box-shadow: 0 0 20px var(--oshi-glow); }
+  50% { box-shadow: 0 0 35px var(--oshi-glow), 0 0 60px rgba(0,229,195,0.15); }
+}
+
+.header-title {
+  display: flex; flex-direction: column;
+}
+.header-title h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px; font-weight: 800;
+  background: linear-gradient(135deg, var(--oshi-teal), var(--oshi-green));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  letter-spacing: 3px;
+}
+.header-title span {
+  font-size: 11px; color: var(--text-secondary);
+  letter-spacing: 4px; text-transform: uppercase; font-weight: 500;
+}
+
+.header-right {
+  display: flex; align-items: center; gap: 24px;
+}
+
+.market-badge {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 16px; border-radius: 20px;
+  background: rgba(0,229,195,0.08);
+  border: 1px solid rgba(0,229,195,0.2);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px; font-weight: 600;
+  color: var(--oshi-teal); letter-spacing: 2px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.market-badge:hover {
+  background: rgba(0,229,195,0.15);
+  border-color: var(--oshi-teal);
+  box-shadow: 0 0 16px rgba(0,229,195,0.2);
+  transform: translateY(-1px);
+}
+
+.oshi-x-link {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 18px; border-radius: 20px;
+  background: linear-gradient(135deg, rgba(0,229,195,0.15), rgba(57,255,20,0.08));
+  border: 1px solid rgba(0,229,195,0.35);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px; font-weight: 700;
+  color: var(--oshi-teal); letter-spacing: 1.5px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 12px rgba(0,229,195,0.1);
+}
+.oshi-x-link:hover {
+  background: linear-gradient(135deg, rgba(0,229,195,0.25), rgba(57,255,20,0.15));
+  border-color: var(--oshi-teal);
+  box-shadow: 0 0 24px rgba(0,229,195,0.25);
+  transform: translateY(-1px);
+}
+.oshi-x-link svg { flex-shrink: 0; }
+
+.footer-oshi-x {
+  color: var(--oshi-teal) !important;
+  font-weight: 600;
+}
+.market-badge .k-logo {
+  width: 18px; height: 18px; background: var(--oshi-teal);
+  border-radius: 4px; display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 12px; color: var(--oshi-navy);
+}
+
+.status-indicator {
+  display: flex; align-items: center; gap: 10px;
+  user-select: none;
+}
+.status-indicator .label {
+  font-family: 'Orbitron', sans-serif; font-size: 11px;
+  letter-spacing: 2px; font-weight: 600;
+}
+.status-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--loss);
+  box-shadow: 0 0 10px rgba(255,59,92,0.5);
+  transition: all 0.4s ease;
+}
+.status-dot.on {
+  background: var(--oshi-teal);
+  box-shadow: 0 0 15px var(--oshi-glow);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 15px var(--oshi-glow); }
+  50% { box-shadow: 0 0 25px var(--oshi-glow), 0 0 35px rgba(0,229,195,0.3); }
+}
+
+/* === MAIN LAYOUT === */
+.dashboard {
+  position: relative; z-index: 5;
+  display: grid;
+  grid-template-columns: 280px 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto auto;
+  gap: 16px;
+  padding: 20px 24px;
+  max-width: 1600px; margin: 0 auto;
+}
+@media (max-width: 900px) {
+  .dashboard {
+    grid-template-columns: 1fr 1fr;
+    padding: 16px;
+  }
+  .oshi-sidebar {
+    grid-row: auto;
+    grid-column: span 2;
+  }
+}
+@media (max-width: 600px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+  .oshi-sidebar {
+    grid-column: span 1;
+  }
+  .card {
+    grid-column: span 1 !important;
+  }
+}
+
+/* === OSHI SIDEBAR === */
+.oshi-sidebar {
+  grid-row: 1 / -1;
+  display: flex; flex-direction: column; gap: 16px;
+}
+
+.oshi-card {
+  background: var(--oshi-card);
+  border: 1px solid var(--oshi-border);
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.oshi-portrait {
+  position: relative;
+  height: 320px; overflow: hidden;
+}
+.oshi-portrait img {
+  width: 100%; height: 100%; object-fit: cover; object-position: center 5%;
+  filter: saturate(1.1) contrast(1.05);
+}
+.oshi-portrait::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(0deg, var(--oshi-navy) 0%, transparent 50%);
+}
+.oshi-nameplate {
+  position: absolute; bottom: 12px; left: 16px; right: 16px; z-index: 2;
+}
+.oshi-nameplate h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 28px; font-weight: 900;
+  color: #fff; text-shadow: 0 0 30px var(--oshi-teal);
+  letter-spacing: 4px;
+}
+.oshi-nameplate p {
+  font-size: 11px; color: var(--oshi-teal);
+  letter-spacing: 3px; text-transform: uppercase; font-weight: 600;
+}
+
+.oshi-stats {
+  padding: 12px 16px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 500px) {
+  .oshi-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.oshi-stat-row {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 10px 8px; border-radius: 10px;
+  background: rgba(0,229,195,0.06);
+  border: 1px solid rgba(0,229,195,0.08);
+  text-align: center;
+}
+.oshi-stat-row .stat-label {
+  font-size: 9px; color: var(--text-secondary);
+  text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+  margin-bottom: 4px;
+}
+.oshi-stat-row .stat-value {
+  font-family: 'Space Mono', monospace;
+  font-size: 16px; font-weight: 700;
+}
+
+/* === CARDS === */
+.card {
+  background: var(--oshi-card);
+  border: 1px solid var(--oshi-border);
+  border-radius: 14px;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  animation: cardFadeIn 0.6s ease-out both;
+}
+.card:nth-child(2) { animation-delay: 0.05s; }
+.card:nth-child(3) { animation-delay: 0.1s; }
+.card:nth-child(4) { animation-delay: 0.15s; }
+.card:nth-child(5) { animation-delay: 0.2s; }
+.card:nth-child(6) { animation-delay: 0.25s; }
+
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px 10px;
+  border-bottom: 1px solid rgba(0,229,195,0.06);
+}
+.card-header h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--oshi-teal);
+}
+.card-header .badge {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; padding: 3px 10px;
+  border-radius: 10px; font-weight: 700;
+  letter-spacing: 1px;
+}
+.badge-live {
+  background: rgba(57,255,20,0.12); color: var(--profit);
+  border: 1px solid rgba(57,255,20,0.25);
+  animation: livePulse 2s ease-in-out infinite;
+}
+@keyframes livePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+.badge-session { background: rgba(0,229,195,0.1); color: var(--oshi-teal); border: 1px solid rgba(0,229,195,0.2); }
+.badge-all { background: rgba(99,102,241,0.15); color: #818cf8; border: 1px solid rgba(99,102,241,0.25); }
+
+.card-body { padding: 12px 16px 16px; }
+
+/* === CURRENT POSITIONS === */
+.positions-section {
+  grid-column: 2 / 5;
+  margin-bottom: 16px;
+}
+.positions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.no-positions {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}
+.position-item {
+  display: grid;
+  grid-template-columns: 80px 60px 1fr 80px 80px 90px;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(0, 229, 195, 0.05);
+  border: 1px solid var(--oshi-border);
+  border-radius: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+}
+@media (max-width: 768px) {
+  .position-item {
+    display: grid;
+    grid-template-columns: auto auto 1fr auto;
+    gap: 6px 12px;
+    padding: 14px;
+    font-size: 13px;
+  }
+  .position-asset { 
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .position-side { 
+    font-size: 11px; 
+    padding: 3px 10px; 
+  }
+  .position-entry { 
+    text-align: right;
+    white-space: nowrap;
+  }
+  .position-pnl { 
+    font-size: 16px;
+    font-weight: 700;
+    text-align: right;
+    grid-row: 1 / 3;
+    grid-column: 4;
+    align-self: center;
+  }
+  .position-current { 
+    grid-column: 1 / 3;
+    font-size: 12px;
+    opacity: 0.7;
+  }
+  .position-size { 
+    grid-column: 3;
+    font-size: 12px;
+    text-align: right;
+    opacity: 0.7;
+  }
+}
+.position-item:hover {
+  background: rgba(0, 229, 195, 0.1);
+  border-color: var(--oshi-teal);
+}
+.position-asset {
+  font-weight: 700;
+  color: var(--oshi-teal);
+}
+.position-side {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.position-side.yes { background: rgba(57,255,20,0.15); color: var(--profit); }
+.position-side.no { background: rgba(255,59,92,0.15); color: var(--loss); }
+.position-entry, .position-current, .position-size {
+  color: var(--text-secondary);
+}
+.position-pnl {
+  font-weight: 700;
+  text-align: right;
+}
+.position-pnl.positive { color: var(--profit); }
+.position-pnl.negative { color: var(--loss); }
+#positionsBadge {
+  background: rgba(0,229,195,0.15);
+  color: var(--oshi-teal);
+}
+#positionsBadge.has-positions {
+  background: rgba(57,255,20,0.2);
+  color: var(--profit);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* === PORTFOLIO SECTION === */
+.portfolio-section {
+  grid-column: 2 / 5;
+  display: grid; 
+  grid-template-columns: 2fr 1fr 1fr; 
+  gap: 16px;
+}
+
+.portfolio-hero {
+  background: linear-gradient(135deg, rgba(16, 22, 58, 0.95), rgba(10, 14, 39, 0.98));
+  border: 1px solid var(--oshi-border);
+  border-radius: 14px;
+  padding: 24px 28px;
+  position: relative; 
+  overflow: hidden;
+}
+
+.portfolio-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 229, 195, 0.08), transparent 60%);
+  pointer-events: none;
+}
+
+.portfolio-total {
+  position: relative;
+  z-index: 1;
+}
+
+.portfolio-breakdown {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.pnl-breakdown {
+  margin-top: 8px;
+}
+
+.platform-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.platform-chip.small {
+  font-size: 11px;
+  padding: 4px 10px;
+}
+
+.platform-chip.kalshi {
+  border-color: rgba(57, 255, 20, 0.3);
+}
+
+.platform-chip.kalshi .chip-dot {
+  color: var(--profit);
+}
+
+.platform-chip.poly {
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+.platform-chip.poly .chip-dot {
+  color: #6366f1;
+}
+
+/* === PNL HERO CARDS === */
+.pnl-row {
+  grid-column: 2 / 5;
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;
+}
+
+.pnl-hero {
+  background: var(--oshi-card);
+  border: 1px solid var(--oshi-border);
+  border-radius: 14px;
+  padding: 20px 24px;
+  position: relative; overflow: hidden;
+}
+.pnl-hero::before {
+  content: ''; position: absolute; inset: 0;
+  opacity: 0.04;
+}
+.pnl-hero.session::before { background: linear-gradient(135deg, var(--oshi-teal), transparent); }
+.pnl-hero.wallet::before { background: linear-gradient(135deg, #6366f1, transparent); }
+.pnl-hero.balance::before { background: linear-gradient(135deg, var(--gold), transparent); }
+.pnl-value.balance-val { color: #ffffff; text-shadow: 0 0 20px rgba(255,255,255,0.15); }
+
+.pnl-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--text-secondary); font-weight: 600; margin-bottom: 6px;
+}
+.pnl-value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 36px; font-weight: 900;
+  line-height: 1.1;
+}
+.pnl-value.positive { color: var(--profit); text-shadow: 0 0 30px rgba(57,255,20,0.3); }
+.pnl-value.negative { color: var(--loss); text-shadow: 0 0 30px rgba(255,59,92,0.3); }
+.pnl-pct {
+  font-family: 'Space Mono', monospace;
+  font-size: 14px; font-weight: 700; margin-top: 4px;
+}
+.pnl-pct.positive { color: var(--profit); }
+.pnl-pct.negative { color: var(--loss); }
+
+/* === TIER STATS (in hero row) === */
+.tier-row { margin-top: -8px; grid-template-columns: 1fr 1fr 1fr 1fr; }
+.tier-hero {
+  position: relative;
+}
+.tier-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 12px 12px 0 0;
+}
+.tier-hero.s-tier::before { background: linear-gradient(90deg, #ffd700, #ffaa00); }
+.tier-hero.a-tier::before { background: linear-gradient(90deg, #c0c0c0, #a0a0a0); }
+.tier-hero.b-tier::before { background: linear-gradient(90deg, #cd7f32, #a66828); }
+.tier-hero.s-tier .pnl-label { color: #ffd700; }
+.tier-hero.a-tier .pnl-label { color: #c0c0c0; }
+.tier-hero.b-tier .pnl-label { color: #cd7f32; }
+.tier-hero.c-tier .pnl-label { color: #6b7280; }
+.tier-trades-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+.tier-pnl.positive { color: var(--profit) !important; }
+.tier-pnl.negative { color: var(--loss) !important; }
+
+/* === TRADE TABLES === */
+.trade-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.trade-item {
+  display: grid; grid-template-columns: 1fr auto auto auto;
+  gap: 12px; align-items: center;
+  padding: 8px 12px; border-radius: 8px;
+  background: rgba(0,229,195,0.02);
+  border: 1px solid rgba(0,229,195,0.04);
+  transition: all 0.2s;
+  font-size: 13px;
+}
+.trade-item:hover {
+  background: rgba(0,229,195,0.06);
+  border-color: rgba(0,229,195,0.12);
+  transform: translateX(3px);
+}
+.trade-name {
+  font-weight: 600; color: var(--text-primary);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.trade-result {
+  font-family: 'Space Mono', monospace; font-size: 11px;
+  padding: 2px 8px; border-radius: 6px; font-weight: 700;
+}
+.trade-result.win { background: rgba(57,255,20,0.1); color: var(--profit); }
+.trade-result.loss { background: rgba(255,59,92,0.1); color: var(--loss); }
+.trade-pnl {
+  font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700;
+  text-align: right; min-width: 70px;
+}
+.trade-pnl.positive { color: var(--profit); }
+.trade-pnl.negative { color: var(--loss); }
+.trade-pct {
+  font-family: 'Space Mono', monospace; font-size: 11px;
+  color: var(--text-secondary); min-width: 50px; text-align: right;
+}
+
+/* === RANK NUMBER === */
+.rank {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px; font-weight: 800;
+  min-width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 6px; margin-right: 4px;
+}
+.rank.gold { background: rgba(255,215,0,0.15); color: var(--gold); }
+.rank.silver { background: rgba(192,192,192,0.12); color: #c0c0c0; }
+.rank.bronze { background: rgba(205,127,50,0.12); color: #cd7f32; }
+.rank.normal { background: rgba(0,229,195,0.06); color: var(--text-dim); }
+
+.leader-item {
+  display: grid; grid-template-columns: 28px 1fr auto auto;
+  gap: 8px; align-items: center;
+  padding: 7px 10px; border-radius: 8px;
+  background: rgba(0,229,195,0.02);
+  border: 1px solid rgba(0,229,195,0.04);
+  transition: all 0.2s;
+}
+.leader-item:hover {
+  background: rgba(0,229,195,0.06);
+  transform: translateX(3px);
+}
+
+/* === LESSONS CARD === */
+.lesson-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.lesson-item {
+  padding: 10px 14px; border-radius: 10px;
+  border-left: 3px solid var(--oshi-teal);
+  background: rgba(0,229,195,0.03);
+  font-size: 13px; line-height: 1.5;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+.lesson-item:hover {
+  background: rgba(0,229,195,0.07);
+  color: var(--text-primary);
+}
+.lesson-item.impl { border-left-color: #6366f1; background: rgba(99,102,241,0.04); }
+.lesson-item.impl:hover { background: rgba(99,102,241,0.08); }
+.lesson-item.manual { border-left-color: var(--gold); background: rgba(255,215,0,0.03); }
+.lesson-item.manual:hover { background: rgba(255,215,0,0.07); }
+.lesson-time {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; color: var(--text-dim);
+
+}
+
+
+/* === VERSION P&L SECTION === */
+.version-section {
+  grid-column: 1 / -1;
+  margin: 16px 0;
+}
+.version-section-header {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 16px;
+  padding: 0 4px;
+}
+.version-section-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--oshi-teal);
+}
+.version-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;
+}
+.version-card {
+  background: var(--oshi-card);
+  border-radius: 12px;
+  border: 1px solid var(--oshi-border);
+  padding: 16px;
+  transition: all 0.3s ease;
+}
+.version-card:hover {
+  border-color: var(--oshi-teal);
+  box-shadow: 0 0 20px rgba(0,229,195,0.1);
+}
+.version-card.current {
+  border-color: var(--oshi-teal);
+  background: linear-gradient(135deg, rgba(0,229,195,0.08), transparent);
+}
+.version-card.overall {
+  background: linear-gradient(135deg, rgba(99,102,241,0.1), var(--oshi-card));
+  border-color: #6366f1;
+}
+.version-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+.version-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px; font-weight: 700;
+  color: var(--text-primary);
+}
+.version-badge {
+  font-size: 10px; font-weight: 600;
+  padding: 4px 8px; border-radius: 4px;
+  background: var(--oshi-blue);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.version-badge.current {
+  background: var(--oshi-teal);
+  color: var(--oshi-deep);
+}
+.version-desc {
+  font-size: 12px; color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+.version-stats {
+  display: flex; justify-content: space-between; gap: 12px;
+  margin-bottom: 12px;
+}
+.version-stats .stat {
+  text-align: center;
+  flex: 1;
+}
+.version-stats .stat-value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px; font-weight: 700;
+  display: block;
+}
+.version-stats .stat-value.positive { color: var(--profit); }
+.version-stats .stat-value.negative { color: var(--loss); }
+.version-stats .stat-label {
+  font-size: 10px; color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.version-details {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  font-size: 11px; color: var(--text-secondary);
+  padding-top: 8px;
+  border-top: 1px solid var(--oshi-border);
+}
+.version-details .detail {
+  background: var(--oshi-mid);
+  padding: 4px 8px; border-radius: 4px;
+}
+/* === SPIRIT VISUAL === */
+.spirit-visual-section {
+  grid-column: 1 / -1;
+  margin-top: 24px;
+  background: linear-gradient(135deg, rgba(6,9,24,0.95), rgba(15,25,50,0.9));
+  border: 1px solid rgba(0,229,195,0.15);
+  border-radius: 16px;
+  padding: 20px;
+  overflow: hidden;
+}
+.spirit-visual-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.spirit-visual-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--oshi-teal);
+  letter-spacing: 1px;
+  margin: 0;
+}
+.spirit-visual-container {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.spirit-visual-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+/* === BRAIN ACTIVITY === */
+.brain-section {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+}
+.brain-section-header {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 16px;
+  padding: 0 4px;
+}
+.brain-section-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--oshi-teal);
+}
+.brain-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+
+.brain-card {
+  background: var(--oshi-card);
+  border: 1px solid var(--oshi-border);
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+}
+.brain-card::before {
+  content: ''; position: absolute; inset: 0; opacity: 0.03; pointer-events: none;
+}
+.brain-card.left-brain { border-left: 3px solid #00b4d8; }
+.brain-card.left-brain::before { background: linear-gradient(135deg, #00b4d8, transparent); }
+.brain-card.right-brain { border-left: 3px solid #f472b6; }
+.brain-card.right-brain::before { background: linear-gradient(135deg, #f472b6, transparent); }
+.brain-card.body-card { border-left: 3px solid #fbbf24; }
+.brain-card.body-card::before { background: linear-gradient(135deg, #fbbf24, transparent); }
+.brain-card.heart-card { border-left: 3px solid #ef4444; }
+.brain-card.heart-card::before { background: linear-gradient(135deg, #ef4444, transparent); }
+
+.brain-grid.four-col { grid-template-columns: repeat(4, 1fr); gap: 12px; }
+@media (max-width: 1200px) { .brain-grid.four-col { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) { .brain-grid.four-col { grid-template-columns: 1fr; } }
+
+.brain-icon.body { background: rgba(251,191,36,0.15); color: #fbbf24; font-size: 18px; }
+.brain-icon.heart { background: rgba(239,68,68,0.15); color: #ef4444; font-size: 18px; }
+
+.brain-description { padding: 14px 18px; font-size: 13px; line-height: 1.5; color: var(--text-secondary); }
+.brain-description p { margin-bottom: 10px; }
+.brain-description strong { color: var(--text-primary); }
+.brain-list { margin: 0; padding-left: 18px; }
+.brain-list li { margin-bottom: 4px; font-size: 12px; }
+.brain-flow { display: flex; align-items: center; gap: 4px; margin-top: 12px; font-size: 10px; flex-wrap: wrap; }
+.flow-step { background: rgba(0,229,195,0.1); color: var(--oshi-teal); padding: 3px 8px; border-radius: 4px; font-weight: 600; }
+
+/* Spirit Section */
+.spirit-section {
+  margin-top: 20px;
+  background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(236,72,153,0.05));
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 14px;
+  padding: 20px;
+}
+.spirit-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.spirit-icon { font-size: 28px; }
+.spirit-title { font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 2px; color: #a78bfa; margin: 0; }
+.spirit-subtitle { font-size: 12px; color: var(--text-dim); margin-left: auto; }
+.spirit-content p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px; }
+.spirit-content strong { color: #a78bfa; }
+.spirit-roles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+@media (max-width: 768px) { .spirit-roles { grid-template-columns: repeat(2, 1fr); } }
+.spirit-role { background: rgba(139,92,246,0.08); border-radius: 10px; padding: 14px; text-align: center; }
+.role-icon { font-size: 24px; display: block; margin-bottom: 6px; }
+.role-name { font-family: 'Orbitron', sans-serif; font-size: 11px; font-weight: 700; color: var(--text-primary); display: block; margin-bottom: 4px; }
+.role-desc { font-size: 11px; color: var(--text-dim); }
+
+.brain-card-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(0,229,195,0.06);
+}
+.brain-icon {
+  width: 34px; height: 34px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 900;
+  flex-shrink: 0;
+}
+.brain-icon.left { background: rgba(0,180,216,0.15); color: #00b4d8; }
+.brain-icon.right { background: rgba(244,114,182,0.15); color: #f472b6; }
+
+.brain-label-group { flex: 1; }
+.brain-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--text-primary);
+}
+.brain-role {
+  font-size: 11px; color: var(--text-dim); letter-spacing: 0.5px;
+}
+
+.brain-status {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px; font-weight: 700; letter-spacing: 2px;
+  padding: 4px 10px; border-radius: 8px;
+  background: rgba(0,229,195,0.08); color: var(--oshi-teal);
+  border: 1px solid rgba(0,229,195,0.15);
+  animation: livePulse 2s ease-in-out infinite;
+}
+
+.brain-thought-stream {
+  padding: 12px 18px 16px;
+  display: flex; flex-direction: column; gap: 12px;
+  max-height: 420px; overflow-y: auto;
+}
+
+.thought-entry {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.04);
+  position: relative;
+  transition: all 0.2s;
+}
+.thought-entry:hover {
+  background: rgba(0,0,0,0.3);
+  border-color: rgba(255,255,255,0.08);
+}
+.thought-entry:first-child {
+  border-color: rgba(0,229,195,0.15);
+  background: rgba(0,229,195,0.03);
+}
+
+.thought-time {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; color: var(--text-dim);
+  display: block; margin-bottom: 6px;
+}
+
+.thought-action {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  padding: 2px 10px; border-radius: 6px;
+  position: absolute; top: 12px; right: 14px;
+}
+.thought-action.buy { background: rgba(57,255,20,0.12); color: var(--profit); }
+.thought-action.sell { background: rgba(255,165,0,0.15); color: #ffa500; }
+.thought-action.skip { background: rgba(136,146,176,0.12); color: var(--text-secondary); }
+
+.thought-text {
+  font-size: 13px; line-height: 1.6; color: var(--text-secondary);
+  padding-right: 60px;
+}
+.thought-text strong { color: var(--text-primary); font-weight: 600; }
+.thought-text em {
+  color: var(--oshi-teal); font-style: normal; font-weight: 600;
+  display: block; margin-top: 4px;
+}
+  margin-bottom: 4px; display: block;
+}
+
+/* === LEADERBOARD SECTION GRID === */
+.boards-grid {
+  grid-column: 2 / 5;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+
+.boards-section-title {
+  grid-column: 1 / -1;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px; letter-spacing: 3px;
+  color: var(--text-dim); text-transform: uppercase;
+  padding: 8px 0 0 4px;
+}
+
+/* === LEADERBOARD TABBED INTERFACE === */
+.leaderboard-container {
+  grid-column: 2 / 5;
+  display: grid;
+}
+
+.leaderboard-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.lb-tab {
+  background: transparent;
+  border: 1px solid var(--oshi-border);
+  color: var(--text-secondary);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lb-tab:hover {
+  border-color: var(--oshi-teal);
+  color: var(--oshi-teal);
+}
+
+.lb-tab.active {
+  background: linear-gradient(135deg, rgba(0,229,195,0.15), rgba(57,255,20,0.1));
+  border-color: var(--oshi-teal);
+  color: var(--oshi-teal);
+  box-shadow: 0 0 12px rgba(0,229,195,0.2);
+}
+
+.lb-content {
+  display: none;
+}
+
+.lb-content.active {
+  display: block;
+}
+
+.lb-split {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  align-items: start;
+}
+
+.lb-split.lb-three-col {
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+}
+
+.lb-recent .lb-column-header {
+  color: var(--oshi-cyan);
+}
+
+.lb-divider {
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--oshi-border), transparent);
+  margin: 0 20px;
+  min-height: 150px;
+  align-self: stretch;
+}
+
+.lb-column {
+  padding: 8px 0;
+}
+
+.lb-column-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 0 12px 0;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.lb-winners .lb-column-header {
+  color: var(--profit);
+}
+
+.lb-losers .lb-column-header {
+  color: var(--loss);
+}
+
+.lb-icon {
+  font-size: 16px;
+}
+
+.trade-list.compact {
+  gap: 6px;
+}
+
+.trade-list.compact .leader-item {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.trade-list.compact .trade-name {
+  font-size: 12px;
+}
+
+.trade-list.compact .trade-pct,
+.trade-list.compact .trade-pnl {
+  font-size: 12px;
+}
+
+.rank.loss {
+  background: rgba(255,59,92,0.12);
+  color: var(--loss);
+}
+
+/* === RECENT TRADES FULL WIDTH === */
+.recent-trades {
+  grid-column: 2 / 5;
+}
+
+/* === LESSONS ROW === */
+.lessons-row {
+  grid-column: 2 / 5;
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;
+}
+
+/* === FOOTER === */
+.footer {
+  position: relative; z-index: 10;
+  text-align: center; padding: 20px;
+  border-top: 1px solid var(--oshi-border);
+  margin-top: 8px;
+}
+.footer span {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px; letter-spacing: 3px;
+  color: var(--text-dim);
+}
+.footer a {
+  color: var(--oshi-teal); text-decoration: none;
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--oshi-deep); }
+::-webkit-scrollbar-thumb { background: rgba(0,229,195,0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,229,195,0.4); }
+
+/* === SCAN LINE EFFECT === */
+.scanline {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 100;
+  background: linear-gradient(90deg, transparent, var(--oshi-teal), transparent);
+  opacity: 0.4;
+  animation: scanDown 4s linear infinite;
+  pointer-events: none;
+}
+@keyframes scanDown {
+  0% { top: -2px; }
+  100% { top: 100vh; }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1200px) {
+  .dashboard {
+    grid-template-columns: 1fr 1fr;
+  }
+  .oshi-sidebar { grid-row: auto; grid-column: 1 / -1; }
+  .oshi-sidebar { flex-direction: row; }
+  .oshi-portrait { height: 200px; min-width: 200px; }
+  .pnl-row, .recent-trades, .boards-grid, .lessons-row { grid-column: 1 / -1; }
+  .lessons-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .header { 
+    padding: 12px 16px; 
+    padding-top: calc(12px + env(safe-area-inset-top, 0px));
+    flex-wrap: wrap; 
+    gap: 12px; 
+  }
+  .dashboard { 
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 12px; 
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 20px));
+    gap: 14px; 
+  }
+  .oshi-sidebar {
+    order: 1;
+    width: 100%;
+  }
+  .positions-container { order: 2; }
+  .pnl-row { 
+    order: 3;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px;
+  }
+  .recent-trades { order: 4; }
+  .boards-grid { 
+    order: 5;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px;
+  }
+  .lessons-row { order: 6; }
+  
+  .leaderboard-container { width: 100%; }
+  .lb-split { grid-template-columns: 1fr; gap: 16px; }
+  .lb-divider { display: none; }
+  .lb-column { border-bottom: 1px solid var(--oshi-border); padding-bottom: 16px; }
+  .lb-column:last-child { border-bottom: none; }
+  .leaderboard-tabs { justify-content: center; }
+  .oshi-sidebar { flex-direction: column; }
+  .oshi-portrait { height: 200px; min-width: auto; }
+  .pnl-value { font-size: 32px; }
+  .card { padding: 16px; }
+  .card-title { font-size: 13px; }
+  .stat-value { font-size: 22px; }
+  .header-title { font-size: 20px; }
+  .subtitle { font-size: 10px; }
+  
+  /* Hide particles on mobile for performance */
+  #particles { display: none; }
+  .bg-orbs::before, .bg-orbs::after { filter: blur(80px); opacity: 0.1; }
+}
+
+/* Extra small screens */
+@media (max-width: 380px) {
+  .header { padding: 8px 12px; padding-top: calc(8px + env(safe-area-inset-top, 0px)); }
+  .dashboard { padding: 8px; gap: 8px; }
+  .card { padding: 12px; }
+  .pnl-value { font-size: 24px; }
+  .stat-value { font-size: 18px; }
+}
+
+/* Particle canvas */
+#particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-orbs"></div>
+<div class="scanline"></div>
+<canvas id="particles"></canvas>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <img src="oshi-avatar.png" alt="Oshi" class="oshi-avatar" id="oshiAvatar">
+    <div class="header-title">
+      <h1>OSHI</h1>
+      <span>Kalshi Prediction Trader</span>
+      <span style="font-size: 12px; color: var(--oshi-teal); font-family: monospace; font-weight: 600; margin-top: 4px; display: block; cursor: pointer; letter-spacing: 0.5px;" onclick="navigator.clipboard.writeText('Dsv7aCFRw3fQqPcDDAak2rw7biF3EyzBx1bfp6BXBAGS'); this.textContent='✓ Copied!'; setTimeout(() => this.textContent='$OSHI CA: Dsv7aCF...BXBAGS', 1500);" title="Click to copy full address">$OSHI CA: Dsv7aCF...BXBAGS</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <a href="https://x.com/PredictwithOshi" target="_blank" class="oshi-x-link">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      <span>@PredictwithOshi</span>
+    </a>
+    <a href="https://kalshi.com/sign-up/?referral=3284dc15-89f1-494b-ac60-b0d124d26b1d" target="_blank" class="market-badge">
+      <div class="k-logo">K</div>
+      TRADE WITH OSHI
+    </a>
+    <div class="status-indicator" id="statusIndicator">
+      <span class="label" id="statusLabel" style="color: var(--loss);">OFFLINE</span>
+      <div class="status-dot" id="statusDot"></div>
+    </div>
+  </div>
+</header>
+
+<!-- DASHBOARD -->
+<main class="dashboard">
+
+  <!-- OSHI SIDEBAR -->
+  <aside class="oshi-sidebar">
+    <div class="oshi-card">
+      <div class="oshi-portrait">
+        <img src="oshi-new.png" alt="Oshi - Kalshi Prediction Agent" id="oshiPortrait">
+        <div class="oshi-nameplate">
+          <h2>OSHI</h2>
+          <p>Prediction Agent v7.7</p>
+        </div>
+      </div>
+      <div class="oshi-stats">
+        <div class="oshi-stat-row">
+          <span class="stat-label">Session WR</span>
+          <span class="stat-value" style="color: var(--profit);" id="winRate">--</span>
+        </div>
+        <div class="oshi-stat-row">
+          <span class="stat-label">All Time WR</span>
+          <span class="stat-value" style="color: var(--text-secondary);" id="allTimeWinRate">41.0%</span>
+        </div>
+        <div class="oshi-stat-row">
+          <span class="stat-label">Trades Today</span>
+          <span class="stat-value" style="color: var(--oshi-teal);" id="tradesToday">--</span>
+        </div>
+        <div class="oshi-stat-row">
+          <span class="stat-label">Avg Return</span>
+          <span class="stat-value" style="color: var(--profit);" id="avgReturn">+12.3%</span>
+        </div>
+        <div class="oshi-stat-row">
+          <span class="stat-label">Active Pos.</span>
+          <span class="stat-value" style="color: var(--oshi-teal);" id="activePos">3</span>
+        </div>
+        <div class="oshi-stat-row">
+          <span class="stat-label">Streak</span>
+          <span class="stat-value" style="color: var(--gold);" id="streak">🔥 5W</span>
+        </div>
+        <div class="oshi-stat-row">
+          <span class="stat-label">Uptime</span>
+          <span class="stat-value" style="color: var(--text-secondary);" id="uptime">4h 23m</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CURRENT POSITIONS -->
+  <div class="positions-section card" id="positionsSection">
+    <div class="card-header">
+      <h3>📊 Current Positions</h3>
+      <span class="badge" id="positionsBadge">0 OPEN</span>
+    </div>
+    <div class="card-body">
+      <div id="positionsList" class="positions-list">
+        <div class="no-positions">No current positions</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSION RESTART NOTICE -->
+  <div style="grid-column: 2 / 5; background: linear-gradient(135deg, rgba(0,229,195,0.08), rgba(99,102,241,0.05)); border: 1px solid var(--oshi-border); border-radius: 12px; padding: 16px 20px; margin-bottom: 8px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="font-size: 24px;">🔄</span>
+      <div>
+        <div id="version-active" style="font-family: 'Orbitron', sans-serif; font-size: 13px; color: var(--oshi-teal); letter-spacing: 1px; margin-bottom: 4px;">VERSION 7.5 ACTIVE</div>
+        <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">Trade calculations are restarted every new version to test performance upgrades. Starting balance reset to current wallet balance.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PORTFOLIO SECTION - Combined Kalshi + Polymarket -->
+  <div class="portfolio-section">
+    <!-- Total Portfolio Hero -->
+    <div class="portfolio-hero">
+      <div class="portfolio-total">
+        <div class="pnl-label">TOTAL PORTFOLIO</div>
+        <div class="pnl-value balance-val" id="totalPortfolio">$---</div>
+        <div class="portfolio-breakdown">
+          <span class="platform-chip kalshi"><span class="chip-dot">◆</span> Kalshi <span id="kalshiBalance">$---</span></span>
+          <span class="platform-chip poly"><span class="chip-dot">◆</span> Poly <span id="polyBalance">$---</span></span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Today's P&L Card -->
+    <div class="pnl-hero wallet">
+      <div class="pnl-label">TODAY'S P&L</div>
+      <div class="pnl-value" id="totalPnl">--</div>
+      <div class="portfolio-breakdown pnl-breakdown">
+        <span class="platform-chip kalshi small"><span class="chip-dot">◆</span> <span id="kalshiPnl">$0</span></span>
+        <span class="platform-chip poly small"><span class="chip-dot">◆</span> <span id="polyPnl">$0</span></span>
+      </div>
+    </div>
+    
+    <!-- Session Stats Card -->
+    <div class="pnl-hero session">
+      <div class="pnl-label">SESSION STATS</div>
+      <div class="pnl-value" id="totalTrades">0</div>
+      <div class="pnl-pct" style="color: var(--text-secondary);">trades today</div>
+    </div>
+  </div>
+  
+  <!-- TIER STATS ROW (same proportions) -->
+  <div class="pnl-row tier-row">
+    <div class="pnl-hero tier-hero s-tier">
+      <div class="pnl-label">S-TIER</div>
+      <div class="pnl-value" id="sTierWR">--</div>
+      <div class="pnl-pct tier-pnl" id="sTierPnl">$--</div>
+      <div class="tier-trades-label" id="sTierTrades">-- trades</div>
+    </div>
+    <div class="pnl-hero tier-hero a-tier">
+      <div class="pnl-label">A-TIER</div>
+      <div class="pnl-value" id="aTierWR">--</div>
+      <div class="pnl-pct tier-pnl" id="aTierPnl">$--</div>
+      <div class="tier-trades-label" id="aTierTrades">-- trades</div>
+    </div>
+    <div class="pnl-hero tier-hero b-tier">
+      <div class="pnl-label">B-TIER</div>
+      <div class="pnl-value" id="bTierWR">--</div>
+      <div class="pnl-pct tier-pnl" id="bTierPnl">$--</div>
+      <div class="tier-trades-label" id="bTierTrades">-- trades</div>
+    </div>
+    <div class="pnl-hero tier-hero c-tier">
+      <div class="pnl-label">C-TIER</div>
+      <div class="pnl-value" id="cTierWR">--</div>
+      <div class="pnl-pct tier-pnl" id="cTierPnl">$--</div>
+      <div class="tier-trades-label" id="cTierTrades">-- trades</div>
+    </div>
+  </div>
+
+  <!-- Recent Trades removed for cleaner layout -->
+
+  <!-- LEADERBOARDS - Tabbed Interface -->
+  <div class="leaderboard-container">
+    <div class="card" style="grid-column: 1 / -1;">
+      <div class="card-header" style="justify-content: space-between;">
+        <h3>📊 Trade Leaderboards</h3>
+        <div class="leaderboard-tabs">
+          <button class="lb-tab active" data-tab="session" onclick="switchLeaderboardTab('session')">This Session</button>
+          <button class="lb-tab" data-tab="alltime" onclick="switchLeaderboardTab('alltime')">All Time</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <!-- Session Tab Content -->
+        <div class="lb-content active" id="lb-session">
+          <div class="lb-split lb-three-col">
+            <div class="lb-column lb-recent">
+              <div class="lb-column-header">
+                <span class="lb-icon">🕐</span>
+                <span>Recent Trades</span>
+              </div>
+              <ul class="trade-list compact" id="sessionRecent">
+                <li class="leader-item"><span class="rank">1</span><span class="trade-name">Loading...</span></li>
+              </ul>
+            </div>
+            <div class="lb-divider"></div>
+            <div class="lb-column lb-winners">
+              <div class="lb-column-header">
+                <span class="lb-icon">🏆</span>
+                <span>Best Trades</span>
+              </div>
+              <ul class="trade-list compact" id="sessionTop">
+                <li class="leader-item"><span class="rank gold">1</span><span class="trade-name">Loading...</span></li>
+              </ul>
+            </div>
+            <div class="lb-divider"></div>
+            <div class="lb-column lb-losers">
+              <div class="lb-column-header">
+                <span class="lb-icon">💀</span>
+                <span>Worst Trades</span>
+              </div>
+              <ul class="trade-list compact" id="sessionWorst">
+                <li class="leader-item"><span class="rank loss">1</span><span class="trade-name">Loading...</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- All Time Tab Content -->
+        <div class="lb-content" id="lb-alltime">
+          <div class="lb-split lb-three-col">
+            <div class="lb-column lb-recent">
+              <div class="lb-column-header">
+                <span class="lb-icon">🕐</span>
+                <span>Recent Trades</span>
+              </div>
+              <ul class="trade-list compact" id="allTimeRecent">
+                <li class="leader-item"><span class="rank">1</span><span class="trade-name">Loading...</span></li>
+              </ul>
+            </div>
+            <div class="lb-divider"></div>
+            <div class="lb-column lb-winners">
+              <div class="lb-column-header">
+                <span class="lb-icon">👑</span>
+                <span>Best Trades</span>
+              </div>
+              <ul class="trade-list compact" id="allTimeTop">
+                <li class="leader-item"><span class="rank gold">1</span><span class="trade-name">Loading...</span></li>
+              </ul>
+            </div>
+            <div class="lb-divider"></div>
+            <div class="lb-column lb-losers">
+              <div class="lb-column-header">
+                <span class="lb-icon">☠️</span>
+                <span>Worst Trades</span>
+              </div>
+              <ul class="trade-list compact" id="allTimeWorst">
+                <li class="leader-item"><span class="rank loss">1</span><span class="trade-name">Loading...</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LESSONS ROW -->
+  <div class="lessons-row">
+    <div class="card">
+      <div class="card-header">
+        <h3>🧠 Self-Learned Lessons</h3>
+      </div>
+      <div class="card-body">
+        <ul class="lesson-list" id="lessons">
+          <li class="lesson-item loading">
+            <span class="lesson-time">Loading...</span>
+            Fetching lessons from Heart...
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>⚡ Self-Learned Implementations</h3>
+      </div>
+      <div class="card-body">
+        <ul class="lesson-list" id="implementations">
+          <li class="lesson-item impl loading">
+            <span class="lesson-time">Loading...</span>
+            Analyzing tier performance...
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>🔧 Manual Implementations</h3>
+      </div>
+      <div class="card-body">
+        <ul class="lesson-list" id="manual">
+          <li class="lesson-item manual loading">
+            <span class="lesson-time">Loading...</span>
+            Fetching version changes...
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- VERSION P&L SECTION -->
+  <div class="version-section">
+    <div class="version-section-header">
+      <h2 class="version-section-title">📈 Version Performance History</h2>
+      <span class="badge badge-live">● TRACKED</span>
+    </div>
+    
+    <!-- INDIVIDUAL VERSIONS (Last 5 shown) -->
+    <div class="version-grid" id="versionStats">
+      <!-- Dynamically rendered by renderVersionCards() -->
+    </div>
+  </div>
+
+  <!-- BRAIN ACTIVITY -->
+  <div class="brain-section">
+    <div class="brain-section-header">
+      <h2 class="brain-section-title">🧠 Oshi Architecture</h2>
+      <span class="badge badge-live">● LIVE SYSTEM</span>
+    </div>
+
+    <div class="brain-grid four-col">
+      <!-- LEFT BRAIN -->
+      <div class="brain-card left-brain">
+        <div class="brain-card-header">
+          <div class="brain-icon left">🧠</div>
+          <div class="brain-label-group">
+            <h3 class="brain-name">Left Brain</h3>
+            <span class="brain-role">Entry Signals · PSAR · Confluence</span>
+          </div>
+        </div>
+        <div class="brain-description">
+          <p><strong>Purpose:</strong> Decides WHEN and WHICH direction to trade</p>
+          <ul class="brain-list">
+            <li>PSAR determines direction (YES/NO)</li>
+            <li>Counts confluence (RSI, BB, StochRSI)</li>
+            <li>ADX determines tier (S/A/B/C)</li>
+            <li>Only signals when confluence matches trend</li>
+          </ul>
+          <div class="brain-flow">
+            <span class="flow-step">PSAR</span>→
+            <span class="flow-step">Confluence</span>→
+            <span class="flow-step">Tier</span>→
+            <span class="flow-step">Signal</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT BRAIN -->
+      <div class="brain-card right-brain">
+        <div class="brain-card-header">
+          <div class="brain-icon right">⚖️</div>
+          <div class="brain-label-group">
+            <h3 class="brain-name">Right Brain</h3>
+            <span class="brain-role">Validation · Monitoring · Exits</span>
+          </div>
+        </div>
+        <div class="brain-description">
+          <p><strong>Purpose:</strong> Validates entry + monitors positions</p>
+          <ul class="brain-list">
+            <li>Validates odds in entry zone (30-70¢)</li>
+            <li>Calculates position size</li>
+            <li>Monitors: SL, TP, Trailing, Time</li>
+            <li>Signals Body when exit conditions met</li>
+          </ul>
+          <div class="brain-flow">
+            <span class="flow-step">Validate</span>→
+            <span class="flow-step">Size</span>→
+            <span class="flow-step">Monitor</span>→
+            <span class="flow-step">Exit</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BODY -->
+      <div class="brain-card body-card">
+        <div class="brain-card-header">
+          <div class="brain-icon body">💪</div>
+          <div class="brain-label-group">
+            <h3 class="brain-name">Body</h3>
+            <span class="brain-role">Execution · Orders · API</span>
+          </div>
+        </div>
+        <div class="brain-description">
+          <p><strong>Purpose:</strong> Executes all orders with precision</p>
+          <ul class="brain-list">
+            <li>Aggressive buy flow (+3¢/+6¢ spread)</li>
+            <li>Aggressive sell flow (-3¢/-6¢ spread)</li>
+            <li>15s wait loops for fills</li>
+            <li>Handles partial fills & retries</li>
+          </ul>
+          <div class="brain-flow">
+            <span class="flow-step">Signal</span>→
+            <span class="flow-step">Order</span>→
+            <span class="flow-step">Wait</span>→
+            <span class="flow-step">Confirm</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- HEART -->
+      <div class="brain-card heart-card">
+        <div class="brain-card-header">
+          <div class="brain-icon heart">❤️</div>
+          <div class="brain-label-group">
+            <h3 class="brain-name">Heart</h3>
+            <span class="brain-role">Learning · Memory · Analysis</span>
+          </div>
+        </div>
+        <div class="brain-description">
+          <p><strong>Purpose:</strong> Learns from every trade to improve</p>
+          <ul class="brain-list">
+            <li>Records full trade history</li>
+            <li>Tracks performance by tier</li>
+            <li>Analyzes win/loss patterns</li>
+            <li>Suggests strategy improvements</li>
+          </ul>
+          <div class="brain-flow">
+            <span class="flow-step">Record</span>→
+            <span class="flow-step">Analyze</span>→
+            <span class="flow-step">Learn</span>→
+            <span class="flow-step">Improve</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPIRIT SECTION -->
+    <div class="spirit-section">
+      <div class="spirit-header">
+        <span class="spirit-icon">✨</span>
+        <h3 class="spirit-title">Spirit</h3>
+        <span class="spirit-subtitle">Meta-Layer · Personality · Growth</span>
+      </div>
+      <div class="spirit-content">
+        <p>The <strong>Spirit</strong> is Oshi's meta-awareness layer — the part that gives her personality, adaptability, and long-term vision.</p>
+        <div class="spirit-roles">
+          <div class="spirit-role">
+            <span class="role-icon">🎭</span>
+            <span class="role-name">Personality</span>
+            <span class="role-desc">Mood, expression, and social presence</span>
+          </div>
+          <div class="spirit-role">
+            <span class="role-icon">🔄</span>
+            <span class="role-name">Adaptation</span>
+            <span class="role-desc">Adjusts strategy based on market regime</span>
+          </div>
+          <div class="spirit-role">
+            <span class="role-icon">🎯</span>
+            <span class="role-name">Goals</span>
+            <span class="role-desc">Tracks progress toward targets</span>
+          </div>
+          <div class="spirit-role">
+            <span class="role-icon">🛡️</span>
+            <span class="role-name">Protection</span>
+            <span class="role-desc">Circuit breakers & risk limits</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPIRIT SYSTEM VISUALIZATION -->
+  <div class="spirit-visual-section">
+    <div class="spirit-visual-header">
+      <h2 class="spirit-visual-title">✨ Spirit System Architecture</h2>
+      <span class="badge badge-live">● NEURAL FLOW</span>
+    </div>
+    <div class="spirit-visual-container">
+      <img src="spirit-system.jpg" alt="Oshi Spirit System - Left Brain, Right Brain, Body, Heart" class="spirit-visual-img">
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <span>OSHI v7.7 · Left Brain + Right Brain + Body + Heart + Spirit · <a href="https://x.com/PredictwithOshi" target="_blank" class="footer-oshi-x">𝕏 @PredictwithOshi</a></span>
+</footer>
+
+<script>
+const API_BASE = '/api';
+const API_KEY = 'f6fd22cba19c4c27b61ba2ca5ac825cae242e680c44d6bdf7ce5e74f4bf7ecea';
+const API_HEADERS = { 'Authorization': 'Bearer ' + API_KEY, 'Content-Type': 'application/json' };  // Proxied through Netlify to avoid mixed content
+let sessionStartTime = null;
+const STARTING_BALANCE = 206.21  // v7.7 starting balance (Feb 12, 9:45am MST)
+
+// Version config - ordered oldest to newest, last 5 shown
+const VERSION_CONFIG = [
+  {
+    version: 'v1.0',
+    badge: 'FEB 7-9',
+    desc: 'Initial deployment with basic PolyChad framework',
+    pnl: '+$57.84',
+    pnlPositive: true,
+    trades: '339',
+    winRate: '36.9%',
+    winRateColor: 'loss',
+    wrongLabel: '❌ What went wrong:',
+    wrongText: 'S-tier had 14% WR (worst!), mispricing plays losing, ADX exhaustion not detected',
+    fixedLabel: '✅ What we fixed:',
+    fixedText: 'Inverted ADX scoring (30-45 = optimal), disabled mispricing, implemented Two-Brain'
+  },
+  {
+    version: 'v2.0',
+    badge: 'FEB 9 PM',
+    desc: 'Two-Brain Architecture deployed with S+A tier filter',
+    pnl: '+$153.87',
+    pnlPositive: true,
+    trades: '22',
+    winRate: '81.8%',
+    winRateColor: 'profit',
+    wrongLabel: '❌ What went wrong:',
+    wrongText: 'P&L tracking bugs, market discovery API broke, orderbook NoneType errors',
+    fixedLabel: '✅ What we fixed:',
+    fixedText: 'Fixed API endpoint, patched orderbook analysis, deployed Slow Brain'
+  },
+  {
+    version: 'v5.0',
+    badge: 'FEB 10',
+    desc: 'Modular architecture with circuit breakers & enhanced exits',
+    pnl: '-$150.00',
+    pnlPositive: false,
+    trades: '~50',
+    winRate: '30%',
+    winRateColor: 'loss',
+    wrongLabel: '❌ What went wrong:',
+    wrongText: 'Indicator calculations broken, counter-trend trading losses',
+    fixedLabel: '✅ What we fixed:',
+    fixedText: 'Switched to TAAPI.IO API, added trend-following confluence logic'
+  },
+  {
+    version: 'v6.0',
+    badge: 'FEB 10',
+    desc: 'TAAPI.IO integration with PSAR-first tier system',
+    pnl: '-$50.00',
+    pnlPositive: false,
+    trades: '15',
+    winRate: '33%',
+    winRateColor: 'loss',
+    wrongLabel: '❌ What went wrong:',
+    wrongText: 'Stop loss too tight (15¢), early exits during swings',
+    fixedLabel: '✅ What we fixed:',
+    fixedText: 'Changed SL to 50% of entry, added ≤7m timing gate'
+  },
+  {
+    version: 'v7.0',
+    badge: 'FEB 10',
+    isCurrent: false,
+    desc: 'Trailing stops, delayed SL timing, trend-following confluence',
+    pnl: '-$101.15',
+    pnlPositive: false,
+    trades: '43',
+    winRate: '39.5%',
+    winRateColor: 'loss',
+    wrongLabel: '❌ What went wrong:',
+    wrongText: 'B-tier (ADX 15-30) had 37% WR, lost $134. Weak trends causing most losses.',
+    fixedLabel: '✅ What we fixed:',
+    fixedText: 'Raised C-tier to ADX<20, B-tier now requires 3/3 confluence'
+  },
+  {
+    version: 'v7.1',
+    badge: 'ENDED',
+    isCurrent: false,
+    desc: 'Stricter B-tier (3 conf), raised C-tier threshold (ADX<20)',
+    pnl: '-$94.71',
+    pnlPositive: false,
+    trades: '81',
+    winRate: '50.6%',
+    winRateColor: 'text-secondary',
+    newLabel: '🚀 New in v7.1:',
+    newText: 'C-tier: ADX 0-20 (was 0-15) • B-tier: needs 3/3 confluence (was 2) • Fixed metadata tracking',
+    fixedLabel: '📊 Result:',
+    fixedText: 'A-tier had 42% WR - needed more filtering'
+  },
+  {
+    version: 'v7.5',
+    badge: 'ENDED',
+    isCurrent: false,
+    desc: 'Public launch with MTF PSAR + thesis-based stop loss',
+    pnl: '-$7.23',
+    pnlPositive: false,
+    trades: '69',
+    winRate: '47.8%',
+    winRateColor: 'text-secondary',
+    newLabel: '📊 v7.5 Results:',
+    newText: 'S-tier: 1+ conf • A-tier: 2+ conf • B-tier: 3/3 conf',
+    fixedLabel: '❌ What went wrong:',
+    fixedText: 'C-tier caused 5 of 6 catastrophic losses (-$10+)'
+  },
+  {
+    version: 'v7.7',
+    badge: 'ACTIVE',
+    isCurrent: true,
+    desc: 'Tighter C-tier stop loss + earlier thesis check',
+    pnl: null, // Dynamic from API
+    pnlId: 'v72Pnl',
+    trades: null,
+    tradesId: 'v72Trades',
+    winRate: null,
+    winRateId: 'v72Wr',
+    newLabel: '🧪 v7.7 Changes:',
+    newText: 'SL threshold -25% (was -35%) • C-tier exits at confluence<3',
+    fixedLabel: '🎯 Hypothesis:',
+    fixedText: 'Earlier stop loss on weak setups should prevent catastrophic losses'
+  }
+];
+
+function renderVersionCards() {
+  const container = document.getElementById('versionStats');
+  if (!container) return;
+  
+  // Show only last 5 versions
+  const versionsToShow = VERSION_CONFIG.slice(-5);
+  
+  container.innerHTML = versionsToShow.map(v => {
+    const pnlColor = v.pnlPositive ? 'positive' : (v.pnl && v.pnl.startsWith('-') ? 'negative' : '');
+    const pnlValue = v.pnl || '$0.00';
+    const tradesValue = v.trades || '0';
+    const wrValue = v.winRate || '—';
+    const wrColor = v.winRateColor || 'text-secondary';
+    
+    return `
+      <div class="version-card ${v.isCurrent ? 'current' : ''}">
+        <div class="version-header">
+          <span class="version-name">${v.version}</span>
+          <span class="version-badge ${v.isCurrent ? 'current' : ''}" ${v.isCurrent ? 'style="background: var(--oshi-teal); color: var(--oshi-deep);"' : ''}>${v.badge}</span>
+        </div>
+        <div class="version-desc">${v.desc}</div>
+        <div class="version-stats">
+          <div class="stat">
+            <span class="stat-value ${pnlColor}" ${v.pnlId ? `id="${v.pnlId}"` : ''}>${pnlValue}</span>
+            <span class="stat-label">P&L ($)</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" style="color: var(--text-secondary);" ${v.tradesId ? `id="${v.tradesId}"` : ''}>${tradesValue}</span>
+            <span class="stat-label">Trades</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" style="color: var(--${wrColor});" ${v.winRateId ? `id="${v.winRateId}"` : ''}>${wrValue}</span>
+            <span class="stat-label">Win Rate</span>
+          </div>
+        </div>
+        <div style="padding-top: 10px; border-top: 1px solid var(--oshi-border); margin-top: 10px;">
+          <div style="font-size: 11px; color: ${v.isCurrent ? 'var(--oshi-teal)' : 'var(--loss)'}; margin-bottom: 4px;">${v.newLabel || v.wrongLabel}</div>
+          <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px;">${v.newText || v.wrongText}</div>
+          <div style="font-size: 11px; color: var(--profit); margin-bottom: 4px;">${v.fixedLabel}</div>
+          <div style="font-size: 12px; color: var(--text-secondary);">${v.fixedText}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Render versions on load
+document.addEventListener('DOMContentLoaded', renderVersionCards);
+
+// Particle system
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 0.5;
+    this.speedY = -(Math.random() * 0.3 + 0.1);
+    this.speedX = (Math.random() - 0.5) * 0.2;
+    this.opacity = Math.random() * 0.4 + 0.1;
+    this.color = Math.random() > 0.5 ? '0, 229, 195' : '57, 255, 20';
+  }
+  update() {
+    this.y += this.speedY;
+    this.x += this.speedX;
+    if (this.y < -10) { this.reset(); this.y = canvas.height + 10; }
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+    ctx.fill();
+  }
+}
+for (let i = 0; i < 60; i++) particles.push(new Particle());
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// Format time ago
+function timeAgo(dateStr) {
+  const now = new Date();
+  const then = new Date(dateStr);
+  const mins = Math.floor((now - then) / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins} min ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  return `${Math.floor(hrs / 24)}d ago`;
+}
+
+// Calculate uptime from session start
+function updateUptime() {
+  if (!sessionStartTime) return;
+  const now = new Date();
+  const start = new Date(sessionStartTime);
+  const mins = Math.floor((now - start) / 60000);
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  document.getElementById('uptime').textContent = `${h}h ${m.toString().padStart(2, '0')}m`;
+}
+
+// Fetch status from both APIs
+async function fetchStatus() {
+  let kalshiBalance = 0, polyBalance = 0;
+  let kalshiPnl = 0, polyPnl = 0;
+  let totalTrades = 0;
+  let kalshiOnline = false, polyOnline = false;
+  
+  // Fetch Kalshi status
+  try {
+    const res = await fetch(`${API_BASE}/balance`, { headers: API_HEADERS });
+    const data = await res.json();
+    kalshiBalance = data.balance || 0;
+    kalshiOnline = true;
+  } catch (e) {
+    console.error('Kalshi balance fetch failed:', e);
+  }
+  
+  // Fetch Kalshi today's P&L
+  try {
+    const res = await fetch(`${API_BASE}/today`, { headers: API_HEADERS });
+    const data = await res.json();
+    kalshiPnl = data.pnl || 0;
+    totalTrades += data.trades || 0;
+  } catch (e) {
+    console.error('Kalshi today fetch failed:', e);
+  }
+  
+  // Fetch Polymarket status
+  try {
+    const res = await fetch('/poly-api/balance');
+    const data = await res.json();
+    polyBalance = data.balance || 0;
+    polyOnline = true;
+  } catch (e) {
+    console.error('Poly balance fetch failed:', e);
+  }
+  
+  // Fetch Polymarket today's P&L
+  try {
+    const res = await fetch('/poly-api/today');
+    const data = await res.json();
+    polyPnl = data.pnl || 0;
+    totalTrades += data.trades || 0;
+  } catch (e) {
+    console.error('Poly today fetch failed:', e);
+  }
+  
+  // Update Portfolio display
+  const totalPortfolio = kalshiBalance + polyBalance;
+  const totalPnl = kalshiPnl + polyPnl;
+  
+  // Total Portfolio
+  const totalPortfolioEl = document.getElementById('totalPortfolio');
+  if (totalPortfolioEl) {
+    totalPortfolioEl.textContent = `$${totalPortfolio.toFixed(2)}`;
+  }
+  
+  // Platform balances
+  const kalshiBalanceEl = document.getElementById('kalshiBalance');
+  if (kalshiBalanceEl) {
+    kalshiBalanceEl.textContent = `$${kalshiBalance.toFixed(2)}`;
+  }
+  
+  const polyBalanceEl = document.getElementById('polyBalance');
+  if (polyBalanceEl) {
+    polyBalanceEl.textContent = `$${polyBalance.toFixed(2)}`;
+  }
+  
+  // Today's P&L
+  const totalPnlEl = document.getElementById('totalPnl');
+  if (totalPnlEl) {
+    totalPnlEl.textContent = `${totalPnl >= 0 ? '+' : ''}$${Math.abs(totalPnl).toFixed(2)}`;
+    totalPnlEl.className = `pnl-value ${totalPnl >= 0 ? 'positive' : 'negative'}`;
+  }
+  
+  // Platform P&Ls
+  const kalshiPnlEl = document.getElementById('kalshiPnl');
+  if (kalshiPnlEl) {
+    kalshiPnlEl.textContent = `${kalshiPnl >= 0 ? '+' : ''}$${Math.abs(kalshiPnl).toFixed(2)}`;
+    kalshiPnlEl.style.color = kalshiPnl >= 0 ? 'var(--profit)' : 'var(--loss)';
+  }
+  
+  const polyPnlEl = document.getElementById('polyPnl');
+  if (polyPnlEl) {
+    polyPnlEl.textContent = `${polyPnl >= 0 ? '+' : ''}$${Math.abs(polyPnl).toFixed(2)}`;
+    polyPnlEl.style.color = polyPnl >= 0 ? 'var(--profit)' : 'var(--loss)';
+  }
+  
+  // Total trades today
+  const totalTradesEl = document.getElementById('totalTrades');
+  if (totalTradesEl) {
+    totalTradesEl.textContent = totalTrades;
+  }
+  
+  // Update status indicator
+  const label = document.getElementById('statusLabel');
+  const dot = document.getElementById('statusDot');
+  const anyOnline = kalshiOnline || polyOnline;
+  if (anyOnline) {
+    label.textContent = 'LIVE';
+    label.style.color = 'var(--profit)';
+    if (dot) dot.classList.add('on');
+  } else {
+    label.textContent = 'OFFLINE';
+    label.style.color = 'var(--loss)';
+    if (dot) dot.classList.remove('on');
+  }
+}
+
+// Fetch trades and calculate win rate
+async function fetchTrades() {
+  try {
+    const res = await fetch(`${API_BASE}/trades`, { headers: API_HEADERS });
+    const data = await res.json(); const trades = data.recent || [];
+    const completedTrades = trades.filter(t => t.won !== undefined);
+    
+    
+    // Update Recent Trades list
+    const tradesListEl = document.getElementById('recentTrades');
+    if (tradesListEl && completedTrades.length > 0) {
+      tradesListEl.innerHTML = completedTrades.slice(0, 8).map(t => {
+        const asset = t.ticker?.includes('BTC') ? 'BTC' : t.ticker?.includes('SOL') ? 'SOL' : 'ETH';
+        const side = (t.side || '').toUpperCase();
+        const resultClass = t.won ? 'win' : 'loss';
+        const result = t.won ? 'WIN' : 'LOSS';
+        const pnl = t.pnl || 0;
+        const pnlPct = t.pnl_pct || 0;
+        const pnlClass = pnl >= 0 ? 'positive' : 'negative';
+        const pnlSign = pnl >= 0 ? '+' : '';
+        const closeType = t.close_type || '';
+        const typeIcon = closeType === 'DETERMINED' ? '⏰' : closeType.includes('EARLY') ? '💰' : '📊';
+        
+        return `
+          <li class="trade-item">
+            <span class="trade-name">${typeIcon} ${asset} ${side} @ ${t.price || 0}¢</span>
+            <span class="trade-result ${resultClass}">${result}</span>
+            <span class="trade-pct">${pnlSign}${pnlPct.toFixed(1)}%</span>
+            <span class="trade-pnl ${pnlClass}">${pnlSign}$${Math.abs(pnl).toFixed(2)}</span>
+          </li>
+        `;
+      }).join('');
+    }
+    
+    // Update brain activity streams with recent trades
+    updateBrainStreams(trades.slice(0, 5));
+    
+  } catch (e) {
+    console.error('Trades fetch failed:', e);
+  }
+}
+
+// Fetch brain lessons
+async function fetchBrain() {
+  try {
+    const res = await fetch(`${API_BASE}/brain`, { headers: API_HEADERS });
+    const data = await res.json();
+    
+    // Update self-learned lessons
+    const lessonsEl = document.getElementById('lessons');
+    if (lessonsEl && data.lessons?.length) {
+      lessonsEl.innerHTML = data.lessons.slice(0, 5).map(l => `
+        <li class="lesson-item ${l.won ? 'win' : 'loss'}">
+          <span class="lesson-time">${timeAgo(l.timestamp)}</span>
+          ${l.key_lesson}
+        </li>
+      `).join('');
+    }
+    
+    // Update auto implementations (from Heart analysis)
+    const implEl = document.getElementById('implementations');
+    if (implEl && data.auto_implementations?.length) {
+      implEl.innerHTML = data.auto_implementations.slice(0, 5).map(i => `
+        <li class="lesson-item impl">
+          <span class="lesson-time">${timeAgo(i.timestamp)}</span>
+          ${i.description || i.key_lesson}
+        </li>
+      `).join('');
+    }
+    
+    // Update manual implementations
+    const manualEl = document.getElementById('manual');
+    if (manualEl && data.manual_implementations?.length) {
+      manualEl.innerHTML = data.manual_implementations.slice(0, 5).map(m => `
+        <li class="lesson-item manual">
+          <span class="lesson-time">${timeAgo(m.timestamp)}</span>
+          ${m.description}
+        </li>
+      `).join('');
+    }
+    
+    console.log('✅ Brain data updated:', data.analysis);
+  } catch (e) {
+    console.error('Brain fetch failed:', e);
+  }
+}
+
+// Update brain streams with trade analysis
+function updateBrainStreams(trades) {
+  const leftStream = document.getElementById('leftBrainStream');
+  const rightStream = document.getElementById('rightBrainStream');
+  
+  if (!leftStream || !rightStream || !trades.length) return;
+  
+  // Left Brain: Analytical view
+  leftStream.innerHTML = trades.map(t => {
+    const action = t.won ? (t.side === 'yes' ? 'buy' : 'sell') : 'skip';
+    const actionClass = t.won ? (t.pnl > 0 ? 'buy' : 'sell') : 'skip';
+    const asset = t.ticker?.includes('BTC') ? 'BTC' : t.ticker?.includes('SOL') ? 'SOL' : 'ETH';
+    return `
+      <div class="thought-entry">
+        <span class="thought-time">${timeAgo(t.timestamp)}</span>
+        <span class="thought-action ${actionClass}">${t.side?.toUpperCase() || 'TRADE'}</span>
+        <div class="thought-text">
+          <strong>${asset} ${t.side?.toUpperCase()}</strong> — ${t.contracts} contracts @ ${t.price}¢. 
+          RSI: ${t.rsi?.toFixed(0) || 'N/A'}, ADX: ${t.adx?.toFixed(0) || 'N/A'}, StochRSI: ${t.stoch_rsi_k?.toFixed(0) || 'N/A'}, PSAR: ${t.psar_trend || 'N/A'}. 
+          Tier: ${t.tier || 'N/A'}, Edge: ${((t.edge || 0) * 100).toFixed(1)}%. 
+          <em>${t.won ? `Won +$${t.pnl?.toFixed(2)} (${t.pnl_pct?.toFixed(0)}%)` : `Lost $${Math.abs(t.pnl || 0).toFixed(2)}`}</em>
+        </div>
+      </div>
+    `;
+  }).join('');
+  
+  // Right Brain: Pattern/sentiment view
+  rightStream.innerHTML = trades.map(t => {
+    const asset = t.ticker?.includes('BTC') ? 'BTC' : t.ticker?.includes('SOL') ? 'SOL' : 'ETH';
+    const sentiment = t.won ? 'Signal confirmed by price action' : 'Market moved against position';
+    return `
+      <div class="thought-entry">
+        <span class="thought-time">${timeAgo(t.timestamp)}</span>
+        <span class="thought-action ${t.won ? 'buy' : 'sell'}">${t.won ? 'HIT' : 'MISS'}</span>
+        <div class="thought-text">
+          <strong>${asset} ${t.close_type || 'CLOSE'}</strong> — ${sentiment}. 
+          ${t.tier === 'S+' ? 'Mispricing opportunity detected.' : ''} 
+          ${t.pnl_pct > 50 ? 'Strong momentum play.' : t.pnl_pct < -50 ? 'Reversal caught us.' : 'Standard execution.'}
+          <em>${t.won ? '✓ Pattern held' : '✗ Pattern failed'}</em>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// Fetch current positions
+async function fetchPositions() {
+  try {
+    const res = await fetch(`${API_BASE}/positions`, { headers: API_HEADERS });
+    const data = await res.json(); const listEl = document.getElementById('positionsList');
+    const badgeEl = document.getElementById('positionsBadge');
+    
+    if (!listEl) return;
+    
+    const positions = data.positions || [];
+    
+    // Update badge
+    if (badgeEl) {
+      badgeEl.textContent = positions.length > 0 ? `${positions.length} OPEN` : '0 OPEN';
+      badgeEl.classList.toggle('has-positions', positions.length > 0);
+    }
+    
+    // Render positions
+    if (positions.length === 0) {
+      listEl.innerHTML = '<div class="no-positions">No current positions</div>';
+      return;
+    }
+    
+    listEl.innerHTML = positions.map(p => {
+      const pnlClass = p.unrealized_pnl >= 0 ? 'positive' : 'negative';
+      const pnlSign = p.unrealized_pnl >= 0 ? '+' : '';
+      return `
+        <div class="position-item">
+          <span class="position-asset">${p.asset}</span>
+          <span class="position-side ${p.side}">${p.side.toUpperCase()}</span>
+          <span class="position-entry">${p.contracts} shares @ ${p.entry_price}¢</span>
+          <span class="position-current">Now: ${p.current_price}¢</span>
+          <span class="position-size">$${p.size_usd.toFixed(2)}</span>
+          <span class="position-pnl ${pnlClass}">${pnlSign}$${p.unrealized_pnl.toFixed(2)}</span>
+        </div>
+      `;
+    }).join('');
+    
+  } catch (e) {
+    console.error('Positions fetch failed:', e);
+  }
+}
+
+// Fetch leaderboard data
+async function fetchLeaderboard() {
+  try {
+    const res = await fetch(`${API_BASE}/all`, { headers: API_HEADERS });
+    const data = await res.json(); const lb = data.leaderboard || {};
+    
+    const renderLeaderboard = (elId, items, isWorst = false, version = 'v7.5') => {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      
+      // Check if this is session leaderboard with no trades
+      const isSession = elId.startsWith('session');
+      if (!items?.length) {
+        if (isSession) {
+          // Show "no trades yet" for current session
+          el.innerHTML = `<li class="leader-item" style="display:flex;justify-content:center;text-align:center;opacity:0.5;">No ${version} trades closed yet</li>`;
+        } else {
+          // Show demo data for all-time if truly empty
+          el.innerHTML = isWorst ? getDemoWorstTrades() : getDemoBestTrades();
+        }
+        return;
+      }
+      
+      el.innerHTML = items.slice(0, 5).map((t, i) => {
+        const asset = t.ticker?.includes('BTC') ? 'BTC' : t.ticker?.includes('SOL') ? 'SOL' : 'ETH';
+        const side = (t.side || '').toUpperCase();
+        const pnl = t.pnl || 0;
+        const pnlPct = t.pnl_pct || ((pnl / (t.size_usd || 1)) * 100);
+        const pnlClass = pnl >= 0 ? 'positive' : 'negative';
+        const pnlSign = pnl >= 0 ? '+' : '';
+        const version = t.version || 'v2.0';
+        const rankClass = isWorst 
+          ? `style="background:rgba(255,59,92,${0.12 - i*0.03});color:var(--loss);"`
+          : (i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : 'normal');
+        const rankAttr = isWorst ? rankClass : `class="rank ${rankClass}"`;
+        
+        const wonLost = pnl >= 0 ? 'WIN' : 'LOSS';
+        return `
+          <li class="leader-item">
+            <span ${rankAttr}>${i + 1}</span>
+            <span class="trade-name">${asset} ${side} <span style="color:var(--text-dim);font-size:11px;">(${version})</span></span>
+            <span class="trade-pct ${pnlClass}">${wonLost}</span>
+            <span class="trade-pnl ${pnlClass}">${pnlSign}$${Math.abs(pnl).toFixed(2)}</span>
+          </li>
+        `;
+      }).join('');
+    };
+    
+    const sessionVer = lb.session_version || 'v7.7';
+    
+    // Render recent trades (most recent first, win or loss)
+    const renderRecent = (elId, items, version = 'v7.7') => {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      
+      if (!items?.length) {
+        el.innerHTML = `<li class="leader-item" style="display:flex;justify-content:center;text-align:center;opacity:0.5;">No recent trades</li>`;
+        return;
+      }
+      
+      // Sort by timestamp descending (most recent first)
+      const sorted = [...items].sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
+      
+      el.innerHTML = sorted.slice(0, 5).map((t, i) => {
+        const asset = t.ticker?.includes('BTC') ? 'BTC' : t.ticker?.includes('SOL') ? 'SOL' : 'ETH';
+        const side = (t.side || '').toUpperCase();
+        const pnl = t.pnl || 0;
+        const pnlClass = pnl >= 0 ? 'positive' : 'negative';
+        const pnlSign = pnl >= 0 ? '+' : '';
+        const version = t.version || 'v7.7';
+        const wonLost = pnl >= 0 ? 'WIN' : 'LOSS';
+        const rankBg = pnl >= 0 ? 'rgba(0,255,163,0.15)' : 'rgba(255,59,92,0.15)';
+        const rankColor = pnl >= 0 ? 'var(--profit)' : 'var(--loss)';
+        
+        return `
+          <li class="leader-item">
+            <span class="rank" style="background:${rankBg};color:${rankColor};">${i + 1}</span>
+            <span class="trade-name">${asset} ${side} <span style="color:var(--text-dim);font-size:11px;">(${version})</span></span>
+            <span class="trade-pct ${pnlClass}">${wonLost}</span>
+            <span class="trade-pnl ${pnlClass}">${pnlSign}$${Math.abs(pnl).toFixed(2)}</span>
+          </li>
+        `;
+      }).join('');
+    };
+    
+    // Combine session top and worst for recent (or use all_trades if available)
+    const sessionAll = [...(lb.session_top || []), ...(lb.session_worst || [])];
+    const allTimeAll = [...(lb.all_time_top || []), ...(lb.all_time_worst || [])];
+    
+    renderRecent('sessionRecent', sessionAll, sessionVer);
+    renderRecent('allTimeRecent', allTimeAll);
+    
+    renderLeaderboard('sessionTop', lb.session_top, false, sessionVer);
+    renderLeaderboard('sessionWorst', lb.session_worst, true, sessionVer);
+    renderLeaderboard('allTimeTop', lb.all_time_top, false);
+    renderLeaderboard('allTimeWorst', lb.all_time_worst, true);
+    
+  } catch (e) {
+    console.error('Leaderboard fetch failed:', e);
+    // Show demo data on error
+    document.getElementById('sessionTop').innerHTML = getDemoBestTrades();
+    document.getElementById('sessionWorst').innerHTML = getDemoWorstTrades();
+    document.getElementById('allTimeTop').innerHTML = getDemoBestTrades();
+    document.getElementById('allTimeWorst').innerHTML = getDemoWorstTrades();
+  }
+}
+
+// Demo data for leaderboards
+function getDemoBestTrades() {
+  return `
+    <li class="leader-item"><span class="rank gold">1</span><span class="trade-name">SOL YES <span style="color:var(--text-dim);font-size:11px;">(v2.0)</span></span><span class="trade-pct positive">WIN</span><span class="trade-pnl positive">+$15.52</span></li>
+    <li class="leader-item"><span class="rank silver">2</span><span class="trade-name">BTC NO <span style="color:var(--text-dim);font-size:11px;">(v2.0)</span></span><span class="trade-pct positive">WIN</span><span class="trade-pnl positive">+$14.28</span></li>
+    <li class="leader-item"><span class="rank bronze">3</span><span class="trade-name">SOL NO <span style="color:var(--text-dim);font-size:11px;">(v2.0)</span></span><span class="trade-pct positive">WIN</span><span class="trade-pnl positive">+$13.85</span></li>
+    <li class="leader-item"><span class="rank normal">4</span><span class="trade-name">BTC YES <span style="color:var(--text-dim);font-size:11px;">(v2.0)</span></span><span class="trade-pct positive">WIN</span><span class="trade-pnl positive">+$12.43</span></li>
+    <li class="leader-item"><span class="rank normal">5</span><span class="trade-name">SOL YES <span style="color:var(--text-dim);font-size:11px;">(v2.0)</span></span><span class="trade-pct positive">WIN</span><span class="trade-pnl positive">+$11.87</span></li>
+  `;
+}
+
+function getDemoWorstTrades() {
+  return `
+    <li class="leader-item"><span class="rank loss" style="background:rgba(255,59,92,0.12);color:var(--loss);">1</span><span class="trade-name">BTC YES <span style="color:var(--text-dim);font-size:11px;">(v1.0)</span></span><span class="trade-pct negative">LOSS</span><span class="trade-pnl negative">-$19.70</span></li>
+    <li class="leader-item"><span class="rank loss" style="background:rgba(255,59,92,0.09);color:var(--loss);">2</span><span class="trade-name">ETH NO <span style="color:var(--text-dim);font-size:11px;">(v1.0)</span></span><span class="trade-pct negative">LOSS</span><span class="trade-pnl negative">-$19.04</span></li>
+    <li class="leader-item"><span class="rank loss" style="background:rgba(255,59,92,0.06);color:var(--loss);">3</span><span class="trade-name">BTC NO <span style="color:var(--text-dim);font-size:11px;">(v1.0)</span></span><span class="trade-pct negative">LOSS</span><span class="trade-pnl negative">-$17.88</span></li>
+    <li class="leader-item"><span class="rank loss" style="background:rgba(255,59,92,0.03);color:var(--loss);">4</span><span class="trade-name">SOL YES <span style="color:var(--text-dim);font-size:11px;">(v1.0)</span></span><span class="trade-pct negative">LOSS</span><span class="trade-pnl negative">-$17.42</span></li>
+    <li class="leader-item"><span class="rank loss" style="background:rgba(255,59,92,0.02);color:var(--loss);">5</span><span class="trade-name">ETH YES <span style="color:var(--text-dim);font-size:11px;">(v1.0)</span></span><span class="trade-pct negative">LOSS</span><span class="trade-pnl negative">-$16.46</span></li>
+  `;
+}
+
+// Fetch P&L separately for accuracy
+async function fetchPnL() { try {
+    const res = await fetch(`${API_BASE}/pnl`, { headers: API_HEADERS });
+    const data = await res.json(); const session = data.session || {};
+    const wallet = data.wallet || {};
+    
+    // Session P&L
+    const sessionPnlEl = document.getElementById('sessionPnl');
+    const sessionPctEl = document.getElementById('sessionPct');
+    if (sessionPnlEl) {
+      const pnl = session.pnl || 0;
+      sessionPnlEl.textContent = `${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}`;
+      sessionPnlEl.className = `pnl-value ${pnl >= 0 ? 'positive' : 'negative'}`;
+    }
+    if (sessionPctEl) {
+      const pct = session.pct || 0;
+      sessionPctEl.textContent = `${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%`;
+      sessionPctEl.className = `pnl-pct ${pct >= 0 ? 'positive' : 'negative'}`;
+    }
+    
+    // v7.5 FIX: Use SESSION P&L (not wallet) since label says "P&L (v7.5)"
+    const totalPnlEl = document.getElementById('totalPnl');
+    const pnlPctEl = document.getElementById('pnlPct');
+    if (totalPnlEl) {
+      const pnl = session.pnl || 0;  // Changed from wallet.pnl to session.pnl
+      totalPnlEl.textContent = `${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}`;
+      totalPnlEl.className = `pnl-value ${pnl >= 0 ? 'positive' : 'negative'}`;
+    }
+    if (pnlPctEl) {
+      const pct = session.pct || 0;  // Changed from wallet.pct to session.pct
+      pnlPctEl.textContent = `${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%`;
+      pnlPctEl.className = `pnl-pct ${pct >= 0 ? 'positive' : 'negative'}`;
+    }
+    
+    // Win rate from session
+    const winRateEl = document.getElementById('winRate');
+    if (winRateEl) {
+      const wr = session.win_rate || 0;
+      winRateEl.textContent = `${wr.toFixed(1)}%`;
+      winRateEl.style.color = wr >= 50 ? 'var(--profit)' : 'var(--loss)';
+    }
+    
+    // Trades today
+    const tradesTodayEl = document.getElementById('tradesToday');
+    if (tradesTodayEl) {
+      tradesTodayEl.textContent = (session.wins || 0) + (session.losses || 0);
+    }
+    
+  } catch (e) {
+    console.error('P&L fetch failed:', e);
+  }
+}
+
+// Fetch tier-specific stats (S, A, B)
+async function fetchTiers() {
+  try {
+    const res = await fetch(`${API_BASE}/tiers`, { headers: API_HEADERS });
+    const data = await res.json();
+    const tiers = data.tiers || {};
+    
+    // S-Tier
+    const sTier = tiers['S'] || {};
+    const sTierWR = document.getElementById('sTierWR');
+    const sTierPnl = document.getElementById('sTierPnl');
+    const sTierTrades = document.getElementById('sTierTrades');
+    if (sTierWR) sTierWR.textContent = `${(sTier.win_rate || 0).toFixed(1)}%`;
+    if (sTierPnl) {
+      const pnl = sTier.pnl || 0;
+      sTierPnl.textContent = `${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}`;
+      sTierPnl.className = `tier-pnl ${pnl >= 0 ? 'positive' : 'negative'}`;
+    }
+    if (sTierTrades) sTierTrades.textContent = `${sTier.trades || 0} trades`;
+    
+    // A-Tier
+    const aTier = tiers['A'] || {};
+    const aTierWR = document.getElementById('aTierWR');
+    const aTierPnl = document.getElementById('aTierPnl');
+    const aTierTrades = document.getElementById('aTierTrades');
+    if (aTierWR) aTierWR.textContent = `${(aTier.win_rate || 0).toFixed(1)}%`;
+    if (aTierPnl) {
+      const pnl = aTier.pnl || 0;
+      aTierPnl.textContent = `${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}`;
+      aTierPnl.className = `tier-pnl ${pnl >= 0 ? 'positive' : 'negative'}`;
+    }
+    if (aTierTrades) aTierTrades.textContent = `${aTier.trades || 0} trades`;
+    
+    // B-Tier
+    const bTier = tiers['B'] || {};
+    const bTierWR = document.getElementById('bTierWR');
+    const bTierPnl = document.getElementById('bTierPnl');
+    const bTierTrades = document.getElementById('bTierTrades');
+    if (bTierWR) bTierWR.textContent = `${(bTier.win_rate || 0).toFixed(1)}%`;
+    if (bTierPnl) {
+      const pnl = bTier.pnl || 0;
+      bTierPnl.textContent = `${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}`;
+      bTierPnl.className = `tier-pnl ${pnl >= 0 ? 'positive' : 'negative'}`;
+    }
+    if (bTierTrades) bTierTrades.textContent = `${bTier.trades || 0} trades`;
+    
+    // C-Tier
+    const cTier = tiers['C'] || {};
+    const cTierWR = document.getElementById('cTierWR');
+    const cTierPnl = document.getElementById('cTierPnl');
+    const cTierTrades = document.getElementById('cTierTrades');
+    if (cTierWR) cTierWR.textContent = `${(cTier.win_rate || 0).toFixed(1)}%`;
+    if (cTierPnl) {
+      const pnl = cTier.pnl || 0;
+      cTierPnl.textContent = `${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}`;
+      cTierPnl.className = `tier-pnl ${pnl >= 0 ? 'positive' : 'negative'}`;
+    }
+    if (cTierTrades) cTierTrades.textContent = `${cTier.trades || 0} trades`;
+    
+  } catch (e) {
+    console.error('Tiers fetch failed:', e);
+  }
+}
+
+// Fetch version-specific stats (v5.6)
+async function fetchVersions() {
+  try {
+    const res = await fetch(`${API_BASE}/versions`, { headers: API_HEADERS });
+    const data = await res.json();
+    const current = data.current_version || 'v7.5';
+    const versions = data.versions || {};
+    const currentStats = versions[current] || {};
+    
+    // Update current version stats (v7.5)
+    const v72PnlEl = document.getElementById('v72Pnl');
+    const v72TradesEl = document.getElementById('v72Trades');
+    const v72WrEl = document.getElementById('v72Wr');
+    
+    if (v72PnlEl) {
+      const pnl = currentStats.pnl || 0;
+      v72PnlEl.textContent = `${pnl >= 0 ? '+' : ''}$${Math.abs(pnl).toFixed(2)}`;
+      v72PnlEl.style.color = pnl >= 0 ? 'var(--profit)' : 'var(--loss)';
+      v72PnlEl.classList.toggle('positive', pnl >= 0);
+      v72PnlEl.classList.toggle('negative', pnl < 0);
+    }
+    if (v72TradesEl) {
+      v72TradesEl.textContent = currentStats.trades || 0;
+    }
+    if (v72WrEl) {
+      const wr = currentStats.win_rate || 0;
+      v72WrEl.textContent = wr > 0 ? `${wr.toFixed(1)}%` : '—';
+      v72WrEl.style.color = wr >= 50 ? 'var(--profit)' : (wr > 0 ? 'var(--loss)' : 'var(--text-secondary)');
+    }
+    
+    console.log(`✅ v${current} stats updated: ${currentStats.trades} trades, ${currentStats.win_rate}% WR`);
+  } catch (e) {
+    console.error('Version fetch failed:', e);
+  }
+}
+
+// Leaderboard tab switching
+function switchLeaderboardTab(tab) {
+  // Update tab buttons
+  document.querySelectorAll('.lb-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tab);
+  });
+  
+  // Update content panels
+  document.querySelectorAll('.lb-content').forEach(panel => {
+    panel.classList.toggle('active', panel.id === `lb-${tab}`);
+  });
+}
+
+// Initial fetch and refresh loop
+fetchStatus();
+fetchPositions();
+fetchTrades();
+fetchBrain();
+fetchLeaderboard();
+fetchPnL();
+fetchVersions();
+fetchTiers();
+setInterval(fetchStatus, 15000);  // Every 15s
+setInterval(fetchTiers, 30000);   // Every 30s
+setInterval(fetchPositions, 10000); // Every 10s (positions are time-sensitive)
+setInterval(fetchTrades, 30000);  // Every 30s
+setInterval(fetchBrain, 60000);   // Every 60s
+setInterval(fetchLeaderboard, 30000); // Every 30s
+setInterval(fetchPnL, 15000); // Every 15s
+setInterval(fetchVersions, 30000); // Every 30s
+setInterval(updateUptime, 60000); // Update uptime every minute
+
+// Register Service Worker for PWA
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js')
+    .then(() => console.log('OSHI PWA ready'))
+    .catch(err => console.log('SW registration failed:', err));
+}
+
+// === OSHI CHAT WIDGET ===
+const chatWidget = {
+  isOpen: false,
+  messages: [],
+  
+  init() {
+    this.addStyles();
+    this.addHTML();
+    this.bindEvents();
+    this.addWelcome();
+  },
+  
+  addStyles() {
+    const style = document.createElement('style');
+    style.textContent = `
+      .oshi-chat-bubble {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--oshi-teal), #00b89c);
+        border: 2px solid var(--oshi-teal);
+        cursor: pointer;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 20px var(--oshi-glow), 0 0 40px rgba(0,229,195,0.2);
+        transition: all 0.3s ease;
+        animation: pulse-glow 2s infinite;
+      }
+      .oshi-chat-bubble:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 30px var(--oshi-glow);
+      }
+      .oshi-chat-bubble img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+      }
+      .oshi-chat-bubble .chat-icon {
+        font-size: 28px;
+      }
+      @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 4px 20px var(--oshi-glow), 0 0 40px rgba(0,229,195,0.2); }
+        50% { box-shadow: 0 4px 30px var(--oshi-glow), 0 0 60px rgba(0,229,195,0.3); }
+      }
+      
+      .oshi-chat-modal {
+        position: fixed;
+        bottom: 100px;
+        right: 24px;
+        width: 360px;
+        max-width: calc(100vw - 48px);
+        height: 480px;
+        max-height: calc(100vh - 140px);
+        background: var(--oshi-card);
+        border: 1px solid var(--oshi-border);
+        border-radius: 16px;
+        z-index: 999;
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 60px var(--oshi-glow);
+        backdrop-filter: blur(20px);
+      }
+      .oshi-chat-modal.open { display: flex; animation: slideUp 0.3s ease; }
+      @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      .oshi-chat-header {
+        padding: 16px;
+        background: linear-gradient(135deg, rgba(0,229,195,0.1), transparent);
+        border-bottom: 1px solid var(--oshi-border);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .oshi-chat-header .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--oshi-teal);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+      }
+      .oshi-chat-header .info h3 {
+        font-family: 'Orbitron', monospace;
+        font-size: 14px;
+        color: var(--oshi-teal);
+        margin: 0;
+      }
+      .oshi-chat-header .info span {
+        font-size: 11px;
+        color: var(--text-secondary);
+      }
+      .oshi-chat-header .close-btn {
+        margin-left: auto;
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        font-size: 20px;
+        cursor: pointer;
+        padding: 4px 8px;
+      }
+      .oshi-chat-header .close-btn:hover { color: var(--oshi-teal); }
+      
+      .oshi-chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .oshi-chat-messages::-webkit-scrollbar { width: 4px; }
+      .oshi-chat-messages::-webkit-scrollbar-thumb { background: var(--oshi-border); border-radius: 4px; }
+      
+      .chat-msg {
+        max-width: 85%;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+      .chat-msg.user {
+        align-self: flex-end;
+        background: var(--oshi-teal);
+        color: var(--oshi-deep);
+        border-bottom-right-radius: 4px;
+      }
+      .chat-msg.oshi {
+        align-self: flex-start;
+        background: var(--oshi-mid);
+        border: 1px solid var(--oshi-border);
+        border-bottom-left-radius: 4px;
+      }
+      .chat-msg.typing {
+        background: var(--oshi-mid);
+        border: 1px solid var(--oshi-border);
+      }
+      .typing-dots { display: flex; gap: 4px; }
+      .typing-dots span {
+        width: 6px; height: 6px; border-radius: 50%;
+        background: var(--oshi-teal);
+        animation: bounce 1.4s infinite;
+      }
+      .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+      .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+      @keyframes bounce {
+        0%, 60%, 100% { transform: translateY(0); }
+        30% { transform: translateY(-4px); }
+      }
+      
+      .oshi-chat-input {
+        padding: 12px 16px;
+        border-top: 1px solid var(--oshi-border);
+        display: flex;
+        gap: 8px;
+      }
+      .oshi-chat-input input {
+        flex: 1;
+        background: var(--oshi-mid);
+        border: 1px solid var(--oshi-border);
+        border-radius: 8px;
+        padding: 10px 14px;
+        color: var(--text-primary);
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 14px;
+        outline: none;
+      }
+      .oshi-chat-input input:focus { border-color: var(--oshi-teal); }
+      .oshi-chat-input input::placeholder { color: var(--text-dim); }
+      .oshi-chat-input button {
+        background: var(--oshi-teal);
+        border: none;
+        border-radius: 8px;
+        width: 40px;
+        cursor: pointer;
+        color: var(--oshi-deep);
+        font-size: 16px;
+        transition: all 0.2s;
+      }
+      .oshi-chat-input button:hover { background: #00ffda; }
+      .oshi-chat-input button:disabled { opacity: 0.5; cursor: not-allowed; }
+      
+      @media (max-width: 480px) {
+        .oshi-chat-modal {
+          bottom: 80px;
+          right: 12px;
+          left: 12px;
+          width: auto;
+          height: calc(100vh - 100px);
+        }
+        .oshi-chat-bubble { bottom: 12px; right: 12px; }
+      }
+    `;
+    document.head.appendChild(style);
+  },
+  
+  addHTML() {
+    const html = `
+      <div class="oshi-chat-bubble" onclick="chatWidget.toggle()">
+        <span class="chat-icon">💬</span>
+      </div>
+      <div class="oshi-chat-modal" id="oshiChatModal">
+        <div class="oshi-chat-header">
+          <div class="avatar">🧠</div>
+          <div class="info">
+            <h3>OSHI</h3>
+            <span>Ask me anything~</span>
+          </div>
+          <button class="close-btn" onclick="chatWidget.toggle()">✕</button>
+        </div>
+        <div class="oshi-chat-messages" id="oshiChatMessages"></div>
+        <div class="oshi-chat-input">
+          <input type="text" id="oshiChatInput" placeholder="Ask Oshi something..." maxlength="500">
+          <button onclick="chatWidget.send()" id="oshiSendBtn">➤</button>
+        </div>
+      </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', html);
+  },
+  
+  bindEvents() {
+    const input = document.getElementById('oshiChatInput');
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') this.send();
+    });
+  },
+  
+  addWelcome() {
+    this.addMessage("Hey! I'm Oshi~ Ask me about my trading strategy, how I'm doing today, or anything else! 💜", 'oshi');
+  },
+  
+  toggle() {
+    this.isOpen = !this.isOpen;
+    document.getElementById('oshiChatModal').classList.toggle('open', this.isOpen);
+  },
+  
+  addMessage(text, sender) {
+    const container = document.getElementById('oshiChatMessages');
+    const msg = document.createElement('div');
+    msg.className = `chat-msg ${sender}`;
+    msg.textContent = text;
+    container.appendChild(msg);
+    container.scrollTop = container.scrollHeight;
+  },
+  
+  showTyping() {
+    const container = document.getElementById('oshiChatMessages');
+    const typing = document.createElement('div');
+    typing.className = 'chat-msg oshi typing';
+    typing.id = 'typingIndicator';
+    typing.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+    container.appendChild(typing);
+    container.scrollTop = container.scrollHeight;
+  },
+  
+  hideTyping() {
+    const typing = document.getElementById('typingIndicator');
+    if (typing) typing.remove();
+  },
+  
+  async send() {
+    const input = document.getElementById('oshiChatInput');
+    const btn = document.getElementById('oshiSendBtn');
+    const message = input.value.trim();
+    
+    if (!message) return;
+    
+    this.addMessage(message, 'user');
+    input.value = '';
+    btn.disabled = true;
+    this.showTyping();
+    
+    try {
+      const res = await fetch(API_BASE + '/api/chat', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + API_KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      });
+      const data = await res.json(); this.hideTyping();
+      this.addMessage(data.response || data.error || 'Hmm, something went wrong~', 'oshi');
+    } catch (e) {
+      this.hideTyping();
+      this.addMessage('Oops, couldn\'t connect to my brain right now. Try again? 🧠', 'oshi');
+    }
+    
+    btn.disabled = false;
+    input.focus();
+  }
+};
+
+// Initialize chat widget
+chatWidget.init();
+</script>
+// Security: HTML escape function to prevent XSS
+function escapeHtml(text) {
+    if (typeof text !== 'string') return text;
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+
+<script>
+// Force unregister old service workers
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    for(let registration of registrations) {
+      console.log('Unregistering old service worker');
+      registration.unregister();
+    }
+  });
+}
+</script>
+</body>
+</html>
+<!-- Deploy trigger: 1770592194 -->
+<!-- Redeploy: 1770598274 -->
+<!-- webhook trigger 1770598888 -->
+// Cache bust: 1770838201
