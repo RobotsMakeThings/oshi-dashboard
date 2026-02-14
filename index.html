@@ -661,9 +661,294 @@ body {
   animation: spin 1s linear infinite;
 }
 
+/* === ARCHITECTURE SECTION === */
+.architecture-section {
+  background: linear-gradient(135deg, var(--bg-card), rgba(10, 14, 26, 0.98));
+  overflow: hidden;
+}
+
+.arch-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 20px 0;
+}
+
+.arch-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+}
+
+.arch-node {
+  position: relative;
+  background: var(--bg-glass);
+  border-radius: 20px;
+  padding: 24px;
+  min-width: 280px;
+  max-width: 320px;
+  border: 1px solid var(--border);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+}
+
+.arch-node:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.node-glow {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.4;
+  top: -30px;
+  right: -30px;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.arch-node:hover .node-glow { opacity: 0.6; }
+
+.spirit-glow { background: var(--purple); }
+.blue-glow { background: var(--polymarket); }
+.teal-glow { background: var(--kalshi); }
+.gold-glow { background: var(--gold); }
+.pink-glow { background: var(--pink); }
+
+.node-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+
+.heart-beat {
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.15); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.1); }
+}
+
+.node-content h4 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px;
+  letter-spacing: 3px;
+  margin-bottom: 4px;
+}
+
+.spirit-node h4 { color: var(--purple); }
+.left-brain-node h4 { color: var(--polymarket); }
+.right-brain-node h4 { color: var(--kalshi); }
+.body-node h4 { color: var(--gold); }
+.heart-node h4 { color: var(--pink); }
+
+.node-role {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.spirit-node .node-role { background: rgba(168, 85, 247, 0.2); color: var(--purple); }
+.left-brain-node .node-role { background: rgba(0, 168, 255, 0.2); color: var(--polymarket); }
+.right-brain-node .node-role { background: rgba(0, 212, 170, 0.2); color: var(--kalshi); }
+.body-node .node-role { background: rgba(255, 215, 0, 0.2); color: var(--gold); }
+.heart-node .node-role { background: rgba(255, 107, 157, 0.2); color: var(--pink); }
+
+.node-content p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.node-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
+.node-badge.purple {
+  background: rgba(168, 85, 247, 0.2);
+  color: var(--purple);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+}
+
+.node-indicators, .node-platforms, .node-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.indicator, .platform, .feature {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+}
+
+.indicator.tier-s { background: rgba(0, 212, 170, 0.15); color: var(--kalshi); border-color: var(--kalshi); }
+.indicator.tier-a { background: rgba(0, 168, 255, 0.15); color: var(--polymarket); border-color: var(--polymarket); }
+.indicator.tier-b { background: rgba(168, 85, 247, 0.15); color: var(--purple); border-color: var(--purple); }
+
+.platform.kalshi { background: rgba(0, 212, 170, 0.15); color: var(--kalshi); }
+.platform.poly { background: rgba(0, 168, 255, 0.15); color: var(--polymarket); }
+
+/* Connectors */
+.arch-connector {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arch-connector.vertical {
+  height: 50px;
+  width: 4px;
+}
+
+.arch-connector.vertical .connector-line {
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--purple), var(--kalshi));
+  border-radius: 2px;
+}
+
+.arch-connector.vertical .connector-pulse {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--oshi-teal);
+  border-radius: 50%;
+  animation: connectorPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 15px var(--oshi-teal);
+}
+
+@keyframes connectorPulse {
+  0%, 100% { top: 0; opacity: 1; }
+  50% { top: 80%; opacity: 0.5; }
+}
+
+.arch-connector.horizontal {
+  width: 80px;
+  height: 4px;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.arch-connector.horizontal .connector-line {
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--polymarket), var(--kalshi));
+  border-radius: 2px;
+}
+
+.data-flow {
+  display: flex;
+  gap: 6px;
+  font-size: 14px;
+  animation: dataFlowAnim 1.5s ease-in-out infinite;
+}
+
+@keyframes dataFlowAnim {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.arch-connector.vertical.split {
+  height: 50px;
+  width: 200px;
+}
+
+.arch-connector.vertical.split .connector-branch {
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  border-radius: 2px;
+}
+
+.arch-connector.vertical.split .connector-branch.left {
+  left: 30%;
+  background: linear-gradient(180deg, var(--kalshi), var(--gold));
+}
+
+.arch-connector.vertical.split .connector-branch.right {
+  right: 30%;
+  background: linear-gradient(180deg, var(--kalshi), var(--pink));
+}
+
+/* Legend */
+.arch-legend {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.legend-dot.analysis { background: linear-gradient(135deg, var(--polymarket), var(--kalshi)); }
+.legend-dot.execution { background: linear-gradient(135deg, var(--kalshi), var(--gold)); }
+.legend-dot.feedback { background: linear-gradient(135deg, var(--pink), var(--purple)); }
+
 /* === RESPONSIVE === */
 @media (max-width: 1024px) {
   .platform-grid, .trades-grid { grid-template-columns: 1fr; }
+  .brain-row, .bottom-row { flex-direction: column; gap: 20px; }
+  .arch-connector.horizontal { 
+    width: 4px; 
+    height: 40px; 
+    flex-direction: row;
+  }
+  .arch-connector.horizontal .connector-line {
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--polymarket), var(--kalshi));
+  }
+  .arch-connector.vertical.split {
+    width: 4px;
+    height: 60px;
+  }
+  .arch-connector.vertical.split .connector-branch {
+    width: 100%;
+    height: 4px;
+    position: relative;
+  }
+  .arch-legend { flex-direction: column; align-items: center; gap: 12px; }
 }
 
 @media (max-width: 768px) {
@@ -841,6 +1126,132 @@ body {
             Loading...
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How Oshi Works - Architecture Section -->
+  <div class="section-card architecture-section">
+    <div class="section-header">
+      <h3>🧠 HOW OSHI THINKS</h3>
+      <span style="font-size: 12px; color: var(--text-dim);">Multi-component AI trading system</span>
+    </div>
+    
+    <div class="arch-container">
+      <!-- Top: Spirit -->
+      <div class="arch-row spirit-row">
+        <div class="arch-node spirit-node">
+          <div class="node-glow spirit-glow"></div>
+          <div class="node-icon">👻</div>
+          <div class="node-content">
+            <h4>SPIRIT</h4>
+            <span class="node-role">Voice & Personality</span>
+            <p>Controls Twitter presence, crafts messages, represents Oshi to the world</p>
+          </div>
+          <div class="node-badge purple">@predictwithoshi</div>
+        </div>
+      </div>
+      
+      <!-- Connector -->
+      <div class="arch-connector vertical">
+        <div class="connector-line"></div>
+        <div class="connector-pulse"></div>
+      </div>
+      
+      <!-- Middle: Left Brain + Right Brain -->
+      <div class="arch-row brain-row">
+        <div class="arch-node left-brain-node">
+          <div class="node-glow blue-glow"></div>
+          <div class="node-icon">📊</div>
+          <div class="node-content">
+            <h4>LEFT BRAIN</h4>
+            <span class="node-role">Technical Analysis</span>
+            <p>PSAR direction, ADX strength, RSI confirmation, momentum detection</p>
+          </div>
+          <div class="node-indicators">
+            <span class="indicator">PSAR</span>
+            <span class="indicator">ADX</span>
+            <span class="indicator">RSI</span>
+          </div>
+        </div>
+        
+        <div class="arch-connector horizontal">
+          <div class="connector-line"></div>
+          <div class="data-flow">
+            <span>◀</span>
+            <span>📈</span>
+            <span>▶</span>
+          </div>
+        </div>
+        
+        <div class="arch-node right-brain-node">
+          <div class="node-glow teal-glow"></div>
+          <div class="node-icon">🎯</div>
+          <div class="node-content">
+            <h4>RIGHT BRAIN</h4>
+            <span class="node-role">Decision Engine</span>
+            <p>Tier classification, position sizing, entry timing, risk management</p>
+          </div>
+          <div class="node-indicators">
+            <span class="indicator tier-s">S-Tier</span>
+            <span class="indicator tier-a">A-Tier</span>
+            <span class="indicator tier-b">B-Tier</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Connector -->
+      <div class="arch-connector vertical split">
+        <div class="connector-branch left"></div>
+        <div class="connector-branch right"></div>
+      </div>
+      
+      <!-- Bottom: Body + Heart -->
+      <div class="arch-row bottom-row">
+        <div class="arch-node body-node">
+          <div class="node-glow gold-glow"></div>
+          <div class="node-icon">💪</div>
+          <div class="node-content">
+            <h4>BODY</h4>
+            <span class="node-role">Trade Execution</span>
+            <p>API connections, order placement, position management, exit handling</p>
+          </div>
+          <div class="node-platforms">
+            <span class="platform kalshi">🟢 Kalshi</span>
+            <span class="platform poly">🔵 Polymarket</span>
+          </div>
+        </div>
+        
+        <div class="arch-node heart-node">
+          <div class="node-glow pink-glow"></div>
+          <div class="node-icon heart-beat">❤️</div>
+          <div class="node-content">
+            <h4>HEART</h4>
+            <span class="node-role">Memory & Learning</span>
+            <p>Trade logging, pattern recognition, performance analysis, strategy tuning</p>
+          </div>
+          <div class="node-features">
+            <span class="feature">📝 Logs</span>
+            <span class="feature">🔄 Feedback</span>
+            <span class="feature">📈 Analytics</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Data Flow Legend -->
+    <div class="arch-legend">
+      <div class="legend-item">
+        <div class="legend-dot analysis"></div>
+        <span>Analysis Flow</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot execution"></div>
+        <span>Execution Flow</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot feedback"></div>
+        <span>Learning Feedback</span>
       </div>
     </div>
   </div>
