@@ -852,6 +852,442 @@ body {
   color: var(--oshi-teal-light);
 }
 
+/* === ARCHITECTURE SECTION === */
+.architecture-section {
+  background: var(--bg-card);
+  border-radius: 24px;
+  padding: 40px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.architecture-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--purple), var(--pink), var(--oshi-teal), var(--polymarket));
+}
+
+.arch-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.arch-header h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 24px;
+  letter-spacing: 4px;
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+}
+
+.arch-subtitle {
+  color: var(--text-secondary);
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.arch-diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Spirit Node */
+.arch-spirit {
+  text-align: center;
+  max-width: 400px;
+}
+
+.spirit-node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px 32px;
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(255, 107, 157, 0.2));
+  border: 2px solid var(--purple);
+  border-radius: 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 0 30px var(--purple-glow), inset 0 0 20px rgba(168, 85, 247, 0.1);
+  animation: spiritPulse 3s ease-in-out infinite;
+}
+
+@keyframes spiritPulse {
+  0%, 100% { box-shadow: 0 0 30px var(--purple-glow); }
+  50% { box-shadow: 0 0 50px var(--purple-glow), 0 0 80px rgba(255, 107, 157, 0.2); }
+}
+
+.spirit-node h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  color: var(--purple);
+  letter-spacing: 3px;
+}
+
+.spirit-node p {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.spirit-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  padding: 0 20px;
+}
+
+.node-icon {
+  font-size: 32px;
+}
+
+.spirit-icon {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Connectors */
+.arch-connectors {
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.connector-line {
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--purple), var(--oshi-teal));
+  position: relative;
+}
+
+.connector-line::after {
+  content: '▼';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--oshi-teal);
+  font-size: 10px;
+}
+
+.arch-connectors.middle {
+  width: 60%;
+  justify-content: space-around;
+}
+
+/* Brain Row */
+.arch-brain-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.brain-node {
+  flex: 1;
+  max-width: 340px;
+  padding: 24px;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.brain-node:hover {
+  transform: translateY(-4px);
+}
+
+.left-brain {
+  background: linear-gradient(135deg, rgba(0, 168, 255, 0.15), rgba(0, 168, 255, 0.05));
+  border: 1px solid var(--polymarket);
+  box-shadow: 0 0 20px var(--polymarket-glow);
+}
+
+.right-brain {
+  background: linear-gradient(135deg, rgba(0, 212, 170, 0.15), rgba(0, 212, 170, 0.05));
+  border: 1px solid var(--kalshi);
+  box-shadow: 0 0 20px var(--kalshi-glow);
+}
+
+.node-glow {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.left-glow {
+  top: -20px;
+  right: -20px;
+  background: var(--polymarket);
+  opacity: 0.3;
+}
+
+.right-glow {
+  top: -20px;
+  left: -20px;
+  background: var(--kalshi);
+  opacity: 0.3;
+}
+
+.brain-node .node-content {
+  position: relative;
+  z-index: 2;
+}
+
+.brain-node h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.left-brain h3 { color: var(--polymarket); }
+.right-brain h3 { color: var(--kalshi); }
+
+.node-role {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.left-brain .node-role {
+  background: rgba(0, 168, 255, 0.2);
+  color: var(--polymarket);
+}
+
+.right-brain .node-role {
+  background: rgba(0, 212, 170, 0.2);
+  color: var(--kalshi);
+}
+
+.brain-node p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.node-flow {
+  margin-top: 12px;
+}
+
+.flow-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.brain-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.data-flow {
+  display: flex;
+  gap: 8px;
+  animation: dataFlow 2s ease-in-out infinite;
+}
+
+@keyframes dataFlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.data-flow span {
+  font-size: 16px;
+}
+
+/* Bottom Row - Body & Heart */
+.arch-bottom-row {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.bottom-node {
+  flex: 1;
+  max-width: 350px;
+  padding: 24px;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.bottom-node:hover {
+  transform: translateY(-4px);
+}
+
+.body-node {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.05));
+  border: 1px solid var(--gold);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+.heart-node {
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.15), rgba(255, 107, 157, 0.05));
+  border: 1px solid var(--pink);
+  box-shadow: 0 0 20px var(--pink-glow);
+}
+
+.body-glow {
+  top: -20px;
+  right: -20px;
+  background: var(--gold);
+  opacity: 0.2;
+}
+
+.heart-glow {
+  top: -20px;
+  left: -20px;
+  background: var(--pink);
+  opacity: 0.3;
+}
+
+.body-node h3 { color: var(--gold); }
+.heart-node h3 { color: var(--pink); }
+
+.body-node .node-role {
+  background: rgba(255, 215, 0, 0.2);
+  color: var(--gold);
+}
+
+.heart-node .node-role {
+  background: rgba(255, 107, 157, 0.2);
+  color: var(--pink);
+}
+
+.bottom-node h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.bottom-node p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.body-platforms, .heart-features {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.platform-tag, .feature-tag {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.kalshi-tag {
+  background: rgba(0, 212, 170, 0.15);
+  color: var(--kalshi);
+  border: 1px solid rgba(0, 212, 170, 0.3);
+}
+
+.poly-tag {
+  background: rgba(0, 168, 255, 0.15);
+  color: var(--polymarket);
+  border: 1px solid rgba(0, 168, 255, 0.3);
+}
+
+.feature-tag {
+  background: rgba(255, 107, 157, 0.1);
+  color: var(--text-secondary);
+  border: 1px solid rgba(255, 107, 157, 0.2);
+}
+
+.heart-icon {
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Legend */
+.arch-legend {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.legend-line {
+  width: 30px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.legend-line.analysis { background: linear-gradient(90deg, var(--polymarket), var(--kalshi)); }
+.legend-line.execution { background: linear-gradient(90deg, var(--kalshi), var(--gold)); }
+.legend-line.feedback { background: linear-gradient(90deg, var(--pink), var(--purple)); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .arch-brain-row {
+    flex-direction: column;
+  }
+  
+  .arch-bottom-row {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .brain-connector {
+    transform: rotate(90deg);
+    margin: 10px 0;
+  }
+  
+  .arch-legend {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+}
+
 /* === LOADING === */
 .loading {
   display: flex;
@@ -1060,6 +1496,126 @@ body {
       <div class="insight-card">
         <div class="insight-value high" id="corrAdx">82%</div>
         <div class="insight-label">ADX>50 Win</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Architecture Section -->
+  <div class="architecture-section">
+    <div class="arch-header">
+      <h2>🧠 HOW OSHI THINKS</h2>
+      <p class="arch-subtitle">A multi-component AI trading system with specialized modules</p>
+    </div>
+    
+    <div class="arch-diagram">
+      <!-- Spirit at top -->
+      <div class="arch-spirit">
+        <div class="spirit-node">
+          <div class="node-icon spirit-icon">👻</div>
+          <div class="node-content">
+            <h3>SPIRIT</h3>
+            <p>The Voice & Personality</p>
+          </div>
+        </div>
+        <div class="spirit-desc">
+          Controls Twitter presence, crafts messages, and represents Oshi's personality to the world. Receives updates from all systems.
+        </div>
+      </div>
+      
+      <!-- Connection lines -->
+      <div class="arch-connectors">
+        <div class="connector-line spirit-to-brain"></div>
+      </div>
+      
+      <!-- Brain row -->
+      <div class="arch-brain-row">
+        <div class="brain-node left-brain">
+          <div class="node-glow left-glow"></div>
+          <div class="node-icon brain-icon">🧠</div>
+          <div class="node-content">
+            <h3>LEFT BRAIN</h3>
+            <span class="node-role">Analyst</span>
+            <p>Technical analysis, indicator processing, signal detection (PSAR, ADX, RSI, MACD)</p>
+          </div>
+          <div class="node-flow">
+            <span class="flow-tag">Analyze Signal →</span>
+          </div>
+        </div>
+        
+        <div class="brain-connector">
+          <div class="data-flow">
+            <span>📊</span>
+            <span>📈</span>
+            <span>🎯</span>
+          </div>
+        </div>
+        
+        <div class="brain-node right-brain">
+          <div class="node-glow right-glow"></div>
+          <div class="node-icon brain-icon">🎛️</div>
+          <div class="node-content">
+            <h3>RIGHT BRAIN</h3>
+            <span class="node-role">Orchestrator</span>
+            <p>Decision making, position sizing, risk management, trade timing</p>
+          </div>
+          <div class="node-flow">
+            <span class="flow-tag">→ Execute Command</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Connection to body/heart -->
+      <div class="arch-connectors middle">
+        <div class="connector-line brain-to-body"></div>
+        <div class="connector-line brain-to-heart"></div>
+      </div>
+      
+      <!-- Body and Heart row -->
+      <div class="arch-bottom-row">
+        <div class="bottom-node body-node">
+          <div class="node-glow body-glow"></div>
+          <div class="node-icon body-icon">💪</div>
+          <div class="node-content">
+            <h3>BODY</h3>
+            <span class="node-role">Executor</span>
+            <p>API connections, order execution, position management across Kalshi & Polymarket</p>
+          </div>
+          <div class="body-platforms">
+            <span class="platform-tag kalshi-tag">🟢 Kalshi</span>
+            <span class="platform-tag poly-tag">🔵 Polymarket</span>
+          </div>
+        </div>
+        
+        <div class="bottom-node heart-node">
+          <div class="node-glow heart-glow"></div>
+          <div class="node-icon heart-icon">❤️</div>
+          <div class="node-content">
+            <h3>HEART</h3>
+            <span class="node-role">Memory & Learning</span>
+            <p>Trade logging, pattern recognition, performance analysis, strategy optimization</p>
+          </div>
+          <div class="heart-features">
+            <span class="feature-tag">📝 Logs</span>
+            <span class="feature-tag">🤖 ML</span>
+            <span class="feature-tag">📊 Analytics</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Data flow legend -->
+    <div class="arch-legend">
+      <div class="legend-item">
+        <div class="legend-line analysis"></div>
+        <span>Analysis Flow</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-line execution"></div>
+        <span>Execution Flow</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-line feedback"></div>
+        <span>Learning Feedback</span>
       </div>
     </div>
   </div>
