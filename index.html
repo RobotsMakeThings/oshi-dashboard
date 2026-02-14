@@ -1400,7 +1400,7 @@ body {
       <div class="balance-info">
         <div class="label">Polymarket Balance</div>
         <div class="value" id="polyBalance">$--</div>
-        <div class="unredeemed-label">+ <span id="polyUnredeemed">$--</span> unredeemed</div>
+        <div class="unredeemed-label">Total P&L: <span id="polyTotalPnL">$--</span></div>
       </div>
     </div>
   </div>
@@ -1755,24 +1755,33 @@ const updatePolymarket = async () => {
       }
     }
     
-    // Calculate unredeemed balance from winning trades
+    // Calculate total P&L from all trades
     try {
       const tradesRes = await fetch(`${POLY_API}/trades?limit=200`);
       if (tradesRes.ok) {
         const tradesData = await tradesRes.json();
-        let unredeemed = 0;
+        let totalPnL = 0;
         for (const t of (tradesData.trades || [])) {
-          if (t.exit_price === 100) {
+          // Use pnl_usd if available, otherwise calculate
+          if (t.pnl_usd !== undefined) {
+            totalPnL += t.pnl_usd;
+          } else if (t.exit_price !== undefined) {
             const entry = t.entry_price || 50;
             const size = t.size_usd || 5;
-            // Return from win = stake + profit
-            unredeemed += size + (size * (100 - entry) / entry);
+            if (t.exit_price === 0) {
+              totalPnL -= size;
+            } else {
+              totalPnL += size * (t.exit_price - entry) / entry;
+            }
           }
         }
-        document.getElementById('polyUnredeemed').textContent = `$${unredeemed.toFixed(2)}`;
+        const sign = totalPnL >= 0 ? '+' : '';
+        const color = totalPnL >= 0 ? 'var(--win)' : 'var(--loss)';
+        document.getElementById('polyTotalPnL').textContent = `${sign}$${Math.abs(totalPnL).toFixed(2)}`;
+        document.getElementById('polyTotalPnL').style.color = color;
       }
     } catch (e) {
-      document.getElementById('polyUnredeemed').textContent = '$--';
+      document.getElementById('polyTotalPnL').textContent = '$--';
     }
   } catch (e) {
     console.error('Poly error:', e);
