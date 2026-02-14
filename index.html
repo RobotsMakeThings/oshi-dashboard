@@ -7,37 +7,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  /* Oshi's Teal Theme */
   --oshi-teal: #00d4aa;
   --oshi-teal-light: #00ffd0;
   --oshi-teal-glow: rgba(0, 212, 170, 0.4);
-  
-  /* Platform Colors */
   --kalshi: #00d4aa;
   --kalshi-glow: rgba(0, 212, 170, 0.3);
   --polymarket: #00a8ff;
   --polymarket-glow: rgba(0, 168, 255, 0.3);
-  
-  /* Anime Accent Colors */
   --pink: #ff6b9d;
   --pink-glow: rgba(255, 107, 157, 0.3);
   --purple: #a855f7;
   --purple-glow: rgba(168, 85, 247, 0.3);
   --gold: #ffd700;
-  
-  /* Status */
   --win: #00d4aa;
   --loss: #ff5c8a;
   --neutral: #8892b0;
-  
-  /* Backgrounds */
   --bg-deep: #0a0e1a;
   --bg-card: rgba(15, 20, 35, 0.95);
   --bg-glass: rgba(255, 255, 255, 0.03);
   --border: rgba(0, 212, 170, 0.15);
   --border-glow: rgba(0, 212, 170, 0.4);
-  
-  /* Text */
   --text-primary: #f0f4ff;
   --text-secondary: #8892b0;
   --text-dim: #5a6480;
@@ -51,24 +40,18 @@ body {
   font-family: 'Quicksand', sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
-  position: relative;
 }
 
-/* === ANIMATED BACKGROUND === */
 .bg-effects {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   pointer-events: none;
   z-index: 0;
 }
 
 .bg-gradient {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 100%; height: 100%;
   background: 
     radial-gradient(ellipse at 20% 20%, rgba(0, 212, 170, 0.08) 0%, transparent 50%),
     radial-gradient(ellipse at 80% 80%, rgba(0, 168, 255, 0.08) 0%, transparent 50%),
@@ -77,8 +60,7 @@ body {
 
 .sparkle {
   position: absolute;
-  width: 4px;
-  height: 4px;
+  width: 4px; height: 4px;
   background: white;
   border-radius: 50%;
   animation: sparkle 3s ease-in-out infinite;
@@ -115,22 +97,9 @@ body {
 .hero-header::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 3px;
   background: linear-gradient(90deg, var(--kalshi), var(--purple), var(--polymarket));
-}
-
-.hero-header::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -10%;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, var(--oshi-teal-glow) 0%, transparent 70%);
-  pointer-events: none;
 }
 
 .hero-left {
@@ -140,20 +109,14 @@ body {
   z-index: 2;
 }
 
-.oshi-avatar-container {
-  position: relative;
-}
+.oshi-avatar-container { position: relative; }
 
 .oshi-avatar {
-  width: 100px;
-  height: 100px;
+  width: 100px; height: 100px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--oshi-teal);
-  box-shadow: 
-    0 0 20px var(--oshi-teal-glow),
-    0 0 40px var(--oshi-teal-glow),
-    inset 0 0 20px rgba(0, 212, 170, 0.1);
+  box-shadow: 0 0 20px var(--oshi-teal-glow), 0 0 40px var(--oshi-teal-glow);
   animation: avatarGlow 3s ease-in-out infinite;
 }
 
@@ -164,25 +127,14 @@ body {
 
 .avatar-ring {
   position: absolute;
-  top: -5px;
-  left: -5px;
-  right: -5px;
-  bottom: -5px;
+  top: -5px; left: -5px; right: -5px; bottom: -5px;
   border: 2px solid transparent;
   border-top-color: var(--pink);
   border-radius: 50%;
   animation: spin 4s linear infinite;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.hero-brand {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .hero-brand h1 {
   font-family: 'Orbitron', sans-serif;
@@ -192,7 +144,6 @@ body {
   background: linear-gradient(135deg, var(--oshi-teal-light), var(--oshi-teal), var(--polymarket));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 30px var(--oshi-teal-glow);
 }
 
 .hero-brand .tagline {
@@ -220,8 +171,7 @@ body {
 }
 
 .status-dot {
-  width: 10px;
-  height: 10px;
+  width: 10px; height: 10px;
   background: var(--oshi-teal);
   border-radius: 50%;
   animation: pulse 2s ease-in-out infinite;
@@ -240,62 +190,6 @@ body {
   letter-spacing: 1px;
 }
 
-.version-badge {
-  font-family: 'Space Mono', monospace;
-  padding: 8px 16px;
-  background: var(--bg-glass);
-  border: 1px solid var(--purple);
-  border-radius: 8px;
-  font-size: 12px;
-  color: var(--purple);
-}
-
-/* Bags CA */
-.bags-ca {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 8px;
-  padding: 6px 12px;
-  background: rgba(255, 215, 0, 0.1);
-  border: 1px solid var(--gold);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 12px;
-}
-
-.bags-ca:hover {
-  background: rgba(255, 215, 0, 0.2);
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-}
-
-.ca-label {
-  color: var(--gold);
-  font-weight: 700;
-}
-
-.ca-value {
-  font-family: 'Space Mono', monospace;
-  color: var(--text-secondary);
-  font-size: 11px;
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.ca-copy {
-  font-size: 14px;
-  opacity: 0.7;
-  transition: opacity 0.2s;
-}
-
-.bags-ca:hover .ca-copy {
-  opacity: 1;
-}
-
-/* Trade Button */
 .trade-btn {
   display: flex;
   align-items: center;
@@ -319,28 +213,22 @@ body {
   box-shadow: 0 6px 25px var(--kalshi-glow);
 }
 
-/* Social Button */
 .social-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 44px; height: 44px;
   border-radius: 12px;
   text-decoration: none;
   transition: all 0.3s ease;
-}
-
-.x-btn {
   background: var(--bg-glass);
   border: 1px solid var(--text-dim);
   color: var(--text-primary);
 }
 
-.x-btn:hover {
+.social-btn:hover {
   background: var(--text-primary);
   color: var(--bg-deep);
-  border-color: var(--text-primary);
   transform: translateY(-2px);
 }
 
@@ -354,7 +242,6 @@ body {
   background: var(--bg-card);
   border-radius: 20px;
   border: 1px solid var(--border);
-  position: relative;
 }
 
 .balance-item {
@@ -364,8 +251,7 @@ body {
 }
 
 .balance-icon {
-  width: 50px;
-  height: 50px;
+  width: 50px; height: 50px;
   border-radius: 16px;
   display: flex;
   align-items: center;
@@ -402,13 +288,6 @@ body {
 .balance-item.kalshi .value { color: var(--kalshi); text-shadow: 0 0 20px var(--kalshi-glow); }
 .balance-item.polymarket .value { color: var(--polymarket); text-shadow: 0 0 20px var(--polymarket-glow); }
 
-.unredeemed-label {
-  font-size: 12px;
-  color: var(--win);
-  margin-top: 4px;
-  font-family: 'Space Mono', monospace;
-}
-
 .balance-divider {
   width: 1px;
   background: linear-gradient(180deg, transparent, var(--border), transparent);
@@ -440,9 +319,7 @@ body {
 .platform-card::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 4px;
   border-radius: 4px 4px 0 0;
 }
@@ -455,25 +332,6 @@ body {
 .platform-card.polymarket::before {
   background: linear-gradient(90deg, var(--polymarket), #00d4ff);
   box-shadow: 0 0 20px var(--polymarket-glow);
-}
-
-.platform-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.platform-card.kalshi::after {
-  background: radial-gradient(circle, var(--kalshi-glow) 0%, transparent 70%);
-}
-
-.platform-card.polymarket::after {
-  background: radial-gradient(circle, var(--polymarket-glow) 0%, transparent 70%);
 }
 
 .platform-header {
@@ -492,36 +350,28 @@ body {
 }
 
 .platform-logo {
-  width: 56px;
-  height: 56px;
+  width: 56px; height: 56px;
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 26px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease;
 }
 
-.platform-logo:hover {
-  transform: scale(1.05);
-}
-
-.platform-logo img {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-}
+.platform-logo:hover { transform: scale(1.05); }
+.platform-logo img { width: 40px; height: 40px; border-radius: 8px; }
 
 .kalshi .platform-logo {
   background: linear-gradient(135deg, rgba(0, 212, 170, 0.25), rgba(0, 212, 170, 0.1));
   border: 2px solid var(--kalshi);
-  box-shadow: 0 0 20px var(--kalshi-glow), inset 0 0 20px var(--kalshi-glow);
+  box-shadow: 0 0 20px var(--kalshi-glow);
 }
 
 .polymarket .platform-logo {
   background: linear-gradient(135deg, rgba(0, 168, 255, 0.25), rgba(0, 168, 255, 0.1));
   border: 2px solid var(--polymarket);
-  box-shadow: 0 0 20px var(--polymarket-glow), inset 0 0 20px var(--polymarket-glow);
+  box-shadow: 0 0 20px var(--polymarket-glow);
 }
 
 .platform-meta h2 {
@@ -537,6 +387,27 @@ body {
   font-size: 13px;
   color: var(--text-dim);
   margin-top: 2px;
+}
+
+.version-badge {
+  font-family: 'Space Mono', monospace;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.kalshi .version-badge {
+  background: rgba(0, 212, 170, 0.15);
+  color: var(--kalshi);
+  border: 1px solid var(--kalshi);
+}
+
+.polymarket .version-badge {
+  background: rgba(0, 168, 255, 0.15);
+  color: var(--polymarket);
+  border: 1px solid var(--polymarket);
 }
 
 .platform-stats {
@@ -571,8 +442,8 @@ body {
 .stat-card .value.win { color: var(--win); text-shadow: 0 0 15px var(--kalshi-glow); }
 .stat-card .value.loss { color: var(--loss); text-shadow: 0 0 15px var(--pink-glow); }
 .stat-card .value.neutral { color: var(--neutral); }
-.stat-card .value.positive { color: var(--win); text-shadow: 0 0 15px var(--kalshi-glow); }
-.stat-card .value.negative { color: var(--loss); text-shadow: 0 0 15px var(--pink-glow); }
+.stat-card .value.positive { color: var(--win); }
+.stat-card .value.negative { color: var(--loss); }
 
 .stat-card .label {
   font-size: 11px;
@@ -581,7 +452,7 @@ body {
   letter-spacing: 2px;
 }
 
-/* === ACTIVE POSITIONS === */
+/* === SECTION CARD === */
 .section-card {
   background: var(--bg-card);
   border-radius: 24px;
@@ -609,206 +480,110 @@ body {
   gap: 10px;
 }
 
-.section-badge {
-  background: linear-gradient(135deg, var(--oshi-teal-glow), var(--purple-glow));
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-family: 'Space Mono', monospace;
-  color: var(--oshi-teal);
-  border: 1px solid var(--oshi-teal);
-}
-
-.positions-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.position-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px 20px;
-  background: var(--bg-glass);
-  border-radius: 16px;
-  border: 1px solid transparent;
-  transition: all 0.3s ease;
-}
-
-.position-row:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.position-row.kalshi { border-left: 3px solid var(--kalshi); }
-.position-row.polymarket { border-left: 3px solid var(--polymarket); }
-
-.position-platform-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-}
-
-.position-row.kalshi .position-platform-icon {
-  background: rgba(0, 212, 170, 0.15);
-}
-
-.position-row.polymarket .position-platform-icon {
-  background: rgba(0, 168, 255, 0.15);
-}
-
-.position-details {
-  flex: 1;
-}
-
-.position-market {
-  font-weight: 600;
-  font-size: 15px;
-  margin-bottom: 4px;
-}
-
-.position-meta {
-  font-size: 12px;
-  color: var(--text-dim);
-  font-family: 'Space Mono', monospace;
-}
-
-.position-pnl {
-  font-family: 'Space Mono', monospace;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 8px 16px;
-  border-radius: 10px;
-}
-
-.position-pnl.positive {
-  background: rgba(0, 212, 170, 0.15);
-  color: var(--win);
-}
-
-.position-pnl.negative {
-  background: rgba(255, 92, 138, 0.15);
-  color: var(--loss);
-}
-
-.position-alert {
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 600;
-  background: rgba(255, 107, 157, 0.2);
-  color: var(--pink);
-  animation: alertPulse 2s ease-in-out infinite;
-}
-
-@keyframes alertPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
-
-.no-positions {
-  text-align: center;
-  padding: 40px;
-  color: var(--text-dim);
-  font-style: italic;
-}
-
-/* === INSIGHTS GRID === */
-.insights-grid {
+/* === TRADES GRID (Side by Side) === */
+.trades-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
 }
 
-.insight-card {
+.trades-column {
   background: var(--bg-glass);
   border-radius: 16px;
   padding: 20px;
-  text-align: center;
   border: 1px solid var(--border);
-  transition: all 0.3s ease;
 }
 
-.insight-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--oshi-teal);
+.trades-column.kalshi { border-top: 3px solid var(--kalshi); }
+.trades-column.polymarket { border-top: 3px solid var(--polymarket); }
+
+.trades-column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
 }
 
-.insight-value {
+.trades-column-header h4 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.trades-column.kalshi h4 { color: var(--kalshi); }
+.trades-column.polymarket h4 { color: var(--polymarket); }
+
+.trades-column-header .version {
   font-family: 'Space Mono', monospace;
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-
-.insight-value.high { color: var(--win); }
-.insight-value.medium { color: var(--gold); }
-.insight-value.low { color: var(--loss); }
-
-.insight-label {
   font-size: 10px;
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
+  padding: 4px 8px;
+  border-radius: 6px;
 }
 
-/* === RECENT TRADES === */
+.trades-column.kalshi .version {
+  background: rgba(0, 212, 170, 0.15);
+  color: var(--kalshi);
+}
+
+.trades-column.polymarket .version {
+  background: rgba(0, 168, 255, 0.15);
+  color: var(--polymarket);
+}
+
 .trades-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  max-height: 350px;
+  overflow-y: auto;
 }
 
 .trade-row {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px 20px;
-  background: var(--bg-glass);
-  border-radius: 16px;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
   transition: all 0.3s ease;
 }
 
-.trade-row:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
+.trade-row:hover { background: rgba(255, 255, 255, 0.05); }
 
 .trade-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
+  width: 36px; height: 36px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .trade-row.kalshi .trade-icon { background: rgba(0, 212, 170, 0.15); }
 .trade-row.polymarket .trade-icon { background: rgba(0, 168, 255, 0.15); }
 
-.trade-info {
-  flex: 1;
-}
+.trade-info { flex: 1; }
 
 .trade-market {
   font-weight: 600;
-  font-size: 15px;
-  margin-bottom: 3px;
+  font-size: 14px;
+  margin-bottom: 2px;
 }
 
 .trade-meta {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-dim);
 }
 
 .trade-outcome {
-  padding: 6px 14px;
-  border-radius: 10px;
-  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
 }
@@ -827,14 +602,21 @@ body {
 
 .trade-pnl {
   font-family: 'Space Mono', monospace;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
-  min-width: 90px;
+  min-width: 70px;
   text-align: right;
 }
 
 .trade-pnl.positive { color: var(--win); }
 .trade-pnl.negative { color: var(--loss); }
+
+.no-trades {
+  text-align: center;
+  padding: 30px;
+  color: var(--text-dim);
+  font-style: italic;
+}
 
 /* === FOOTER === */
 .footer {
@@ -856,454 +638,9 @@ body {
   color: var(--text-secondary);
 }
 
-.footer .brand-line {
-  font-size: 13px;
-}
-
 .footer a {
   color: var(--oshi-teal);
   text-decoration: none;
-  transition: color 0.2s;
-}
-
-.footer a:hover {
-  color: var(--oshi-teal-light);
-}
-
-/* === ARCHITECTURE SECTION === */
-.architecture-section {
-  background: var(--bg-card);
-  border-radius: 24px;
-  padding: 40px;
-  margin-bottom: 24px;
-  border: 1px solid var(--border);
-  position: relative;
-  overflow: hidden;
-}
-
-.architecture-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--purple), var(--pink), var(--oshi-teal), var(--polymarket));
-}
-
-.arch-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.arch-header h2 {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 24px;
-  letter-spacing: 4px;
-  background: linear-gradient(135deg, var(--purple), var(--pink));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 12px;
-}
-
-.arch-subtitle {
-  color: var(--text-secondary);
-  font-size: 14px;
-  letter-spacing: 1px;
-}
-
-.arch-diagram {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-}
-
-/* Spirit Node */
-.arch-spirit {
-  text-align: center;
-  max-width: 400px;
-}
-
-.spirit-node {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: 20px 32px;
-  background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(255, 107, 157, 0.2));
-  border: 2px solid var(--purple);
-  border-radius: 20px;
-  margin-bottom: 12px;
-  box-shadow: 0 0 30px var(--purple-glow), inset 0 0 20px rgba(168, 85, 247, 0.1);
-  animation: spiritPulse 3s ease-in-out infinite;
-}
-
-@keyframes spiritPulse {
-  0%, 100% { box-shadow: 0 0 30px var(--purple-glow); }
-  50% { box-shadow: 0 0 50px var(--purple-glow), 0 0 80px rgba(255, 107, 157, 0.2); }
-}
-
-.spirit-node h3 {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 18px;
-  color: var(--purple);
-  letter-spacing: 3px;
-}
-
-.spirit-node p {
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-
-.spirit-desc {
-  font-size: 13px;
-  color: var(--text-dim);
-  line-height: 1.6;
-  padding: 0 20px;
-}
-
-.node-icon {
-  font-size: 32px;
-}
-
-.spirit-icon {
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
-/* Connectors */
-.arch-connectors {
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  position: relative;
-}
-
-.connector-line {
-  width: 2px;
-  height: 100%;
-  background: linear-gradient(180deg, var(--purple), var(--oshi-teal));
-  position: relative;
-}
-
-.connector-line::after {
-  content: '▼';
-  position: absolute;
-  bottom: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: var(--oshi-teal);
-  font-size: 10px;
-}
-
-.arch-connectors.middle {
-  width: 60%;
-  justify-content: space-around;
-}
-
-/* Brain Row */
-.arch-brain-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-  width: 100%;
-  max-width: 900px;
-}
-
-.brain-node {
-  flex: 1;
-  max-width: 340px;
-  padding: 24px;
-  border-radius: 20px;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.brain-node:hover {
-  transform: translateY(-4px);
-}
-
-.left-brain {
-  background: linear-gradient(135deg, rgba(0, 168, 255, 0.15), rgba(0, 168, 255, 0.05));
-  border: 1px solid var(--polymarket);
-  box-shadow: 0 0 20px var(--polymarket-glow);
-}
-
-.right-brain {
-  background: linear-gradient(135deg, rgba(0, 212, 170, 0.15), rgba(0, 212, 170, 0.05));
-  border: 1px solid var(--kalshi);
-  box-shadow: 0 0 20px var(--kalshi-glow);
-}
-
-.node-glow {
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  filter: blur(40px);
-  pointer-events: none;
-}
-
-.left-glow {
-  top: -20px;
-  right: -20px;
-  background: var(--polymarket);
-  opacity: 0.3;
-}
-
-.right-glow {
-  top: -20px;
-  left: -20px;
-  background: var(--kalshi);
-  opacity: 0.3;
-}
-
-.brain-node .node-content {
-  position: relative;
-  z-index: 2;
-}
-
-.brain-node h3 {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 16px;
-  letter-spacing: 2px;
-  margin-bottom: 6px;
-}
-
-.left-brain h3 { color: var(--polymarket); }
-.right-brain h3 { color: var(--kalshi); }
-
-.node-role {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 12px;
-}
-
-.left-brain .node-role {
-  background: rgba(0, 168, 255, 0.2);
-  color: var(--polymarket);
-}
-
-.right-brain .node-role {
-  background: rgba(0, 212, 170, 0.2);
-  color: var(--kalshi);
-}
-
-.brain-node p {
-  font-size: 13px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-
-.node-flow {
-  margin-top: 12px;
-}
-
-.flow-tag {
-  font-family: 'Space Mono', monospace;
-  font-size: 11px;
-  color: var(--text-dim);
-}
-
-.brain-connector {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.data-flow {
-  display: flex;
-  gap: 8px;
-  animation: dataFlow 2s ease-in-out infinite;
-}
-
-@keyframes dataFlow {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
-
-.data-flow span {
-  font-size: 16px;
-}
-
-/* Bottom Row - Body & Heart */
-.arch-bottom-row {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  width: 100%;
-  max-width: 800px;
-}
-
-.bottom-node {
-  flex: 1;
-  max-width: 350px;
-  padding: 24px;
-  border-radius: 20px;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.bottom-node:hover {
-  transform: translateY(-4px);
-}
-
-.body-node {
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.05));
-  border: 1px solid var(--gold);
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-}
-
-.heart-node {
-  background: linear-gradient(135deg, rgba(255, 107, 157, 0.15), rgba(255, 107, 157, 0.05));
-  border: 1px solid var(--pink);
-  box-shadow: 0 0 20px var(--pink-glow);
-}
-
-.body-glow {
-  top: -20px;
-  right: -20px;
-  background: var(--gold);
-  opacity: 0.2;
-}
-
-.heart-glow {
-  top: -20px;
-  left: -20px;
-  background: var(--pink);
-  opacity: 0.3;
-}
-
-.body-node h3 { color: var(--gold); }
-.heart-node h3 { color: var(--pink); }
-
-.body-node .node-role {
-  background: rgba(255, 215, 0, 0.2);
-  color: var(--gold);
-}
-
-.heart-node .node-role {
-  background: rgba(255, 107, 157, 0.2);
-  color: var(--pink);
-}
-
-.bottom-node h3 {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 16px;
-  letter-spacing: 2px;
-  margin-bottom: 6px;
-}
-
-.bottom-node p {
-  font-size: 13px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  margin-bottom: 12px;
-}
-
-.body-platforms, .heart-features {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.platform-tag, .feature-tag {
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.kalshi-tag {
-  background: rgba(0, 212, 170, 0.15);
-  color: var(--kalshi);
-  border: 1px solid rgba(0, 212, 170, 0.3);
-}
-
-.poly-tag {
-  background: rgba(0, 168, 255, 0.15);
-  color: var(--polymarket);
-  border: 1px solid rgba(0, 168, 255, 0.3);
-}
-
-.feature-tag {
-  background: rgba(255, 107, 157, 0.1);
-  color: var(--text-secondary);
-  border: 1px solid rgba(255, 107, 157, 0.2);
-}
-
-.heart-icon {
-  animation: heartbeat 1.5s ease-in-out infinite;
-}
-
-@keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-}
-
-/* Legend */
-.arch-legend {
-  display: flex;
-  justify-content: center;
-  gap: 32px;
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px solid var(--border);
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  color: var(--text-dim);
-}
-
-.legend-line {
-  width: 30px;
-  height: 3px;
-  border-radius: 2px;
-}
-
-.legend-line.analysis { background: linear-gradient(90deg, var(--polymarket), var(--kalshi)); }
-.legend-line.execution { background: linear-gradient(90deg, var(--kalshi), var(--gold)); }
-.legend-line.feedback { background: linear-gradient(90deg, var(--pink), var(--purple)); }
-
-/* Responsive */
-@media (max-width: 768px) {
-  .arch-brain-row {
-    flex-direction: column;
-  }
-  
-  .arch-bottom-row {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .brain-connector {
-    transform: rotate(90deg);
-    margin: 10px 0;
-  }
-  
-  .arch-legend {
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
 }
 
 /* === LOADING === */
@@ -1311,14 +648,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px;
+  padding: 30px;
   color: var(--text-dim);
-  gap: 12px;
+  gap: 10px;
 }
 
 .loader {
-  width: 24px;
-  height: 24px;
+  width: 20px; height: 20px;
   border: 3px solid var(--border);
   border-top-color: var(--oshi-teal);
   border-radius: 50%;
@@ -1327,8 +663,7 @@ body {
 
 /* === RESPONSIVE === */
 @media (max-width: 1024px) {
-  .platform-grid { grid-template-columns: 1fr; }
-  .insights-grid { grid-template-columns: repeat(2, 1fr); }
+  .platform-grid, .trades-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
@@ -1338,29 +673,16 @@ body {
     gap: 20px;
     padding: 24px;
   }
-  
-  .hero-left {
-    flex-direction: column;
-  }
-  
-  .balance-banner {
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-  }
-  
+  .hero-left { flex-direction: column; }
+  .balance-banner { flex-direction: column; gap: 20px; align-items: center; }
   .balance-divider { display: none; }
-  
-  .insights-grid { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
 <body>
 
-<!-- Background Effects -->
 <div class="bg-effects">
   <div class="bg-gradient"></div>
-  <!-- Sparkles generated by JS -->
 </div>
 
 <div class="main-container">
@@ -1375,11 +697,6 @@ body {
       <div class="hero-brand">
         <h1>✨ OSHI</h1>
         <div class="tagline">Prediction Agent Dashboard</div>
-        <div class="bags-ca" onclick="copyCA()" title="Click to copy">
-          <span class="ca-label">$BAGS:</span>
-          <span class="ca-value" id="bagsCA">Coming Soon</span>
-          <span class="ca-copy">📋</span>
-        </div>
       </div>
     </div>
     <div class="hero-right">
@@ -1390,7 +707,7 @@ body {
       <a href="https://kalshi.com/sign-up/?referral=3284dc15-89f1-494b-ac60-b0d124d26b1d" target="_blank" class="trade-btn">
         <span>🎯 Trade with Oshi</span>
       </a>
-      <a href="https://x.com/predictwithoshi" target="_blank" class="social-btn x-btn">
+      <a href="https://x.com/predictwithoshi" target="_blank" class="social-btn">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
       </a>
     </div>
@@ -1411,7 +728,6 @@ body {
       <div class="balance-info">
         <div class="label">Polymarket Balance</div>
         <div class="value" id="polyBalance">$--</div>
-        <div class="unredeemed-label">Total P&L: <span id="polyTotalPnL">$--</span></div>
       </div>
     </div>
   </div>
@@ -1422,14 +738,15 @@ body {
     <div class="platform-card kalshi">
       <div class="platform-header">
         <div class="platform-identity">
-          <a href="https://kalshi.com/sign-up/?referral=3284dc15-89f1-494b-ac60-b0d124d26b1d" target="_blank" class="platform-logo" title="Trade on Kalshi">
-            <img src="https://kalshi.com/favicon.ico" alt="Kalshi" style="width: 40px; height: 40px; border-radius: 8px;">
+          <a href="https://kalshi.com/sign-up/?referral=3284dc15-89f1-494b-ac60-b0d124d26b1d" target="_blank" class="platform-logo">
+            <img src="https://kalshi.com/favicon.ico" alt="Kalshi">
           </a>
           <div class="platform-meta">
-            <h2><a href="https://kalshi.com/sign-up/?referral=3284dc15-89f1-494b-ac60-b0d124d26b1d" target="_blank" style="color: inherit; text-decoration: none;">KALSHI</a></h2>
-            <div class="timeframe">15-Minute Markets (BTC, ETH, SOL)</div>
+            <h2>KALSHI</h2>
+            <div class="timeframe">15-Min BTC/SOL Markets</div>
           </div>
         </div>
+        <span class="version-badge">v10.0</span>
       </div>
       <div class="platform-stats">
         <div class="stat-card">
@@ -1441,12 +758,12 @@ body {
           <div class="label">Losses</div>
         </div>
         <div class="stat-card">
-          <div class="value neutral" id="kalshiWLRatio">--</div>
-          <div class="label">Win Ratio</div>
+          <div class="value neutral" id="kalshiWinRate">--%</div>
+          <div class="label">Win Rate</div>
         </div>
         <div class="stat-card">
-          <div class="value neutral" id="kalshiOpenPos">--</div>
-          <div class="label">Open Positions</div>
+          <div class="value" id="kalshiPnL">$--</div>
+          <div class="label">P&L (v10)</div>
         </div>
       </div>
     </div>
@@ -1456,7 +773,7 @@ body {
       <div class="platform-header">
         <div class="platform-identity">
           <div class="platform-logo">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
               <rect width="40" height="40" rx="8" fill="#1a1a2e"/>
               <rect x="8" y="22" width="6" height="12" rx="1" fill="#3b82f6"/>
               <rect x="17" y="14" width="6" height="20" rx="1" fill="#8b5cf6"/>
@@ -1465,9 +782,10 @@ body {
           </div>
           <div class="platform-meta">
             <h2>POLYMARKET</h2>
-            <div class="timeframe">5-Minute Markets (BTC)</div>
+            <div class="timeframe">5-Min BTC Markets</div>
           </div>
         </div>
+        <span class="version-badge">v2.0</span>
       </div>
       <div class="platform-stats">
         <div class="stat-card">
@@ -1479,171 +797,50 @@ body {
           <div class="label">Losses</div>
         </div>
         <div class="stat-card">
-          <div class="value neutral" id="polyWLRatio">--</div>
-          <div class="label">Win Ratio</div>
+          <div class="value neutral" id="polyWinRate">--%</div>
+          <div class="label">Win Rate</div>
         </div>
         <div class="stat-card">
-          <div class="value neutral" id="polyOpenPos">--</div>
-          <div class="label">Open Positions</div>
+          <div class="value" id="polyPnL">$--</div>
+          <div class="label">P&L (v2)</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Recent Trades (moved up) -->
+  <!-- Recent Trades - Side by Side -->
   <div class="section-card">
     <div class="section-header">
       <h3>📜 RECENT TRADES</h3>
+      <span style="font-size: 12px; color: var(--text-dim);">Stats reset per version</span>
     </div>
-    <div class="trades-list" id="tradesList">
-      <div class="loading">
-        <div class="loader"></div>
-        Loading trades...
-      </div>
-    </div>
-  </div>
-
-  <!-- Insights -->
-  <div class="section-card">
-    <div class="section-header">
-      <h3>🔮 TRADING INSIGHTS</h3>
-    </div>
-    <div class="insights-grid">
-      <div class="insight-card">
-        <div class="insight-value high" id="corr5to15">67%</div>
-        <div class="insight-label">5m → 15m Corr</div>
-      </div>
-      <div class="insight-card">
-        <div class="insight-value high" id="corrBtcSol">71%</div>
-        <div class="insight-label">BTC ↔ SOL</div>
-      </div>
-      <div class="insight-card">
-        <div class="insight-value medium" id="corrPlatforms">45%</div>
-        <div class="insight-label">Cross-Platform</div>
-      </div>
-      <div class="insight-card">
-        <div class="insight-value high" id="corrAdx">82%</div>
-        <div class="insight-label">ADX>50 Win</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Architecture Section -->
-  <div class="architecture-section">
-    <div class="arch-header">
-      <h2>🧠 HOW OSHI THINKS</h2>
-      <p class="arch-subtitle">A multi-component AI trading system with specialized modules</p>
-    </div>
-    
-    <div class="arch-diagram">
-      <!-- Spirit at top -->
-      <div class="arch-spirit">
-        <div class="spirit-node">
-          <div class="node-icon spirit-icon">👻</div>
-          <div class="node-content">
-            <h3>SPIRIT</h3>
-            <p>The Voice & Personality</p>
-          </div>
+    <div class="trades-grid">
+      <!-- Kalshi Trades -->
+      <div class="trades-column kalshi">
+        <div class="trades-column-header">
+          <h4>🟢 KALSHI</h4>
+          <span class="version">v10.0</span>
         </div>
-        <div class="spirit-desc">
-          Controls Twitter presence, crafts messages, and represents Oshi's personality to the world. Receives updates from all systems.
-        </div>
-      </div>
-      
-      <!-- Connection lines -->
-      <div class="arch-connectors">
-        <div class="connector-line spirit-to-brain"></div>
-      </div>
-      
-      <!-- Brain row -->
-      <div class="arch-brain-row">
-        <div class="brain-node left-brain">
-          <div class="node-glow left-glow"></div>
-          <div class="node-icon brain-icon">🧠</div>
-          <div class="node-content">
-            <h3>LEFT BRAIN</h3>
-            <span class="node-role">Analyst</span>
-            <p>Technical analysis, indicator processing, signal detection (PSAR, ADX, RSI, MACD)</p>
-          </div>
-          <div class="node-flow">
-            <span class="flow-tag">Analyze Signal →</span>
-          </div>
-        </div>
-        
-        <div class="brain-connector">
-          <div class="data-flow">
-            <span>📊</span>
-            <span>📈</span>
-            <span>🎯</span>
-          </div>
-        </div>
-        
-        <div class="brain-node right-brain">
-          <div class="node-glow right-glow"></div>
-          <div class="node-icon brain-icon">🎛️</div>
-          <div class="node-content">
-            <h3>RIGHT BRAIN</h3>
-            <span class="node-role">Orchestrator</span>
-            <p>Decision making, position sizing, risk management, trade timing</p>
-          </div>
-          <div class="node-flow">
-            <span class="flow-tag">→ Execute Command</span>
+        <div class="trades-list" id="kalshiTradesList">
+          <div class="loading">
+            <div class="loader"></div>
+            Loading...
           </div>
         </div>
       </div>
       
-      <!-- Connection to body/heart -->
-      <div class="arch-connectors middle">
-        <div class="connector-line brain-to-body"></div>
-        <div class="connector-line brain-to-heart"></div>
-      </div>
-      
-      <!-- Body and Heart row -->
-      <div class="arch-bottom-row">
-        <div class="bottom-node body-node">
-          <div class="node-glow body-glow"></div>
-          <div class="node-icon body-icon">💪</div>
-          <div class="node-content">
-            <h3>BODY</h3>
-            <span class="node-role">Executor</span>
-            <p>API connections, order execution, position management across Kalshi & Polymarket</p>
-          </div>
-          <div class="body-platforms">
-            <span class="platform-tag kalshi-tag">🟢 Kalshi</span>
-            <span class="platform-tag poly-tag">🔵 Polymarket</span>
+      <!-- Polymarket Trades -->
+      <div class="trades-column polymarket">
+        <div class="trades-column-header">
+          <h4>🔵 POLYMARKET</h4>
+          <span class="version">v2.0</span>
+        </div>
+        <div class="trades-list" id="polyTradesList">
+          <div class="loading">
+            <div class="loader"></div>
+            Loading...
           </div>
         </div>
-        
-        <div class="bottom-node heart-node">
-          <div class="node-glow heart-glow"></div>
-          <div class="node-icon heart-icon">❤️</div>
-          <div class="node-content">
-            <h3>HEART</h3>
-            <span class="node-role">Memory & Learning</span>
-            <p>Trade logging, pattern recognition, performance analysis, strategy optimization</p>
-          </div>
-          <div class="heart-features">
-            <span class="feature-tag">📝 Logs</span>
-            <span class="feature-tag">🤖 ML</span>
-            <span class="feature-tag">📊 Analytics</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Data flow legend -->
-    <div class="arch-legend">
-      <div class="legend-item">
-        <div class="legend-line analysis"></div>
-        <span>Analysis Flow</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-line execution"></div>
-        <span>Execution Flow</span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-line feedback"></div>
-        <span>Learning Feedback</span>
       </div>
     </div>
   </div>
@@ -1655,36 +852,16 @@ body {
       <span class="refresh-time" id="lastUpdate">--</span>
     </div>
     <div class="brand-line">
-      Powered by <a href="https://predictwithoshi.com">Oshi Overseer</a> ✨ Balances: ~3 min | Trades: 10s
+      Powered by <a href="https://predictwithoshi.com">Oshi Overseer</a> ✨ Auto-refresh: 10s
     </div>
   </footer>
 
 </div>
 
 <script>
-// Copy CA function
-const BAGS_CA = 'Dsv7aCFRw3fQqPcDDAak2rw7biF3EyzBx1bfp6BXBAGS';
-function copyCA() {
-  if (!BAGS_CA) {
-    alert('$BAGS CA coming soon! 👀');
-    return;
-  }
-  navigator.clipboard.writeText(BAGS_CA).then(() => {
-    const el = document.getElementById('bagsCA');
-    const original = el.textContent;
-    el.textContent = 'Copied! ✓';
-    setTimeout(() => el.textContent = original, 1500);
-  });
-}
-
-// Update CA display if set
-if (BAGS_CA) {
-  document.getElementById('bagsCA').textContent = BAGS_CA.slice(0, 8) + '...' + BAGS_CA.slice(-6);
-}
-
 // Generate sparkles
 const bgEffects = document.querySelector('.bg-effects');
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 15; i++) {
   const sparkle = document.createElement('div');
   sparkle.className = 'sparkle';
   sparkle.style.left = Math.random() * 100 + '%';
@@ -1697,46 +874,92 @@ for (let i = 0; i < 20; i++) {
 const API_BASE = '';
 const POLY_API = '/poly-api';
 
+// Version filters - only count trades from these versions
+const KALSHI_VERSION = 'v10';  // Matches v10.0, v10.1, etc
+const POLY_VERSION = '1.4';    // Matches 1.4-rsi, etc (displayed as v2.0)
+
 const fmt = (n) => {
   if (n === null || n === undefined || isNaN(n)) return '$--';
   const sign = n >= 0 ? '+' : '';
   return `${sign}$${Math.abs(n).toFixed(2)}`;
 };
 
+const fmtPnl = (n, el) => {
+  if (n === null || n === undefined || isNaN(n)) {
+    el.textContent = '$--';
+    el.className = 'value neutral';
+    return;
+  }
+  el.textContent = fmt(n);
+  el.className = n >= 0 ? 'value positive' : 'value negative';
+};
+
+// Render trade row
+const renderTrade = (t, platform) => {
+  const won = t.won === true || t.pnl > 0 || t.pnl_usd > 0;
+  const pnl = t.pnl || t.pnl_usd || 0;
+  const pnlClass = pnl >= 0 ? 'positive' : 'negative';
+  const outcome = won ? 'win' : 'loss';
+  const market = t.asset || t.ticker?.split('-')[0] || 'BTC';
+  const side = t.direction || t.side?.toUpperCase() || '';
+  const tier = t.tier ? `[${t.tier}]` : '';
+  const timeStr = t.exit_time || t.entry_time || t.timestamp;
+  const time = timeStr ? new Date(timeStr).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) : '';
+  
+  return `
+    <div class="trade-row ${platform}">
+      <div class="trade-icon">${platform === 'kalshi' ? '🟢' : '🔵'}</div>
+      <div class="trade-info">
+        <div class="trade-market">${market} ${side} ${tier}</div>
+        <div class="trade-meta">${time}</div>
+      </div>
+      <span class="trade-outcome ${outcome}">${won ? 'WIN' : 'LOSS'}</span>
+      <span class="trade-pnl ${pnlClass}">${fmt(pnl)}</span>
+    </div>
+  `;
+};
+
 // Update Kalshi
 const updateKalshi = async () => {
   try {
-    const res = await fetch(`${API_BASE}/api/today`);
-    if (!res.ok) throw new Error('Kalshi API error');
-    const data = await res.json();
+    // Get trades and filter by version
+    const tradesRes = await fetch(`${API_BASE}/api/trades`);
+    let trades = [];
+    let wins = 0, losses = 0, pnl = 0;
     
-    // API returns wins/losses at top level, not under stats
-    const wins = data.wins || data.stats?.wins || 0;
-    const losses = data.losses || data.stats?.losses || 0;
-    const pnl = data.pnl || data.stats?.pnl || 0;
-    const ratio = losses > 0 ? (wins / losses).toFixed(2) : wins > 0 ? '∞' : '0.00';
+    if (tradesRes.ok) {
+      const data = await tradesRes.json();
+      trades = (data.trades || []).filter(t => {
+        const ver = t.version || '';
+        return ver.includes('10') || ver.includes('v10');
+      });
+      
+      // Calculate stats from filtered trades
+      for (const t of trades) {
+        const won = t.won === true || t.pnl > 0;
+        if (won) wins++; else losses++;
+        pnl += t.pnl || 0;
+      }
+    }
     
     document.getElementById('kalshiWins').textContent = wins;
     document.getElementById('kalshiLosses').textContent = losses;
-    document.getElementById('kalshiWLRatio').textContent = ratio;
+    const total = wins + losses;
+    document.getElementById('kalshiWinRate').textContent = total > 0 ? Math.round(wins / total * 100) + '%' : '--%';
+    fmtPnl(pnl, document.getElementById('kalshiPnL'));
     
-    // Get open positions count
-    try {
-      const posRes = await fetch(`${API_BASE}/api/positions`);
-      if (posRes.ok) {
-        const posData = await posRes.json();
-        document.getElementById('kalshiOpenPos').textContent = posData.count || 0;
-      } else {
-        document.getElementById('kalshiOpenPos').textContent = 0;
-      }
-    } catch (e) {
-      document.getElementById('kalshiOpenPos').textContent = 0;
+    // Render trades
+    const container = document.getElementById('kalshiTradesList');
+    if (trades.length === 0) {
+      container.innerHTML = '<div class="no-trades">✨ No v10 trades yet</div>';
+    } else {
+      container.innerHTML = trades.slice(0, 8).map(t => renderTrade(t, 'kalshi')).join('');
     }
     
+    // Balance
     const balRes = await fetch(`${API_BASE}/api/balance`);
     if (balRes.ok) {
       const balData = await balRes.json();
-      // API returns balance in dollars already (or balance_cents for cents)
       const bal = balData.balance_cents ? balData.balance_cents / 100 : balData.balance;
       document.getElementById('kalshiBalance').textContent = `$${bal.toFixed(2)}`;
     }
@@ -1748,196 +971,52 @@ const updateKalshi = async () => {
 // Update Polymarket
 const updatePolymarket = async () => {
   try {
-    const res = await fetch(`${POLY_API}/stats`);
-    if (!res.ok) throw new Error('Poly API error');
-    const data = await res.json();
+    // Get trades and filter by version
+    const tradesRes = await fetch(`${POLY_API}/trades?limit=200`);
+    let trades = [];
+    let wins = 0, losses = 0, pnl = 0;
     
-    const wins = data.wins || 0;
-    const losses = data.losses || 0;
-    const pnl = data.unredeemed_pnl || data.total_pnl || 0;
-    const ratio = losses > 0 ? (wins / losses).toFixed(2) : wins > 0 ? '∞' : '0.00';
+    if (tradesRes.ok) {
+      const data = await tradesRes.json();
+      trades = (data.trades || []).filter(t => {
+        const ver = t.version || '';
+        // Match 1.4-rsi or anything with 1.4
+        return ver.includes('1.4') || ver.includes('2.0') || ver.includes('v2');
+      });
+      
+      // Calculate stats from filtered trades
+      for (const t of trades) {
+        const tPnl = t.pnl_usd || 0;
+        if (tPnl > 0) wins++;
+        else if (tPnl < 0) losses++;
+        pnl += tPnl;
+      }
+    }
     
     document.getElementById('polyWins').textContent = wins;
     document.getElementById('polyLosses').textContent = losses;
-    document.getElementById('polyWLRatio').textContent = ratio;
-    // Get open positions count
-    try {
-      const posRes = await fetch(`${POLY_API}/positions`);
-      if (posRes.ok) {
-        const posData = await posRes.json();
-        document.getElementById('polyOpenPos').textContent = posData.count || 0;
-      } else {
-        document.getElementById('polyOpenPos').textContent = 0;
-      }
-    } catch (e) {
-      document.getElementById('polyOpenPos').textContent = 0;
+    const total = wins + losses;
+    document.getElementById('polyWinRate').textContent = total > 0 ? Math.round(wins / total * 100) + '%' : '--%';
+    fmtPnl(pnl, document.getElementById('polyPnL'));
+    
+    // Render trades
+    const container = document.getElementById('polyTradesList');
+    if (trades.length === 0) {
+      container.innerHTML = '<div class="no-trades">✨ No v2.0 trades yet</div>';
+    } else {
+      container.innerHTML = trades.slice(0, 8).map(t => renderTrade(t, 'polymarket')).join('');
     }
     
-    // Fetch actual wallet balance from separate endpoint
+    // Balance
     try {
       const balRes = await fetch(`${POLY_API}/balance`);
       if (balRes.ok) {
         const balData = await balRes.json();
-        const walletBal = balData.balance || data.balance || 0;
-        document.getElementById('polyBalance').textContent = `$${walletBal.toFixed(2)}`;
+        document.getElementById('polyBalance').textContent = `$${balData.balance.toFixed(2)}`;
       }
-    } catch (e) {
-      if (data.balance) {
-        document.getElementById('polyBalance').textContent = `$${data.balance.toFixed(2)}`;
-      }
-    }
-    
-    // Calculate total P&L from all trades
-    try {
-      const tradesRes = await fetch(`${POLY_API}/trades?limit=200`);
-      if (tradesRes.ok) {
-        const tradesData = await tradesRes.json();
-        let totalPnL = 0;
-        for (const t of (tradesData.trades || [])) {
-          // Use pnl_usd if available, otherwise calculate
-          if (t.pnl_usd !== undefined) {
-            totalPnL += t.pnl_usd;
-          } else if (t.exit_price !== undefined) {
-            const entry = t.entry_price || 50;
-            const size = t.size_usd || 5;
-            if (t.exit_price === 0) {
-              totalPnL -= size;
-            } else {
-              totalPnL += size * (t.exit_price - entry) / entry;
-            }
-          }
-        }
-        const sign = totalPnL >= 0 ? '+' : '';
-        const color = totalPnL >= 0 ? 'var(--win)' : 'var(--loss)';
-        document.getElementById('polyTotalPnL').textContent = `${sign}$${Math.abs(totalPnL).toFixed(2)}`;
-        document.getElementById('polyTotalPnL').style.color = color;
-      }
-    } catch (e) {
-      document.getElementById('polyTotalPnL').textContent = '$--';
-    }
+    } catch (e) {}
   } catch (e) {
     console.error('Poly error:', e);
-  }
-};
-
-// Update positions
-const updatePositions = async () => {
-  try {
-    const container = document.getElementById('positionsList');
-    const countEl = document.getElementById('positionCount');
-    let positions = [];
-    
-    try {
-      const kRes = await fetch(`${API_BASE}/api/positions`);
-      if (kRes.ok) {
-        const kData = await kRes.json();
-        positions = positions.concat((kData.positions || []).map(p => ({
-          ...p, platform: 'kalshi', icon: '🟢'
-        })));
-      }
-    } catch (e) {}
-    
-    try {
-      const pRes = await fetch(`${POLY_API}/positions`);
-      if (pRes.ok) {
-        const pData = await pRes.json();
-        positions = positions.concat((pData.positions || []).map(p => ({
-          ...p, platform: 'polymarket', icon: '🔵'
-        })));
-      }
-    } catch (e) {}
-    
-    countEl.textContent = `${positions.length} OPEN`;
-    
-    if (positions.length === 0) {
-      container.innerHTML = '<div class="no-positions">✨ No active positions</div>';
-      return;
-    }
-    
-    container.innerHTML = positions.map(p => {
-      const pnlPct = p.pnl_pct || 0;
-      const pnlClass = pnlPct >= 0 ? 'positive' : 'negative';
-      const alert = pnlPct <= -25 ? '<span class="position-alert">⚡ -25% CHECK</span>' : '';
-      const entryPrice = typeof p.entry_price === 'number' ? p.entry_price.toFixed(1) : p.entry_price;
-      const currentPrice = p.current_price ? p.current_price.toFixed(1) : 'live';
-      const direction = p.direction || p.side?.toUpperCase() || '';
-      const asset = p.asset || p.ticker?.split('-')[0] || 'BTC';
-      
-      return `
-        <div class="position-row ${p.platform}">
-          <div class="position-platform-icon">${p.icon}</div>
-          <div class="position-details">
-            <div class="position-market">${asset} ${direction}</div>
-            <div class="position-meta">Entry: ${entryPrice}¢ | $${(p.size_usd || 5).toFixed(0)}</div>
-          </div>
-          <span class="position-pnl ${pnlClass}">${pnlPct >= 0 ? '+' : ''}${pnlPct.toFixed(1)}%</span>
-          ${alert}
-        </div>
-      `;
-    }).join('');
-  } catch (e) {
-    console.error('Positions error:', e);
-  }
-};
-
-// Update trades
-const updateTrades = async () => {
-  try {
-    const container = document.getElementById('tradesList');
-    let trades = [];
-    
-    try {
-      const kRes = await fetch(`${API_BASE}/api/trades`);
-      if (kRes.ok) {
-        const kData = await kRes.json();
-        trades = trades.concat((kData.trades || []).slice(0, 10).map(t => ({
-          ...t, platform: 'kalshi', icon: '🟢'
-        })));
-      }
-    } catch (e) {}
-    
-    try {
-      const pRes = await fetch(`${POLY_API}/trades`);
-      if (pRes.ok) {
-        const pData = await pRes.json();
-        trades = trades.concat((pData.trades || []).slice(0, 10).map(t => ({
-          ...t, platform: 'polymarket', icon: '🔵'
-        })));
-      }
-    } catch (e) {}
-    
-    trades.sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
-    trades = trades.slice(0, 6);
-    
-    if (trades.length === 0) {
-      container.innerHTML = '<div class="no-positions">✨ No recent trades</div>';
-      return;
-    }
-    
-    container.innerHTML = trades.map(t => {
-      const won = t.won === true || t.pnl > 0 || t.pnl_usd > 0;
-      const pnl = t.pnl || t.pnl_usd || 0;
-      const pnlClass = pnl >= 0 ? 'positive' : 'negative';
-      const outcome = won ? 'win' : 'loss';
-      const market = t.asset || t.ticker?.split('-')[0] || 'BTC';
-      const side = t.direction || t.side?.toUpperCase() || '';
-      const timeStr = t.exit_time || t.entry_time || t.timestamp;
-      const time = timeStr ? new Date(timeStr).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) : '';
-      
-      return `
-        <div class="trade-row ${t.platform}">
-          <div class="trade-icon">${t.icon}</div>
-          <div class="trade-info">
-            <div class="trade-market">${market} ${side}</div>
-            <div class="trade-meta">${t.platform}${time ? ' • ' + time : ''}</div>
-          </div>
-          <span class="trade-outcome ${outcome}">${won ? 'WIN' : 'LOSS'}</span>
-          <span class="trade-pnl ${pnlClass}">${fmt(pnl)}</span>
-        </div>
-      `;
-    }).join('');
-  } catch (e) {
-    console.error('Trades error:', e);
   }
 };
 
@@ -1946,16 +1025,12 @@ const updateTimestamp = () => {
 };
 
 const updateAll = async () => {
-  await Promise.all([
-    updateKalshi(),
-    updatePolymarket(),
-    updateTrades()
-  ]);
+  await Promise.all([updateKalshi(), updatePolymarket()]);
   updateTimestamp();
 };
 
 updateAll();
-setInterval(updateAll, 10000); // Refresh every 10s
+setInterval(updateAll, 10000);
 </script>
 
 </body>
