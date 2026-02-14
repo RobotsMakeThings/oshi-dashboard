@@ -1153,7 +1153,9 @@ const updateKalshi = async () => {
     const balRes = await fetch(`${API_BASE}/api/balance`);
     if (balRes.ok) {
       const balData = await balRes.json();
-      document.getElementById('kalshiBalance').textContent = `$${(balData.balance / 100).toFixed(2)}`;
+      // API returns balance in dollars already (or balance_cents for cents)
+      const bal = balData.balance_cents ? balData.balance_cents / 100 : balData.balance;
+      document.getElementById('kalshiBalance').textContent = `$${bal.toFixed(2)}`;
     }
   } catch (e) {
     console.error('Kalshi error:', e);
@@ -1180,8 +1182,18 @@ const updatePolymarket = async () => {
     pnlEl.textContent = fmt(pnl);
     pnlEl.className = `value ${pnl >= 0 ? 'positive' : 'negative'}`;
     
-    if (data.balance) {
-      document.getElementById('polyBalance').textContent = `$${data.balance.toFixed(2)}`;
+    // Fetch actual wallet balance from separate endpoint
+    try {
+      const balRes = await fetch(`${POLY_API}/balance`);
+      if (balRes.ok) {
+        const balData = await balRes.json();
+        const walletBal = balData.balance || data.balance || 0;
+        document.getElementById('polyBalance').textContent = `$${walletBal.toFixed(2)}`;
+      }
+    } catch (e) {
+      if (data.balance) {
+        document.getElementById('polyBalance').textContent = `$${data.balance.toFixed(2)}`;
+      }
     }
   } catch (e) {
     console.error('Poly error:', e);
@@ -1226,13 +1238,17 @@ const updatePositions = async () => {
       const pnlPct = p.pnl_pct || 0;
       const pnlClass = pnlPct >= 0 ? 'positive' : 'negative';
       const alert = pnlPct <= -25 ? '<span class="position-alert">⚡ -25% CHECK</span>' : '';
+      const entryPrice = typeof p.entry_price === 'number' ? p.entry_price.toFixed(1) : p.entry_price;
+      const currentPrice = p.current_price ? p.current_price.toFixed(1) : 'live';
+      const direction = p.direction || p.side?.toUpperCase() || '';
+      const asset = p.asset || p.ticker?.split('-')[0] || 'BTC';
       
       return `
         <div class="position-row ${p.platform}">
           <div class="position-platform-icon">${p.icon}</div>
           <div class="position-details">
-            <div class="position-market">${p.asset || p.ticker} ${p.direction || p.side?.toUpperCase()}</div>
-            <div class="position-meta">Entry: ${p.entry_price}¢ → ${p.current_price || '?'}¢</div>
+            <div class="position-market">${asset} ${direction}</div>
+            <div class="position-meta">Entry: ${entryPrice}¢ | $${(p.size_usd || 5).toFixed(0)}</div>
           </div>
           <span class="position-pnl ${pnlClass}">${pnlPct >= 0 ? '+' : ''}${pnlPct.toFixed(1)}%</span>
           ${alert}
