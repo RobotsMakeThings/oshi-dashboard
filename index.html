@@ -970,7 +970,7 @@ body {
           <div class="platform-logo">🎯</div>
           <div class="platform-meta">
             <h2>KALSHI</h2>
-            <div class="timeframe">15-Minute Markets</div>
+            <div class="timeframe">15-Minute Markets (BTC, ETH, SOL)</div>
           </div>
         </div>
       </div>
@@ -1001,7 +1001,7 @@ body {
           <div class="platform-logo">📊</div>
           <div class="platform-meta">
             <h2>POLYMARKET</h2>
-            <div class="timeframe">5-Minute Markets</div>
+            <div class="timeframe">5-Minute Markets (BTC)</div>
           </div>
         </div>
       </div>
@@ -1294,16 +1294,17 @@ const updateTrades = async () => {
       const pnl = t.pnl || t.pnl_usd || 0;
       const pnlClass = pnl >= 0 ? 'positive' : 'negative';
       const outcome = won ? 'win' : 'loss';
-      const market = t.asset || t.ticker?.split('-')[0] || '?';
-      const side = t.direction || t.side?.toUpperCase() || '?';
-      const time = t.timestamp ? new Date(t.timestamp).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) : '?';
+      const market = t.asset || t.ticker?.split('-')[0] || 'BTC';
+      const side = t.direction || t.side?.toUpperCase() || '';
+      const timeStr = t.exit_time || t.entry_time || t.timestamp;
+      const time = timeStr ? new Date(timeStr).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) : '';
       
       return `
         <div class="trade-row ${t.platform}">
           <div class="trade-icon">${t.icon}</div>
           <div class="trade-info">
             <div class="trade-market">${market} ${side}</div>
-            <div class="trade-meta">${t.platform} • ${time}</div>
+            <div class="trade-meta">${t.platform}${time ? ' • ' + time : ''}</div>
           </div>
           <span class="trade-outcome ${outcome}">${won ? 'WIN' : 'LOSS'}</span>
           <span class="trade-pnl ${pnlClass}">${fmt(pnl)}</span>
