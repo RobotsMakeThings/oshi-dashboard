@@ -988,8 +988,8 @@ body {
           <div class="label">Win Ratio</div>
         </div>
         <div class="stat-card">
-          <div class="value" id="kalshiPnL">$--</div>
-          <div class="label">Today P&L</div>
+          <div class="value neutral" id="kalshiTrades">--</div>
+          <div class="label">Total Trades</div>
         </div>
       </div>
     </div>
@@ -1019,8 +1019,8 @@ body {
           <div class="label">Win Ratio</div>
         </div>
         <div class="stat-card">
-          <div class="value" id="polyPnL">$--</div>
-          <div class="label">Unredeemed</div>
+          <div class="value neutral" id="polyTrades">--</div>
+          <div class="label">Total Trades</div>
         </div>
       </div>
     </div>
@@ -1135,9 +1135,18 @@ const updateKalshi = async () => {
     document.getElementById('kalshiLosses').textContent = losses;
     document.getElementById('kalshiWLRatio').textContent = ratio;
     
-    const pnlEl = document.getElementById('kalshiPnL');
-    pnlEl.textContent = fmt(pnl);
-    pnlEl.className = `value ${pnl >= 0 ? 'positive' : 'negative'}`;
+    // Get total trades from trades endpoint
+    try {
+      const tradesRes = await fetch(`${API_BASE}/api/trades`);
+      if (tradesRes.ok) {
+        const tradesData = await tradesRes.json();
+        document.getElementById('kalshiTrades').textContent = tradesData.total || tradesData.trades?.length || (wins + losses);
+      } else {
+        document.getElementById('kalshiTrades').textContent = wins + losses;
+      }
+    } catch (e) {
+      document.getElementById('kalshiTrades').textContent = wins + losses;
+    }
     
     const balRes = await fetch(`${API_BASE}/api/balance`);
     if (balRes.ok) {
@@ -1166,10 +1175,7 @@ const updatePolymarket = async () => {
     document.getElementById('polyWins').textContent = wins;
     document.getElementById('polyLosses').textContent = losses;
     document.getElementById('polyWLRatio').textContent = ratio;
-    
-    const pnlEl = document.getElementById('polyPnL');
-    pnlEl.textContent = fmt(pnl);
-    pnlEl.className = `value ${pnl >= 0 ? 'positive' : 'negative'}`;
+    document.getElementById('polyTrades').textContent = data.total_trades || (wins + losses);
     
     // Fetch actual wallet balance from separate endpoint
     try {
