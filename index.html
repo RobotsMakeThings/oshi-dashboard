@@ -402,6 +402,13 @@ body {
 .balance-item.kalshi .value { color: var(--kalshi); text-shadow: 0 0 20px var(--kalshi-glow); }
 .balance-item.polymarket .value { color: var(--polymarket); text-shadow: 0 0 20px var(--polymarket-glow); }
 
+.unredeemed-label {
+  font-size: 12px;
+  color: var(--win);
+  margin-top: 4px;
+  font-family: 'Space Mono', monospace;
+}
+
 .balance-divider {
   width: 1px;
   background: linear-gradient(180deg, transparent, var(--border), transparent);
@@ -1393,6 +1400,7 @@ body {
       <div class="balance-info">
         <div class="label">Polymarket Balance</div>
         <div class="value" id="polyBalance">$--</div>
+        <div class="unredeemed-label">+ <span id="polyUnredeemed">$--</span> unredeemed</div>
       </div>
     </div>
   </div>
@@ -1745,6 +1753,26 @@ const updatePolymarket = async () => {
       if (data.balance) {
         document.getElementById('polyBalance').textContent = `$${data.balance.toFixed(2)}`;
       }
+    }
+    
+    // Calculate unredeemed balance from winning trades
+    try {
+      const tradesRes = await fetch(`${POLY_API}/trades?limit=200`);
+      if (tradesRes.ok) {
+        const tradesData = await tradesRes.json();
+        let unredeemed = 0;
+        for (const t of (tradesData.trades || [])) {
+          if (t.exit_price === 100) {
+            const entry = t.entry_price || 50;
+            const size = t.size_usd || 5;
+            // Return from win = stake + profit
+            unredeemed += size + (size * (100 - entry) / entry);
+          }
+        }
+        document.getElementById('polyUnredeemed').textContent = `$${unredeemed.toFixed(2)}`;
+      }
+    } catch (e) {
+      document.getElementById('polyUnredeemed').textContent = '$--';
     }
   } catch (e) {
     console.error('Poly error:', e);
