@@ -257,6 +257,30 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 24px;
+  overflow: hidden;
+}
+
+.platform-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.header-logo {
+  width: 22px;
+  height: 22px;
+  object-fit: cover;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+.trade-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 .balance-item.kalshi .balance-icon {
@@ -1001,7 +1025,9 @@ body {
   <!-- Balance Banner -->
   <div class="balance-banner">
     <div class="balance-item kalshi">
-      <div class="balance-icon">🟢</div>
+      <div class="balance-icon">
+        <img src="kalshi-logo.png" alt="Kalshi" class="platform-logo-img">
+      </div>
       <div class="balance-info">
         <div class="label">Kalshi Balance</div>
         <div class="value" id="kalshiBalance">$--</div>
@@ -1009,7 +1035,9 @@ body {
     </div>
     <div class="balance-divider"></div>
     <div class="balance-item polymarket">
-      <div class="balance-icon">🔵</div>
+      <div class="balance-icon">
+        <img src="polymarket-logo.png" alt="Polymarket" class="platform-logo-img">
+      </div>
       <div class="balance-info">
         <div class="label">Polymarket Balance</div>
         <div class="value" id="polyBalance">$--</div>
@@ -1103,7 +1131,7 @@ body {
       <!-- Kalshi Trades -->
       <div class="trades-column kalshi">
         <div class="trades-column-header">
-          <h4>🟢 KALSHI</h4>
+          <h4><img src="kalshi-logo.png" alt="Kalshi" class="header-logo"> KALSHI</h4>
           <span class="version">v10.0</span>
         </div>
         <div class="trades-list" id="kalshiTradesList">
@@ -1117,7 +1145,7 @@ body {
       <!-- Polymarket Trades -->
       <div class="trades-column polymarket">
         <div class="trades-column-header">
-          <h4>🔵 POLYMARKET</h4>
+          <h4><img src="polymarket-logo.png" alt="Polymarket" class="header-logo"> POLYMARKET</h4>
           <span class="version">v2.0</span>
         </div>
         <div class="trades-list" id="polyTradesList">
@@ -1316,10 +1344,11 @@ const renderTrade = (t, platform) => {
   const tier = t.tier ? `[${t.tier}]` : '';
   const timeStr = t.exit_time || t.entry_time || t.timestamp;
   const time = timeStr ? new Date(timeStr).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) : '';
+  const logo = platform === 'kalshi' ? 'kalshi-logo.png' : 'polymarket-logo.png';
   
   return `
     <div class="trade-row ${platform}">
-      <div class="trade-icon">${platform === 'kalshi' ? '🟢' : '🔵'}</div>
+      <div class="trade-icon"><img src="${logo}" alt="${platform}" class="trade-logo"></div>
       <div class="trade-info">
         <div class="trade-market">${market} ${side} ${tier}</div>
         <div class="trade-meta">${time}</div>
