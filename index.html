@@ -499,6 +499,17 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 26px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.platform-logo:hover {
+  transform: scale(1.05);
+}
+
+.platform-logo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
 }
 
 .kalshi .platform-logo {
@@ -1411,9 +1422,11 @@ body {
     <div class="platform-card kalshi">
       <div class="platform-header">
         <div class="platform-identity">
-          <div class="platform-logo">🎯</div>
+          <a href="https://kalshi.com/sign-up/?referral=3284dc15-89f1-494b-ac60-b0d124d26b1d" target="_blank" class="platform-logo" title="Trade on Kalshi">
+            <img src="https://kalshi.com/favicon.ico" alt="Kalshi" style="width: 40px; height: 40px; border-radius: 8px;">
+          </a>
           <div class="platform-meta">
-            <h2>KALSHI</h2>
+            <h2><a href="https://kalshi.com/sign-up/?referral=3284dc15-89f1-494b-ac60-b0d124d26b1d" target="_blank" style="color: inherit; text-decoration: none;">KALSHI</a></h2>
             <div class="timeframe">15-Minute Markets (BTC, ETH, SOL)</div>
           </div>
         </div>
@@ -1442,7 +1455,9 @@ body {
     <div class="platform-card polymarket">
       <div class="platform-header">
         <div class="platform-identity">
-          <div class="platform-logo">📊</div>
+          <div class="platform-logo">
+            <img src="https://polymarket.com/favicon.ico" alt="Polymarket" style="width: 40px; height: 40px; border-radius: 8px;">
+          </div>
           <div class="platform-meta">
             <h2>POLYMARKET</h2>
             <div class="timeframe">5-Minute Markets (BTC)</div>
