@@ -1314,7 +1314,7 @@ const API_BASE = '';
 const POLY_API = '/poly-api';
 
 // Version filters - only count trades from these versions
-const KALSHI_VERSION = 'v10';  // Matches v10.0, v10.1, etc
+const KALSHI_VERSION = '10.';  // Matches 10.0, 10.1, etc
 const POLY_VERSION = '1.4';    // Matches 1.4-rsi, etc (displayed as v2.0)
 
 const fmt = (n) => {
@@ -1370,8 +1370,8 @@ const updateKalshi = async () => {
     if (tradesRes.ok) {
       const data = await tradesRes.json();
       trades = (data.trades || []).filter(t => {
-        const ver = t.version || '';
-        return ver.includes('10') || ver.includes('v10');
+        const ver = String(t.version || '');
+        return ver.startsWith('10.') || ver === '10' || ver.includes('v10');
       });
       
       // Calculate stats from filtered trades
