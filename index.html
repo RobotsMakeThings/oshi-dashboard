@@ -1432,8 +1432,8 @@ body {
           <div class="label">Win Ratio</div>
         </div>
         <div class="stat-card">
-          <div class="value neutral" id="kalshiTrades">--</div>
-          <div class="label">Total Trades</div>
+          <div class="value neutral" id="kalshiOpenPos">--</div>
+          <div class="label">Open Positions</div>
         </div>
       </div>
     </div>
@@ -1463,8 +1463,8 @@ body {
           <div class="label">Win Ratio</div>
         </div>
         <div class="stat-card">
-          <div class="value neutral" id="polyTrades">--</div>
-          <div class="label">Total Trades</div>
+          <div class="value neutral" id="polyOpenPos">--</div>
+          <div class="label">Open Positions</div>
         </div>
       </div>
     </div>
@@ -1700,17 +1700,17 @@ const updateKalshi = async () => {
     document.getElementById('kalshiLosses').textContent = losses;
     document.getElementById('kalshiWLRatio').textContent = ratio;
     
-    // Get total trades from trades endpoint
+    // Get open positions count
     try {
-      const tradesRes = await fetch(`${API_BASE}/api/trades`);
-      if (tradesRes.ok) {
-        const tradesData = await tradesRes.json();
-        document.getElementById('kalshiTrades').textContent = tradesData.total || tradesData.trades?.length || (wins + losses);
+      const posRes = await fetch(`${API_BASE}/api/positions`);
+      if (posRes.ok) {
+        const posData = await posRes.json();
+        document.getElementById('kalshiOpenPos').textContent = posData.count || 0;
       } else {
-        document.getElementById('kalshiTrades').textContent = wins + losses;
+        document.getElementById('kalshiOpenPos').textContent = 0;
       }
     } catch (e) {
-      document.getElementById('kalshiTrades').textContent = wins + losses;
+      document.getElementById('kalshiOpenPos').textContent = 0;
     }
     
     const balRes = await fetch(`${API_BASE}/api/balance`);
@@ -1740,7 +1740,18 @@ const updatePolymarket = async () => {
     document.getElementById('polyWins').textContent = wins;
     document.getElementById('polyLosses').textContent = losses;
     document.getElementById('polyWLRatio').textContent = ratio;
-    document.getElementById('polyTrades').textContent = data.total_trades || (wins + losses);
+    // Get open positions count
+    try {
+      const posRes = await fetch(`${POLY_API}/positions`);
+      if (posRes.ok) {
+        const posData = await posRes.json();
+        document.getElementById('polyOpenPos').textContent = posData.count || 0;
+      } else {
+        document.getElementById('polyOpenPos').textContent = 0;
+      }
+    } catch (e) {
+      document.getElementById('polyOpenPos').textContent = 0;
+    }
     
     // Fetch actual wallet balance from separate endpoint
     try {
