@@ -3,32 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OSHI Dashboard v2.1 — Cross-Platform Trading</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>✨ Oshi — Prediction Agent Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
+  /* Oshi's Teal Theme */
+  --oshi-teal: #00d4aa;
+  --oshi-teal-light: #00ffd0;
+  --oshi-teal-glow: rgba(0, 212, 170, 0.4);
+  
   /* Platform Colors */
-  --kalshi-primary: #00d4aa;
-  --kalshi-light: #00ff88;
-  --polymarket-primary: #0088ff;
-  --polymarket-light: #00a8ff;
+  --kalshi: #00d4aa;
+  --kalshi-glow: rgba(0, 212, 170, 0.3);
+  --polymarket: #00a8ff;
+  --polymarket-glow: rgba(0, 168, 255, 0.3);
   
-  /* Status Colors */
-  --profit: #00d4aa;
-  --loss: #ff4757;
-  --neutral: #888888;
-  --warning: #f7931a;
+  /* Anime Accent Colors */
+  --pink: #ff6b9d;
+  --pink-glow: rgba(255, 107, 157, 0.3);
+  --purple: #a855f7;
+  --purple-glow: rgba(168, 85, 247, 0.3);
+  --gold: #ffd700;
   
-  /* Background */
-  --bg-deep: #0a0a0f;
-  --bg-card: linear-gradient(145deg, #12121a, #0d0d12);
-  --border: #1a1a2e;
-  --border-glow: rgba(0, 212, 170, 0.3);
+  /* Status */
+  --win: #00d4aa;
+  --loss: #ff5c8a;
+  --neutral: #8892b0;
+  
+  /* Backgrounds */
+  --bg-deep: #0a0e1a;
+  --bg-card: rgba(15, 20, 35, 0.95);
+  --bg-glass: rgba(255, 255, 255, 0.03);
+  --border: rgba(0, 212, 170, 0.15);
+  --border-glow: rgba(0, 212, 170, 0.4);
   
   /* Text */
-  --text-primary: #e8edf5;
+  --text-primary: #f0f4ff;
   --text-secondary: #8892b0;
-  --text-dim: #666;
+  --text-dim: #5a6480;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -36,144 +48,292 @@
 body {
   background: var(--bg-deep);
   color: var(--text-primary);
-  font-family: 'Rajdhani', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* === ANIMATED BACKGROUND === */
+.bg-effects {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-gradient {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(ellipse at 20% 20%, rgba(0, 212, 170, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(0, 168, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 60%);
+}
+
+.sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  animation: sparkle 3s ease-in-out infinite;
+  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.5);
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+.main-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
   padding: 20px;
-  line-height: 1.4;
 }
 
-/* === HEADER === */
-.header {
+/* === HERO HEADER === */
+.hero-header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  padding: 20px 0;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 24px;
+  padding: 30px 40px;
+  margin-bottom: 30px;
+  background: var(--bg-card);
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
 }
 
-.logo-section {
+.hero-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--kalshi), var(--purple), var(--polymarket));
+}
+
+.hero-header::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--oshi-teal-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-left {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 24px;
+  z-index: 2;
+}
+
+.oshi-avatar-container {
+  position: relative;
 }
 
 .oshi-avatar {
-  width: 56px;
-  height: 56px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--kalshi-primary), var(--polymarket-primary));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  border: 2px solid var(--kalshi-primary);
-  box-shadow: 0 0 20px rgba(0, 212, 170, 0.3);
+  object-fit: cover;
+  border: 3px solid var(--oshi-teal);
+  box-shadow: 
+    0 0 20px var(--oshi-teal-glow),
+    0 0 40px var(--oshi-teal-glow),
+    inset 0 0 20px rgba(0, 212, 170, 0.1);
+  animation: avatarGlow 3s ease-in-out infinite;
 }
 
-.brand h1 {
+@keyframes avatarGlow {
+  0%, 100% { box-shadow: 0 0 20px var(--oshi-teal-glow), 0 0 40px var(--oshi-teal-glow); }
+  50% { box-shadow: 0 0 30px var(--oshi-teal-glow), 0 0 60px var(--oshi-teal-glow); }
+}
+
+.avatar-ring {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border: 2px solid transparent;
+  border-top-color: var(--pink);
+  border-radius: 50%;
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.hero-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hero-brand h1 {
   font-family: 'Orbitron', sans-serif;
-  font-size: 24px;
-  letter-spacing: 3px;
-  background: linear-gradient(90deg, var(--kalshi-primary), var(--polymarket-primary));
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  background: linear-gradient(135deg, var(--oshi-teal-light), var(--oshi-teal), var(--polymarket));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px var(--oshi-teal-glow);
 }
 
-.brand .subtitle {
-  font-size: 12px;
+.hero-brand .tagline {
+  font-size: 14px;
   color: var(--text-secondary);
-  letter-spacing: 2px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
 }
 
-.header-right {
+.hero-right {
   display: flex;
   align-items: center;
   gap: 20px;
+  z-index: 2;
 }
 
-.version-badge {
-  background: var(--border);
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-family: 'Space Mono', monospace;
-  color: var(--kalshi-primary);
-  border: 1px solid var(--kalshi-primary);
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, rgba(0, 212, 170, 0.15), rgba(0, 168, 255, 0.15));
+  border-radius: 50px;
+  border: 1px solid var(--border);
 }
 
 .status-dot {
   width: 10px;
   height: 10px;
+  background: var(--oshi-teal);
   border-radius: 50%;
-  background: var(--kalshi-primary);
-  animation: pulse 2s infinite;
+  animation: pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 10px var(--oshi-teal);
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 212, 170, 0.4); }
-  50% { opacity: 0.8; box-shadow: 0 0 0 8px rgba(0, 212, 170, 0); }
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.7; }
 }
 
-/* === BALANCE BAR === */
-.balance-bar {
+.status-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  color: var(--oshi-teal);
+  letter-spacing: 1px;
+}
+
+.version-badge {
+  font-family: 'Space Mono', monospace;
+  padding: 8px 16px;
+  background: var(--bg-glass);
+  border: 1px solid var(--purple);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--purple);
+}
+
+/* === BALANCE BANNER === */
+.balance-banner {
   display: flex;
   justify-content: center;
-  gap: 40px;
-  padding: 16px;
+  gap: 60px;
+  padding: 24px 40px;
+  margin-bottom: 30px;
   background: var(--bg-card);
-  border-radius: 12px;
-  margin-bottom: 24px;
+  border-radius: 20px;
   border: 1px solid var(--border);
+  position: relative;
 }
 
 .balance-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
 }
 
-.balance-item .icon {
-  font-size: 20px;
+.balance-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
 }
 
-.balance-item .label {
+.balance-item.kalshi .balance-icon {
+  background: linear-gradient(135deg, rgba(0, 212, 170, 0.2), rgba(0, 212, 170, 0.05));
+  border: 1px solid var(--kalshi);
+  box-shadow: 0 0 20px var(--kalshi-glow);
+}
+
+.balance-item.polymarket .balance-icon {
+  background: linear-gradient(135deg, rgba(0, 168, 255, 0.2), rgba(0, 168, 255, 0.05));
+  border: 1px solid var(--polymarket);
+  box-shadow: 0 0 20px var(--polymarket-glow);
+}
+
+.balance-info .label {
   font-size: 12px;
   color: var(--text-dim);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
 }
 
-.balance-item .value {
+.balance-info .value {
   font-family: 'Space Mono', monospace;
-  font-size: 18px;
+  font-size: 26px;
   font-weight: 700;
 }
 
-.balance-item.kalshi .value { color: var(--kalshi-primary); }
-.balance-item.polymarket .value { color: var(--polymarket-primary); }
+.balance-item.kalshi .value { color: var(--kalshi); text-shadow: 0 0 20px var(--kalshi-glow); }
+.balance-item.polymarket .value { color: var(--polymarket); text-shadow: 0 0 20px var(--polymarket-glow); }
+
+.balance-divider {
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--border), transparent);
+}
 
 /* === PLATFORM GRID === */
 .platform-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
-  margin-bottom: 24px;
+  margin-bottom: 30px;
 }
 
 .platform-card {
   background: var(--bg-card);
-  border-radius: 16px;
-  padding: 24px;
+  border-radius: 24px;
+  padding: 28px;
   border: 1px solid var(--border);
   position: relative;
   overflow: hidden;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .platform-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 .platform-card::before {
@@ -183,14 +343,36 @@ body {
   left: 0;
   right: 0;
   height: 4px;
+  border-radius: 4px 4px 0 0;
 }
 
 .platform-card.kalshi::before {
-  background: linear-gradient(90deg, var(--kalshi-primary), var(--kalshi-light));
+  background: linear-gradient(90deg, var(--kalshi), var(--oshi-teal-light));
+  box-shadow: 0 0 20px var(--kalshi-glow);
 }
 
 .platform-card.polymarket::before {
-  background: linear-gradient(90deg, var(--polymarket-primary), var(--polymarket-light));
+  background: linear-gradient(90deg, var(--polymarket), #00d4ff);
+  box-shadow: 0 0 20px var(--polymarket-glow);
+}
+
+.platform-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.platform-card.kalshi::after {
+  background: radial-gradient(circle, var(--kalshi-glow) 0%, transparent 70%);
+}
+
+.platform-card.polymarket::after {
+  background: radial-gradient(circle, var(--polymarket-glow) 0%, transparent 70%);
 }
 
 .platform-header {
@@ -198,88 +380,100 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+  position: relative;
+  z-index: 2;
 }
 
-.platform-name {
+.platform-identity {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
-.platform-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+.platform-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 26px;
 }
 
-.kalshi .platform-icon {
-  background: rgba(0, 212, 170, 0.15);
-  border: 1px solid var(--kalshi-primary);
+.kalshi .platform-logo {
+  background: linear-gradient(135deg, rgba(0, 212, 170, 0.25), rgba(0, 212, 170, 0.1));
+  border: 2px solid var(--kalshi);
+  box-shadow: 0 0 20px var(--kalshi-glow), inset 0 0 20px var(--kalshi-glow);
 }
 
-.polymarket .platform-icon {
-  background: rgba(0, 136, 255, 0.15);
-  border: 1px solid var(--polymarket-primary);
+.polymarket .platform-logo {
+  background: linear-gradient(135deg, rgba(0, 168, 255, 0.25), rgba(0, 168, 255, 0.1));
+  border: 2px solid var(--polymarket);
+  box-shadow: 0 0 20px var(--polymarket-glow), inset 0 0 20px var(--polymarket-glow);
 }
 
-.platform-label h2 {
+.platform-meta h2 {
   font-family: 'Orbitron', sans-serif;
-  font-size: 16px;
-  letter-spacing: 2px;
+  font-size: 18px;
+  letter-spacing: 3px;
 }
 
-.kalshi .platform-label h2 { color: var(--kalshi-primary); }
-.polymarket .platform-label h2 { color: var(--polymarket-primary); }
+.kalshi .platform-meta h2 { color: var(--kalshi); }
+.polymarket .platform-meta h2 { color: var(--polymarket); }
 
-.platform-label .timeframe {
-  font-size: 12px;
+.platform-meta .timeframe {
+  font-size: 13px;
   color: var(--text-dim);
+  margin-top: 2px;
 }
 
 .platform-stats {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
+  position: relative;
+  z-index: 2;
 }
 
-.stat-box {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 12px;
-  padding: 20px 16px;
+.stat-card {
+  background: var(--bg-glass);
+  border-radius: 16px;
+  padding: 20px;
   text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
 }
 
-.stat-box.wide {
-  grid-column: span 2;
+.stat-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
-.stat-value {
+.stat-card .value {
   font-family: 'Space Mono', monospace;
   font-size: 32px;
   font-weight: 700;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
-.stat-value.positive { color: var(--profit); }
-.stat-value.negative { color: var(--loss); }
-.stat-value.neutral { color: var(--neutral); }
+.stat-card .value.win { color: var(--win); text-shadow: 0 0 15px var(--kalshi-glow); }
+.stat-card .value.loss { color: var(--loss); text-shadow: 0 0 15px var(--pink-glow); }
+.stat-card .value.neutral { color: var(--neutral); }
+.stat-card .value.positive { color: var(--win); text-shadow: 0 0 15px var(--kalshi-glow); }
+.stat-card .value.negative { color: var(--loss); text-shadow: 0 0 15px var(--pink-glow); }
 
-.stat-label {
+.stat-card .label {
   font-size: 11px;
   color: var(--text-dim);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
 }
 
 /* === ACTIVE POSITIONS === */
-.active-positions {
+.section-card {
   background: var(--bg-card);
-  border-radius: 16px;
-  padding: 20px 24px;
+  border-radius: 24px;
+  padding: 28px;
   margin-bottom: 24px;
   border: 1px solid var(--border);
 }
@@ -288,438 +482,531 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
 }
 
 .section-header h3 {
   font-family: 'Orbitron', sans-serif;
   font-size: 14px;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.position-count {
-  background: rgba(0, 212, 170, 0.1);
-  padding: 4px 12px;
-  border-radius: 12px;
+.section-badge {
+  background: linear-gradient(135deg, var(--oshi-teal-glow), var(--purple-glow));
+  padding: 6px 14px;
+  border-radius: 20px;
   font-size: 12px;
-  color: var(--kalshi-primary);
+  font-family: 'Space Mono', monospace;
+  color: var(--oshi-teal);
+  border: 1px solid var(--oshi-teal);
 }
 
-.positions-list {
+.positions-grid {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.position-item {
+.position-row {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 14px 16px;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 10px;
-  border-left: 3px solid transparent;
+  padding: 16px 20px;
+  background: var(--bg-glass);
+  border-radius: 16px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
 }
 
-.position-item.kalshi { border-left-color: var(--kalshi-primary); }
-.position-item.polymarket { border-left-color: var(--polymarket-primary); }
+.position-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
 
-.position-platform {
+.position-row.kalshi { border-left: 3px solid var(--kalshi); }
+.position-row.polymarket { border-left: 3px solid var(--polymarket); }
+
+.position-platform-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 18px;
 }
 
-.position-info {
+.position-row.kalshi .position-platform-icon {
+  background: rgba(0, 212, 170, 0.15);
+}
+
+.position-row.polymarket .position-platform-icon {
+  background: rgba(0, 168, 255, 0.15);
+}
+
+.position-details {
   flex: 1;
 }
 
 .position-market {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15px;
+  margin-bottom: 4px;
 }
 
 .position-meta {
   font-size: 12px;
   color: var(--text-dim);
+  font-family: 'Space Mono', monospace;
 }
 
 .position-pnl {
   font-family: 'Space Mono', monospace;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 10px;
 }
 
-.position-pnl.positive { color: var(--profit); }
-.position-pnl.negative { color: var(--loss); }
+.position-pnl.positive {
+  background: rgba(0, 212, 170, 0.15);
+  color: var(--win);
+}
+
+.position-pnl.negative {
+  background: rgba(255, 92, 138, 0.15);
+  color: var(--loss);
+}
 
 .position-alert {
+  padding: 6px 12px;
+  border-radius: 8px;
   font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 6px;
-  background: rgba(247, 147, 26, 0.2);
-  color: var(--warning);
+  font-weight: 600;
+  background: rgba(255, 107, 157, 0.2);
+  color: var(--pink);
+  animation: alertPulse 2s ease-in-out infinite;
+}
+
+@keyframes alertPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
 .no-positions {
   text-align: center;
-  padding: 30px;
+  padding: 40px;
   color: var(--text-dim);
   font-style: italic;
 }
 
-/* === CORRELATION MATRIX === */
-.correlation-section {
-  background: var(--bg-card);
-  border-radius: 16px;
-  padding: 20px 24px;
-  margin-bottom: 24px;
-  border: 1px solid var(--border);
-}
-
-.correlation-grid {
+/* === INSIGHTS GRID === */
+.insights-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
 
-.corr-item {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 10px;
-  padding: 16px;
+.insight-card {
+  background: var(--bg-glass);
+  border-radius: 16px;
+  padding: 20px;
   text-align: center;
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
 }
 
-.corr-value {
+.insight-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--oshi-teal);
+}
+
+.insight-value {
   font-family: 'Space Mono', monospace;
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
-.corr-value.high { color: var(--profit); }
-.corr-value.medium { color: var(--warning); }
-.corr-value.low { color: var(--loss); }
+.insight-value.high { color: var(--win); }
+.insight-value.medium { color: var(--gold); }
+.insight-value.low { color: var(--loss); }
 
-.corr-label {
+.insight-label {
   font-size: 10px;
   color: var(--text-dim);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
 
-/* === RECENT RESOLUTIONS === */
-.recent-section {
-  background: var(--bg-card);
-  border-radius: 16px;
-  padding: 20px 24px;
-  border: 1px solid var(--border);
-}
-
-.resolutions-list {
+/* === RECENT TRADES === */
+.trades-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.resolution-item {
+.trade-row {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 14px 16px;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 10px;
-  transition: background 0.2s;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--bg-glass);
+  border-radius: 16px;
+  transition: all 0.3s ease;
 }
 
-.resolution-item:hover {
-  background: rgba(255, 255, 255, 0.04);
+.trade-row:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.resolution-platform {
+.trade-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 20px;
 }
 
-.resolution-info {
+.trade-row.kalshi .trade-icon { background: rgba(0, 212, 170, 0.15); }
+.trade-row.polymarket .trade-icon { background: rgba(0, 168, 255, 0.15); }
+
+.trade-info {
   flex: 1;
 }
 
-.resolution-market {
+.trade-market {
   font-weight: 600;
-  font-size: 14px;
-  margin-bottom: 2px;
+  font-size: 15px;
+  margin-bottom: 3px;
 }
 
-.resolution-meta {
-  font-size: 11px;
+.trade-meta {
+  font-size: 12px;
   color: var(--text-dim);
 }
 
-.resolution-outcome {
-  padding: 5px 12px;
-  border-radius: 8px;
+.trade-outcome {
+  padding: 6px 14px;
+  border-radius: 10px;
   font-size: 12px;
-  font-weight: 600;
-}
-
-.resolution-outcome.win {
-  background: rgba(0, 212, 170, 0.15);
-  color: var(--profit);
-}
-
-.resolution-outcome.loss {
-  background: rgba(255, 71, 87, 0.15);
-  color: var(--loss);
-}
-
-.resolution-pnl {
-  font-family: 'Space Mono', monospace;
-  font-size: 14px;
   font-weight: 700;
-  min-width: 80px;
+  letter-spacing: 1px;
+}
+
+.trade-outcome.win {
+  background: linear-gradient(135deg, rgba(0, 212, 170, 0.2), rgba(0, 212, 170, 0.1));
+  color: var(--win);
+  border: 1px solid var(--win);
+}
+
+.trade-outcome.loss {
+  background: linear-gradient(135deg, rgba(255, 92, 138, 0.2), rgba(255, 92, 138, 0.1));
+  color: var(--loss);
+  border: 1px solid var(--loss);
+}
+
+.trade-pnl {
+  font-family: 'Space Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  min-width: 90px;
   text-align: right;
 }
 
-.resolution-pnl.positive { color: var(--profit); }
-.resolution-pnl.negative { color: var(--loss); }
+.trade-pnl.positive { color: var(--win); }
+.trade-pnl.negative { color: var(--loss); }
 
 /* === FOOTER === */
 .footer {
   text-align: center;
-  padding: 24px;
+  padding: 30px;
   color: var(--text-dim);
-  font-size: 12px;
 }
 
-.footer a {
-  color: var(--kalshi-primary);
-  text-decoration: none;
+.footer .refresh-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
-.refresh-time {
+.footer .refresh-time {
   font-family: 'Space Mono', monospace;
   color: var(--text-secondary);
 }
 
-/* === RESPONSIVE === */
-@media (max-width: 768px) {
-  .platform-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .correlation-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  
-  .balance-bar {
-    flex-direction: column;
-    gap: 16px;
-    align-items: center;
-  }
-  
-  .header {
-    flex-direction: column;
-    gap: 16px;
-    text-align: center;
-  }
+.footer .brand-line {
+  font-size: 13px;
 }
 
-/* === LOADING STATE === */
+.footer a {
+  color: var(--oshi-teal);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer a:hover {
+  color: var(--oshi-teal-light);
+}
+
+/* === LOADING === */
 .loading {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px;
   color: var(--text-dim);
+  gap: 12px;
 }
 
-.spinner {
+.loader {
   width: 24px;
   height: 24px;
   border: 3px solid var(--border);
-  border-top-color: var(--kalshi-primary);
+  border-top-color: var(--oshi-teal);
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-right: 12px;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+/* === RESPONSIVE === */
+@media (max-width: 1024px) {
+  .platform-grid { grid-template-columns: 1fr; }
+  .insights-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .hero-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+    padding: 24px;
+  }
+  
+  .hero-left {
+    flex-direction: column;
+  }
+  
+  .balance-banner {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .balance-divider { display: none; }
+  
+  .insights-grid { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="header">
-  <div class="logo-section">
-    <div class="oshi-avatar">👁️</div>
-    <div class="brand">
-      <h1>OSHI</h1>
-      <div class="subtitle">CROSS-PLATFORM TRADING</div>
-    </div>
-  </div>
-  <div class="header-right">
-    <div class="version-badge">v9.0 + v1.2</div>
-    <div class="status-dot" title="Live"></div>
-  </div>
-</header>
-
-<!-- BALANCE BAR -->
-<div class="balance-bar">
-  <div class="balance-item kalshi">
-    <span class="icon">🟢</span>
-    <div>
-      <div class="label">Kalshi Balance</div>
-      <div class="value" id="kalshiBalance">$--</div>
-    </div>
-  </div>
-  <div class="balance-item polymarket">
-    <span class="icon">🔵</span>
-    <div>
-      <div class="label">Polymarket Balance</div>
-      <div class="value" id="polyBalance">$--</div>
-    </div>
-  </div>
+<!-- Background Effects -->
+<div class="bg-effects">
+  <div class="bg-gradient"></div>
+  <!-- Sparkles generated by JS -->
 </div>
 
-<!-- PLATFORM COMPARISON -->
-<div class="platform-grid">
-  <!-- KALSHI CARD -->
-  <div class="platform-card kalshi">
-    <div class="platform-header">
-      <div class="platform-name">
-        <div class="platform-icon">🟢</div>
-        <div class="platform-label">
-          <h2>KALSHI</h2>
-          <div class="timeframe">15-Minute Markets</div>
+<div class="main-container">
+
+  <!-- Hero Header -->
+  <header class="hero-header">
+    <div class="hero-left">
+      <div class="oshi-avatar-container">
+        <img src="oshi-avatar.jpg" alt="Oshi" class="oshi-avatar">
+        <div class="avatar-ring"></div>
+      </div>
+      <div class="hero-brand">
+        <h1>✨ OSHI</h1>
+        <div class="tagline">Prediction Agent Dashboard</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="status-pill">
+        <div class="status-dot"></div>
+        <span class="status-text">LIVE</span>
+      </div>
+      <div class="version-badge">v9.0 + v1.2</div>
+    </div>
+  </header>
+
+  <!-- Balance Banner -->
+  <div class="balance-banner">
+    <div class="balance-item kalshi">
+      <div class="balance-icon">🟢</div>
+      <div class="balance-info">
+        <div class="label">Kalshi Balance</div>
+        <div class="value" id="kalshiBalance">$--</div>
+      </div>
+    </div>
+    <div class="balance-divider"></div>
+    <div class="balance-item polymarket">
+      <div class="balance-icon">🔵</div>
+      <div class="balance-info">
+        <div class="label">Polymarket Balance</div>
+        <div class="value" id="polyBalance">$--</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Platform Cards -->
+  <div class="platform-grid">
+    <!-- Kalshi -->
+    <div class="platform-card kalshi">
+      <div class="platform-header">
+        <div class="platform-identity">
+          <div class="platform-logo">🎯</div>
+          <div class="platform-meta">
+            <h2>KALSHI</h2>
+            <div class="timeframe">15-Minute Markets</div>
+          </div>
+        </div>
+      </div>
+      <div class="platform-stats">
+        <div class="stat-card">
+          <div class="value win" id="kalshiWins">--</div>
+          <div class="label">Wins</div>
+        </div>
+        <div class="stat-card">
+          <div class="value loss" id="kalshiLosses">--</div>
+          <div class="label">Losses</div>
+        </div>
+        <div class="stat-card">
+          <div class="value neutral" id="kalshiWLRatio">--</div>
+          <div class="label">Win Ratio</div>
+        </div>
+        <div class="stat-card">
+          <div class="value" id="kalshiPnL">$--</div>
+          <div class="label">Today P&L</div>
         </div>
       </div>
     </div>
-    <div class="platform-stats">
-      <div class="stat-box">
-        <div class="stat-value positive" id="kalshiWins">--</div>
-        <div class="stat-label">Wins</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-value negative" id="kalshiLosses">--</div>
-        <div class="stat-label">Losses</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-value neutral" id="kalshiWLRatio">--</div>
-        <div class="stat-label">W/L Ratio</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-value" id="kalshiPnL">$--</div>
-        <div class="stat-label">Today's P&L</div>
-      </div>
-    </div>
-  </div>
 
-  <!-- POLYMARKET CARD -->
-  <div class="platform-card polymarket">
-    <div class="platform-header">
-      <div class="platform-name">
-        <div class="platform-icon">🔵</div>
-        <div class="platform-label">
-          <h2>POLYMARKET</h2>
-          <div class="timeframe">5-Minute Markets</div>
+    <!-- Polymarket -->
+    <div class="platform-card polymarket">
+      <div class="platform-header">
+        <div class="platform-identity">
+          <div class="platform-logo">📊</div>
+          <div class="platform-meta">
+            <h2>POLYMARKET</h2>
+            <div class="timeframe">5-Minute Markets</div>
+          </div>
+        </div>
+      </div>
+      <div class="platform-stats">
+        <div class="stat-card">
+          <div class="value win" id="polyWins">--</div>
+          <div class="label">Wins</div>
+        </div>
+        <div class="stat-card">
+          <div class="value loss" id="polyLosses">--</div>
+          <div class="label">Losses</div>
+        </div>
+        <div class="stat-card">
+          <div class="value neutral" id="polyWLRatio">--</div>
+          <div class="label">Win Ratio</div>
+        </div>
+        <div class="stat-card">
+          <div class="value" id="polyPnL">$--</div>
+          <div class="label">Unredeemed</div>
         </div>
       </div>
     </div>
-    <div class="platform-stats">
-      <div class="stat-box">
-        <div class="stat-value positive" id="polyWins">--</div>
-        <div class="stat-label">Wins</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-value negative" id="polyLosses">--</div>
-        <div class="stat-label">Losses</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-value neutral" id="polyWLRatio">--</div>
-        <div class="stat-label">W/L Ratio</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-value neutral" id="polyPnL">$--</div>
-        <div class="stat-label">Unredeemed P&L</div>
-      </div>
-    </div>
   </div>
-</div>
 
-<!-- ACTIVE POSITIONS (My Addition) -->
-<div class="active-positions">
-  <div class="section-header">
-    <h3>📍 ACTIVE POSITIONS</h3>
-    <div class="position-count" id="positionCount">0 Open</div>
+  <!-- Active Positions -->
+  <div class="section-card">
+    <div class="section-header">
+      <h3>📍 ACTIVE POSITIONS</h3>
+      <span class="section-badge" id="positionCount">0 OPEN</span>
+    </div>
+    <div class="positions-grid" id="positionsList">
+      <div class="no-positions">✨ No active positions</div>
+    </div>
   </div>
-  <div class="positions-list" id="positionsList">
-    <div class="no-positions">No active positions</div>
-  </div>
-</div>
 
-<!-- CORRELATION MATRIX -->
-<div class="correlation-section">
-  <div class="section-header">
-    <h3>🔗 CROSS-PLATFORM CORRELATION</h3>
+  <!-- Insights -->
+  <div class="section-card">
+    <div class="section-header">
+      <h3>🔮 TRADING INSIGHTS</h3>
+    </div>
+    <div class="insights-grid">
+      <div class="insight-card">
+        <div class="insight-value high" id="corr5to15">67%</div>
+        <div class="insight-label">5m → 15m Corr</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-value high" id="corrBtcSol">71%</div>
+        <div class="insight-label">BTC ↔ SOL</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-value medium" id="corrPlatforms">45%</div>
+        <div class="insight-label">Cross-Platform</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-value high" id="corrAdx">82%</div>
+        <div class="insight-label">ADX>50 Win</div>
+      </div>
+    </div>
   </div>
-  <div class="correlation-grid">
-    <div class="corr-item">
-      <div class="corr-value high" id="corr5to15">--%</div>
-      <div class="corr-label">5m → 15m BTC</div>
-    </div>
-    <div class="corr-item">
-      <div class="corr-value medium" id="corrBtcSol">--%</div>
-      <div class="corr-label">BTC ↔ SOL</div>
-    </div>
-    <div class="corr-item">
-      <div class="corr-value low" id="corrPlatforms">--%</div>
-      <div class="corr-label">Kalshi ↔ Poly</div>
-    </div>
-    <div class="corr-item">
-      <div class="corr-value high" id="corrAdx">--%</div>
-      <div class="corr-label">ADX &gt;50 Win</div>
-    </div>
-  </div>
-</div>
 
-<!-- RECENT RESOLUTIONS -->
-<div class="recent-section">
-  <div class="section-header">
-    <h3>📊 RECENT RESOLUTIONS</h3>
-  </div>
-  <div class="resolutions-list" id="resolutionsList">
-    <div class="loading">
-      <div class="spinner"></div>
-      Loading trades...
+  <!-- Recent Trades -->
+  <div class="section-card">
+    <div class="section-header">
+      <h3>📜 RECENT TRADES</h3>
+    </div>
+    <div class="trades-list" id="tradesList">
+      <div class="loading">
+        <div class="loader"></div>
+        Loading trades...
+      </div>
     </div>
   </div>
-</div>
 
-<!-- FOOTER -->
-<footer class="footer">
-  <p>Last updated: <span class="refresh-time" id="lastUpdate">--</span></p>
-  <p>Powered by <a href="https://predictwithoshi.com">Oshi Overseer</a> | Auto-refresh: 60s</p>
-</footer>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="refresh-line">
+      <span>Last updated:</span>
+      <span class="refresh-time" id="lastUpdate">--</span>
+    </div>
+    <div class="brand-line">
+      Powered by <a href="https://predictwithoshi.com">Oshi Overseer</a> ✨ Auto-refresh: 60s
+    </div>
+  </footer>
+
+</div>
 
 <script>
+// Generate sparkles
+const bgEffects = document.querySelector('.bg-effects');
+for (let i = 0; i < 20; i++) {
+  const sparkle = document.createElement('div');
+  sparkle.className = 'sparkle';
+  sparkle.style.left = Math.random() * 100 + '%';
+  sparkle.style.top = Math.random() * 100 + '%';
+  sparkle.style.animationDelay = Math.random() * 3 + 's';
+  sparkle.style.animationDuration = (2 + Math.random() * 2) + 's';
+  bgEffects.appendChild(sparkle);
+}
+
 const API_BASE = '';
 const POLY_API = '/poly-api';
 
-// Format currency
 const fmt = (n) => {
-  if (n === null || n === undefined) return '$--';
+  if (n === null || n === undefined || isNaN(n)) return '$--';
   const sign = n >= 0 ? '+' : '';
   return `${sign}$${Math.abs(n).toFixed(2)}`;
 };
 
-// Format percentage
-const pct = (n) => {
-  if (n === null || n === undefined) return '--%';
-  return `${Math.round(n)}%`;
-};
-
-// Update Kalshi stats
+// Update Kalshi
 const updateKalshi = async () => {
   try {
     const res = await fetch(`${API_BASE}/api/today`);
@@ -729,7 +1016,7 @@ const updateKalshi = async () => {
     const wins = data.stats?.wins || 0;
     const losses = data.stats?.losses || 0;
     const pnl = data.stats?.pnl || 0;
-    const ratio = losses > 0 ? (wins / losses).toFixed(2) : wins > 0 ? '∞' : '0';
+    const ratio = losses > 0 ? (wins / losses).toFixed(2) : wins > 0 ? '∞' : '0.00';
     
     document.getElementById('kalshiWins').textContent = wins;
     document.getElementById('kalshiLosses').textContent = losses;
@@ -737,20 +1024,19 @@ const updateKalshi = async () => {
     
     const pnlEl = document.getElementById('kalshiPnL');
     pnlEl.textContent = fmt(pnl);
-    pnlEl.className = `stat-value ${pnl >= 0 ? 'positive' : 'negative'}`;
+    pnlEl.className = `value ${pnl >= 0 ? 'positive' : 'negative'}`;
     
-    // Balance
     const balRes = await fetch(`${API_BASE}/api/balance`);
     if (balRes.ok) {
       const balData = await balRes.json();
       document.getElementById('kalshiBalance').textContent = `$${(balData.balance / 100).toFixed(2)}`;
     }
   } catch (e) {
-    console.error('Kalshi fetch error:', e);
+    console.error('Kalshi error:', e);
   }
 };
 
-// Update Polymarket stats
+// Update Polymarket
 const updatePolymarket = async () => {
   try {
     const res = await fetch(`${POLY_API}/stats`);
@@ -760,7 +1046,7 @@ const updatePolymarket = async () => {
     const wins = data.wins || 0;
     const losses = data.losses || 0;
     const pnl = data.unredeemed_pnl || data.total_pnl || 0;
-    const ratio = losses > 0 ? (wins / losses).toFixed(2) : wins > 0 ? '∞' : '0';
+    const ratio = losses > 0 ? (wins / losses).toFixed(2) : wins > 0 ? '∞' : '0.00';
     
     document.getElementById('polyWins').textContent = wins;
     document.getElementById('polyLosses').textContent = losses;
@@ -768,118 +1054,103 @@ const updatePolymarket = async () => {
     
     const pnlEl = document.getElementById('polyPnL');
     pnlEl.textContent = fmt(pnl);
-    pnlEl.className = `stat-value ${pnl >= 0 ? 'positive' : 'negative'}`;
+    pnlEl.className = `value ${pnl >= 0 ? 'positive' : 'negative'}`;
     
-    // Balance
     if (data.balance) {
       document.getElementById('polyBalance').textContent = `$${data.balance.toFixed(2)}`;
     }
   } catch (e) {
-    console.error('Poly fetch error:', e);
+    console.error('Poly error:', e);
   }
 };
 
-// Update active positions
+// Update positions
 const updatePositions = async () => {
   try {
     const container = document.getElementById('positionsList');
     const countEl = document.getElementById('positionCount');
-    
-    // Fetch from both platforms
     let positions = [];
     
-    // Kalshi positions
     try {
       const kRes = await fetch(`${API_BASE}/api/positions`);
       if (kRes.ok) {
         const kData = await kRes.json();
         positions = positions.concat((kData.positions || []).map(p => ({
-          ...p,
-          platform: 'kalshi',
-          icon: '🟢'
+          ...p, platform: 'kalshi', icon: '🟢'
         })));
       }
     } catch (e) {}
     
-    // Poly positions
     try {
       const pRes = await fetch(`${POLY_API}/positions`);
       if (pRes.ok) {
         const pData = await pRes.json();
         positions = positions.concat((pData.positions || []).map(p => ({
-          ...p,
-          platform: 'polymarket',
-          icon: '🔵'
+          ...p, platform: 'polymarket', icon: '🔵'
         })));
       }
     } catch (e) {}
     
-    countEl.textContent = `${positions.length} Open`;
+    countEl.textContent = `${positions.length} OPEN`;
     
     if (positions.length === 0) {
-      container.innerHTML = '<div class="no-positions">No active positions</div>';
+      container.innerHTML = '<div class="no-positions">✨ No active positions</div>';
       return;
     }
     
     container.innerHTML = positions.map(p => {
-      const pnlClass = (p.pnl_pct || 0) >= 0 ? 'positive' : 'negative';
-      const alert = (p.pnl_pct || 0) <= -25 ? '<span class="position-alert">⚡-25% CHECK</span>' : '';
+      const pnlPct = p.pnl_pct || 0;
+      const pnlClass = pnlPct >= 0 ? 'positive' : 'negative';
+      const alert = pnlPct <= -25 ? '<span class="position-alert">⚡ -25% CHECK</span>' : '';
       
       return `
-        <div class="position-item ${p.platform}">
-          <span class="position-platform">${p.icon}</span>
-          <div class="position-info">
+        <div class="position-row ${p.platform}">
+          <div class="position-platform-icon">${p.icon}</div>
+          <div class="position-details">
             <div class="position-market">${p.asset || p.ticker} ${p.direction || p.side?.toUpperCase()}</div>
             <div class="position-meta">Entry: ${p.entry_price}¢ → ${p.current_price || '?'}¢</div>
           </div>
-          <span class="position-pnl ${pnlClass}">${(p.pnl_pct || 0).toFixed(1)}%</span>
+          <span class="position-pnl ${pnlClass}">${pnlPct >= 0 ? '+' : ''}${pnlPct.toFixed(1)}%</span>
           ${alert}
         </div>
       `;
     }).join('');
   } catch (e) {
-    console.error('Positions fetch error:', e);
+    console.error('Positions error:', e);
   }
 };
 
-// Update recent resolutions
-const updateResolutions = async () => {
+// Update trades
+const updateTrades = async () => {
   try {
-    const container = document.getElementById('resolutionsList');
+    const container = document.getElementById('tradesList');
     let trades = [];
     
-    // Fetch Kalshi trades
     try {
       const kRes = await fetch(`${API_BASE}/api/trades`);
       if (kRes.ok) {
         const kData = await kRes.json();
         trades = trades.concat((kData.trades || []).slice(0, 10).map(t => ({
-          ...t,
-          platform: 'kalshi',
-          icon: '🟢'
+          ...t, platform: 'kalshi', icon: '🟢'
         })));
       }
     } catch (e) {}
     
-    // Fetch Poly trades
     try {
       const pRes = await fetch(`${POLY_API}/trades`);
       if (pRes.ok) {
         const pData = await pRes.json();
         trades = trades.concat((pData.trades || []).slice(0, 10).map(t => ({
-          ...t,
-          platform: 'polymarket',
-          icon: '🔵'
+          ...t, platform: 'polymarket', icon: '🔵'
         })));
       }
     } catch (e) {}
     
-    // Sort by timestamp descending and take last 5
     trades.sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
-    trades = trades.slice(0, 5);
+    trades = trades.slice(0, 6);
     
     if (trades.length === 0) {
-      container.innerHTML = '<div class="no-positions">No recent trades</div>';
+      container.innerHTML = '<div class="no-positions">✨ No recent trades</div>';
       return;
     }
     
@@ -893,51 +1164,38 @@ const updateResolutions = async () => {
       const time = t.timestamp ? new Date(t.timestamp).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) : '?';
       
       return `
-        <div class="resolution-item">
-          <span class="resolution-platform">${t.icon}</span>
-          <div class="resolution-info">
-            <div class="resolution-market">${market} ${side}</div>
-            <div class="resolution-meta">${t.platform} • ${time}</div>
+        <div class="trade-row ${t.platform}">
+          <div class="trade-icon">${t.icon}</div>
+          <div class="trade-info">
+            <div class="trade-market">${market} ${side}</div>
+            <div class="trade-meta">${t.platform} • ${time}</div>
           </div>
-          <span class="resolution-outcome ${outcome}">${won ? 'WIN' : 'LOSS'}</span>
-          <span class="resolution-pnl ${pnlClass}">${fmt(pnl)}</span>
+          <span class="trade-outcome ${outcome}">${won ? 'WIN' : 'LOSS'}</span>
+          <span class="trade-pnl ${pnlClass}">${fmt(pnl)}</span>
         </div>
       `;
     }).join('');
   } catch (e) {
-    console.error('Resolutions fetch error:', e);
+    console.error('Trades error:', e);
   }
 };
 
-// Update correlations (placeholder - would need backend)
-const updateCorrelations = () => {
-  // These would come from an API - using placeholders
-  document.getElementById('corr5to15').textContent = '67%';
-  document.getElementById('corrBtcSol').textContent = '71%';
-  document.getElementById('corrPlatforms').textContent = '45%';
-  document.getElementById('corrAdx').textContent = '82%';
-};
-
-// Update timestamp
 const updateTimestamp = () => {
   document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
 };
 
-// Main update function
 const updateAll = async () => {
   await Promise.all([
     updateKalshi(),
     updatePolymarket(),
     updatePositions(),
-    updateResolutions()
+    updateTrades()
   ]);
-  updateCorrelations();
   updateTimestamp();
 };
 
-// Initial load and refresh
 updateAll();
-setInterval(updateAll, 60000); // Refresh every 60s
+setInterval(updateAll, 60000);
 </script>
 
 </body>
