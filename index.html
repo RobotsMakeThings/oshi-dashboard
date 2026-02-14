@@ -1690,9 +1690,10 @@ const updateKalshi = async () => {
     if (!res.ok) throw new Error('Kalshi API error');
     const data = await res.json();
     
-    const wins = data.stats?.wins || 0;
-    const losses = data.stats?.losses || 0;
-    const pnl = data.stats?.pnl || 0;
+    // API returns wins/losses at top level, not under stats
+    const wins = data.wins || data.stats?.wins || 0;
+    const losses = data.losses || data.stats?.losses || 0;
+    const pnl = data.pnl || data.stats?.pnl || 0;
     const ratio = losses > 0 ? (wins / losses).toFixed(2) : wins > 0 ? '∞' : '0.00';
     
     document.getElementById('kalshiWins').textContent = wins;
