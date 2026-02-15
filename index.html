@@ -1184,7 +1184,7 @@ body {
           </div>
         </div>
         <span class="version-badge">v10.2</span>
-        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">Stats Refresh After Version Upgrades</div>
+        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">Stats Reset Daily at Midnight EST</div>
       </div>
       <div class="platform-stats">
         <div class="stat-card">
@@ -1222,8 +1222,8 @@ body {
             <div class="timeframe">5-Min BTC Markets</div>
           </div>
         </div>
-        <span class="version-badge">v3.2</span>
-        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">Stats Refresh After Version Upgrades</div>
+        <span class="version-badge">v3.3</span>
+        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">Stats Reset Daily at Midnight EST</div>
       </div>
       <div class="platform-stats">
         <div class="stat-card">
@@ -1254,7 +1254,7 @@ body {
   <div class="section-card">
     <div class="section-header">
       <h3>📜 RECENT TRADES</h3>
-      <span style="font-size: 12px; color: var(--text-dim);">Stats Refresh After Version Upgrades</span>
+      <span style="font-size: 12px; color: var(--text-dim);">Stats Reset Daily at Midnight EST</span>
     </div>
     <div class="trades-grid">
       <!-- Kalshi Trades -->
@@ -1275,7 +1275,7 @@ body {
       <div class="trades-column polymarket">
         <div class="trades-column-header">
           <h4><img src="polymarket-logo.png" alt="Polymarket" class="header-logo"> POLYMARKET</h4>
-          <span class="version">v3.2</span>
+          <span class="version">v3.3</span>
         </div>
         <div class="trades-list" id="polyTradesList">
           <div class="loading">
@@ -1595,11 +1595,23 @@ const updatePolymarket = async () => {
     
     if (tradesRes.ok) {
       const data = await tradesRes.json();
+      // Daily reset at midnight EST (5:00 UTC)
+      const now = new Date();
+      const estMidnight = new Date(now);
+      estMidnight.setUTCHours(5, 0, 0, 0); // Midnight EST = 5:00 UTC
+      if (now.getUTCHours() < 5) {
+        estMidnight.setDate(estMidnight.getDate() - 1); // Yesterday's midnight if before 5 UTC
+      }
+      
       trades = (data.trades || []).filter(t => {
         const ver = t.version || '';
-        // Match v3.1 or v3.2
-        const versionMatch = ver.includes('3.1') || ver.includes('3.2') || ver === '3.1' || ver === '3.2';
+        // Match v3.3 (current) - daily reset means we only show today's trades
+        const versionMatch = ver.includes('3.3') || ver === '3.3';
         if (!versionMatch) return false;
+        
+        // Daily reset: only show trades from today (since midnight EST)
+        const tradeTime = new Date(t.exit_time || t.entry_time);
+        if (tradeTime < estMidnight) return false;
         
         // Only show RESOLVED trades:
         // - Wins: redeemed=true OR exit_price=100
