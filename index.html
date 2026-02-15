@@ -542,6 +542,30 @@ body {
 .trades-column.kalshi h4 { color: var(--kalshi); }
 .trades-column.polymarket h4 { color: var(--polymarket); }
 
+.streak-badge {
+  display: inline-block;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  padding: 3px 8px;
+  margin-left: 8px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.2), rgba(255, 215, 0, 0.2));
+  color: var(--gold);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  vertical-align: middle;
+}
+
+.streak-badge.hot {
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.3), rgba(255, 215, 0, 0.3));
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  animation: streakPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes streakPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
 .trades-column-header .version {
   font-family: 'Space Mono', monospace;
   font-size: 10px;
@@ -1199,10 +1223,6 @@ body {
           <div class="value neutral" id="kalshiWinRate">--%</div>
           <div class="label">Win Rate</div>
         </div>
-        <div class="stat-card">
-          <div class="value win" id="kalshiStreak">--</div>
-          <div class="label">🔥 Win Streak</div>
-        </div>
         <div class="stat-card position-stat">
           <div class="value neutral" id="kalshiPositions">--</div>
           <div class="label">Open Positions</div>
@@ -1242,10 +1262,6 @@ body {
           <div class="value neutral" id="polyWinRate">--%</div>
           <div class="label">Win Rate</div>
         </div>
-        <div class="stat-card">
-          <div class="value win" id="polyStreak">--</div>
-          <div class="label">🔥 Win Streak</div>
-        </div>
         <div class="stat-card position-stat">
           <div class="value neutral" id="polyPositions">--</div>
           <div class="label">Open Positions</div>
@@ -1268,7 +1284,7 @@ body {
       <!-- Kalshi Trades -->
       <div class="trades-column kalshi">
         <div class="trades-column-header">
-          <h4><img src="kalshi-logo.png" alt="Kalshi" class="header-logo"> KALSHI</h4>
+          <h4><img src="kalshi-logo.png" alt="Kalshi" class="header-logo"> KALSHI <span id="kalshiStreakBadge" class="streak-badge">🔥 0</span></h4>
           <span class="version">v10.2</span>
         </div>
         <div class="trades-list" id="kalshiTradesList">
@@ -1282,7 +1298,7 @@ body {
       <!-- Polymarket Trades -->
       <div class="trades-column polymarket">
         <div class="trades-column-header">
-          <h4><img src="polymarket-logo.png" alt="Polymarket" class="header-logo"> POLYMARKET</h4>
+          <h4><img src="polymarket-logo.png" alt="Polymarket" class="header-logo"> POLYMARKET <span id="polyStreakBadge" class="streak-badge">🔥 0</span></h4>
           <span class="version">v3.3</span>
         </div>
         <div class="trades-list" id="polyTradesList">
@@ -1535,7 +1551,11 @@ const updateKalshi = async () => {
     document.getElementById('kalshiLosses').textContent = losses;
     const total = wins + losses;
     document.getElementById('kalshiWinRate').textContent = total > 0 ? Math.round(wins / total * 100) + '%' : '--%';
-    document.getElementById('kalshiStreak').textContent = winStreak || 0;
+    
+    // Update streak badge
+    const kalshiStreakEl = document.getElementById('kalshiStreakBadge');
+    kalshiStreakEl.textContent = `🔥 ${winStreak}`;
+    kalshiStreakEl.className = winStreak >= 3 ? 'streak-badge hot' : 'streak-badge';
     
     // Get open positions with details
     try {
@@ -1665,7 +1685,11 @@ const updatePolymarket = async () => {
     document.getElementById('polyLosses').textContent = losses;
     const total = wins + losses;
     document.getElementById('polyWinRate').textContent = total > 0 ? Math.round(wins / total * 100) + '%' : '--%';
-    document.getElementById('polyStreak').textContent = winStreak || 0;
+    
+    // Update streak badge
+    const polyStreakEl = document.getElementById('polyStreakBadge');
+    polyStreakEl.textContent = `🔥 ${winStreak}`;
+    polyStreakEl.className = winStreak >= 3 ? 'streak-badge hot' : 'streak-badge';
     
     // Get open positions with details
     try {
