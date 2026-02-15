@@ -1199,6 +1199,10 @@ body {
           <div class="value neutral" id="kalshiWinRate">--%</div>
           <div class="label">Win Rate</div>
         </div>
+        <div class="stat-card">
+          <div class="value win" id="kalshiStreak">--</div>
+          <div class="label">🔥 Win Streak</div>
+        </div>
         <div class="stat-card position-stat">
           <div class="value neutral" id="kalshiPositions">--</div>
           <div class="label">Open Positions</div>
@@ -1237,6 +1241,10 @@ body {
         <div class="stat-card">
           <div class="value neutral" id="polyWinRate">--%</div>
           <div class="label">Win Rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="value win" id="polyStreak">--</div>
+          <div class="label">🔥 Win Streak</div>
         </div>
         <div class="stat-card position-stat">
           <div class="value neutral" id="polyPositions">--</div>
@@ -1495,7 +1503,7 @@ const updateKalshi = async () => {
     // Get trades and filter by version
     const tradesRes = await fetch(`${API_BASE}/api/trades`);
     let trades = [];
-    let wins = 0, losses = 0, pnl = 0;
+    let wins = 0, losses = 0, pnl = 0, winStreak = 0;
     
     if (tradesRes.ok) {
       const data = await tradesRes.json();
@@ -1510,12 +1518,24 @@ const updateKalshi = async () => {
         if (won) wins++; else losses++;
         pnl += t.pnl || 0;
       }
+      
+      // Calculate current win streak (most recent trades first)
+      let winStreak = 0;
+      const sortedTrades = [...trades].sort((a, b) => 
+        new Date(b.exit_time || b.timestamp) - new Date(a.exit_time || a.timestamp)
+      );
+      for (const t of sortedTrades) {
+        const won = t.won === true || t.pnl > 0;
+        if (won) winStreak++;
+        else break; // Stop at first loss
+      }
     }
     
     document.getElementById('kalshiWins').textContent = wins;
     document.getElementById('kalshiLosses').textContent = losses;
     const total = wins + losses;
     document.getElementById('kalshiWinRate').textContent = total > 0 ? Math.round(wins / total * 100) + '%' : '--%';
+    document.getElementById('kalshiStreak').textContent = winStreak || 0;
     
     // Get open positions with details
     try {
@@ -1591,7 +1611,7 @@ const updatePolymarket = async () => {
     // Get trades and filter by version + resolution status
     const tradesRes = await fetch(`${POLY_API}/trades?limit=200`);
     let trades = [];
-    let wins = 0, losses = 0, pnl = 0;
+    let wins = 0, losses = 0, pnl = 0, winStreak = 0;
     
     if (tradesRes.ok) {
       const data = await tradesRes.json();
@@ -1622,10 +1642,22 @@ const updatePolymarket = async () => {
       // Calculate stats from filtered trades
       for (const t of trades) {
         const exitPrice = t.exit_price || 0;
-        const isWin = exitPrice >= 100 || t.redeemed === true;
+        const isWin = exitPrice >= 100 || t.redeemed === true || t.pnl_usd > 0;
         if (isWin) wins++;
         else losses++;
         pnl += t.pnl_usd || 0;
+      }
+      
+      // Calculate current win streak (most recent trades first)
+      let winStreak = 0;
+      const sortedTrades = [...trades].sort((a, b) => 
+        new Date(b.exit_time || b.entry_time) - new Date(a.exit_time || a.entry_time)
+      );
+      for (const t of sortedTrades) {
+        const exitPrice = t.exit_price || 0;
+        const isWin = exitPrice >= 100 || t.redeemed === true || t.pnl_usd > 0;
+        if (isWin) winStreak++;
+        else break; // Stop at first loss
       }
     }
     
@@ -1633,6 +1665,7 @@ const updatePolymarket = async () => {
     document.getElementById('polyLosses').textContent = losses;
     const total = wins + losses;
     document.getElementById('polyWinRate').textContent = total > 0 ? Math.round(wins / total * 100) + '%' : '--%';
+    document.getElementById('polyStreak').textContent = winStreak || 0;
     
     // Get open positions with details
     try {
