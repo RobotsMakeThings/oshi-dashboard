@@ -1207,7 +1207,7 @@ body {
             <div class="timeframe">15-Min BTC/SOL Markets</div>
           </div>
         </div>
-        <span class="version-badge">v10.2</span>
+        <span class="version-badge">v10.3</span>
         <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">Stats Reset Daily at 12 AM EST</div>
       </div>
       <div class="platform-stats">
@@ -1285,7 +1285,7 @@ body {
       <div class="trades-column kalshi">
         <div class="trades-column-header">
           <h4><img src="kalshi-logo.png" alt="Kalshi" class="header-logo"> KALSHI <span id="kalshiStreakBadge" class="streak-badge">🔥 0</span></h4>
-          <span class="version">v10.2</span>
+          <span class="version">v10.3</span>
         </div>
         <div class="trades-list" id="kalshiTradesList">
           <div class="loading">
@@ -1525,7 +1525,7 @@ const updateKalshi = async () => {
       const data = await tradesRes.json();
       trades = (data.trades || []).filter(t => {
         const ver = String(t.version || '');
-        return ver.includes('10.2') || ver === '10.2' || ver.includes('v10.2');
+        return ver.includes('10.') || ver.startsWith('10.');
       });
       
       // Calculate stats from filtered trades
@@ -1607,7 +1607,7 @@ const updateKalshi = async () => {
     // Render trades
     const container = document.getElementById('kalshiTradesList');
     if (trades.length === 0) {
-      container.innerHTML = '<div class="no-trades">✨ No v10.2 trades yet</div>';
+      container.innerHTML = '<div class="no-trades">✨ No v10.3 trades yet</div>';
     } else {
       container.innerHTML = trades.slice(0, 8).map(t => renderTrade(t, 'kalshi')).join('');
     }
