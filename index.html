@@ -1508,15 +1508,15 @@ const updateKalshi = async () => {
             const buyIn = parseFloat(p.market_exposure_dollars || 0).toFixed(2);
             const price = contracts > 0 ? Math.round(parseFloat(buyIn) * 100 / contracts) : 0;
             const potentialWin = ((100 - price) * contracts / 100).toFixed(2);
-            return \`
+            return `
               <div class="position-item">
-                <span class="position-asset">\${asset} \${window}</span>
+                <span class="position-asset">${asset} ${window}</span>
                 <div class="position-details">
-                  <div class="entry">\${contracts} @ \${price}¢ · $\${buyIn}</div>
-                  <div class="potential">Win: +$\${potentialWin}</div>
+                  <div class="entry">${contracts} @ ${price}¢ · $${buyIn}</div>
+                  <div class="potential">Win: +$${potentialWin}</div>
                 </div>
               </div>
-            \`;
+            `;
           }).join('');
         }
       } else {
