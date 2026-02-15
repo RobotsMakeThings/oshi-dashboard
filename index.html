@@ -1604,12 +1604,7 @@ const updatePolymarket = async () => {
       }
       
       trades = (data.trades || []).filter(t => {
-        const ver = t.version || '';
-        // Match v3.3 (current) - daily reset means we only show today's trades
-        const versionMatch = ver.includes('3.3') || ver === '3.3';
-        if (!versionMatch) return false;
-        
-        // Daily reset: only show trades since 12 PM EST
+        // Daily reset: only show trades since 12 AM EST (version-agnostic)
         const tradeTime = new Date(t.exit_time || t.entry_time);
         if (tradeTime < resetTime) return false;
         
