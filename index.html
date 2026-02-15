@@ -1184,7 +1184,7 @@ body {
           </div>
         </div>
         <span class="version-badge">v10.2</span>
-        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">Stats Reset Daily at 12 PM EST</div>
+        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">Stats Reset Daily at 12 AM EST</div>
       </div>
       <div class="platform-stats">
         <div class="stat-card">
@@ -1223,7 +1223,7 @@ body {
           </div>
         </div>
         <span class="version-badge">v3.3</span>
-        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">Stats Reset Daily at 12 PM EST</div>
+        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">Stats Reset Daily at 12 AM EST</div>
       </div>
       <div class="platform-stats">
         <div class="stat-card">
@@ -1254,7 +1254,7 @@ body {
   <div class="section-card">
     <div class="section-header">
       <h3>📜 RECENT TRADES</h3>
-      <span style="font-size: 12px; color: var(--text-dim);">Stats Reset Daily at 12 PM EST</span>
+      <span style="font-size: 12px; color: var(--text-dim);">Stats Reset Daily at 12 AM EST</span>
     </div>
     <div class="trades-grid">
       <!-- Kalshi Trades -->
@@ -1595,12 +1595,12 @@ const updatePolymarket = async () => {
     
     if (tradesRes.ok) {
       const data = await tradesRes.json();
-      // Daily reset at 12 PM EST (17:00 UTC)
+      // Daily reset at 12 AM EST / midnight (5:00 UTC)
       const now = new Date();
       const resetTime = new Date(now);
-      resetTime.setUTCHours(17, 0, 0, 0); // 12 PM EST = 17:00 UTC
-      if (now.getUTCHours() < 17) {
-        resetTime.setDate(resetTime.getDate() - 1); // Yesterday's noon if before 17 UTC
+      resetTime.setUTCHours(5, 0, 0, 0); // 12 AM EST = 5:00 UTC
+      if (now.getUTCHours() < 5) {
+        resetTime.setDate(resetTime.getDate() - 1); // Yesterday's midnight if before 5 UTC
       }
       
       trades = (data.trades || []).filter(t => {
