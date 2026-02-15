@@ -1492,7 +1492,8 @@ const updateKalshi = async () => {
       const posRes = await fetch(`${API_BASE}/api/positions`);
       if (posRes.ok) {
         const posData = await posRes.json();
-        const positions = posData.positions || [];
+        // Filter to only truly open positions (position > 0)
+        const positions = (posData.positions || []).filter(p => p.position > 0);
         document.getElementById('kalshiPositions').textContent = positions.length;
         
         // Populate tooltip
@@ -1503,11 +1504,17 @@ const updateKalshi = async () => {
           listEl.innerHTML = positions.map(p => {
             const ticker = p.ticker || '';
             const asset = ticker.includes('BTC') ? 'BTC' : ticker.includes('SOL') ? 'SOL' : '?';
-            const window = ticker.split('-').slice(-1)[0] || '?';
+            // Extract time from ticker like KXBTC15M-26FEB151215-15
+            const parts = ticker.split('-');
+            const timePart = parts.length >= 2 ? parts[1].slice(-4) : '';
+            const hour = timePart.slice(0, 2);
+            const min = timePart.slice(2, 4);
+            const window = hour && min ? `${hour}:${min}` : '?';
             const contracts = p.position || 0;
             const buyIn = parseFloat(p.market_exposure_dollars || 0).toFixed(2);
             const price = contracts > 0 ? Math.round(parseFloat(buyIn) * 100 / contracts) : 0;
             const potentialWin = ((100 - price) * contracts / 100).toFixed(2);
+            const side = p.side || (ticker.includes('YES') ? 'YES' : 'NO');
             return `
               <div class="position-item">
                 <span class="position-asset">${asset} ${window}</span>
