@@ -1332,8 +1332,9 @@ const fmtPnl = (n, el) => {
 
 // Render trade row
 const renderTrade = (t, platform) => {
-  const won = t.won === true || t.pnl > 0 || t.pnl_usd > 0;
-  const pnl = t.pnl || t.pnl_usd || 0;
+  // Use pnl_usd first (Polymarket), fallback to pnl (Kalshi)
+  const pnl = t.pnl_usd !== undefined ? t.pnl_usd : (t.pnl || 0);
+  const won = t.won === true || t.redeemed === true || t.exit_price === 100 || pnl > 0;
   const pnlClass = pnl >= 0 ? 'positive' : 'negative';
   const outcome = won ? 'win' : 'loss';
   const market = t.asset || t.ticker?.split('-')[0] || 'BTC';
