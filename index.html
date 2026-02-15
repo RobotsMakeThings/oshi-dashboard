@@ -641,7 +641,8 @@ body {
   cursor: pointer;
 }
 
-.position-stat:hover .position-tooltip {
+.position-stat:hover .position-tooltip,
+.position-stat.active .position-tooltip {
   display: block;
 }
 
@@ -659,6 +660,35 @@ body {
   z-index: 100;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   margin-bottom: 10px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .position-tooltip {
+    position: fixed;
+    bottom: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 85vw;
+    max-width: 320px;
+    margin-bottom: 0;
+  }
+  
+  .position-tooltip::after {
+    display: none;
+  }
+  
+  .position-stat.active::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+  }
 }
 
 .position-tooltip::after {
@@ -1672,6 +1702,26 @@ const updateAll = async () => {
 
 updateAll();
 setInterval(updateAll, 10000);
+
+// Mobile tap handling for position tooltips
+document.querySelectorAll('.position-stat').forEach(el => {
+  el.addEventListener('click', (e) => {
+    e.stopPropagation();
+    // Close any other open tooltips
+    document.querySelectorAll('.position-stat.active').forEach(other => {
+      if (other !== el) other.classList.remove('active');
+    });
+    // Toggle this one
+    el.classList.toggle('active');
+  });
+});
+
+// Close tooltip when tapping outside
+document.addEventListener('click', () => {
+  document.querySelectorAll('.position-stat.active').forEach(el => {
+    el.classList.remove('active');
+  });
+});
 </script>
 
 </body>
