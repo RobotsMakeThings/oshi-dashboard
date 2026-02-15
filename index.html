@@ -1536,7 +1536,6 @@ const updateKalshi = async () => {
       }
       
       // Calculate current win streak (most recent trades first)
-      let winStreak = 0;
       const sortedTrades = [...trades].sort((a, b) => 
         new Date(b.exit_time || b.timestamp) - new Date(a.exit_time || a.timestamp)
       );
@@ -1669,7 +1668,6 @@ const updatePolymarket = async () => {
       }
       
       // Calculate current win streak (most recent trades first)
-      let winStreak = 0;
       const sortedTrades = [...trades].sort((a, b) => 
         new Date(b.exit_time || b.entry_time) - new Date(a.exit_time || a.entry_time)
       );
