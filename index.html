@@ -1641,7 +1641,7 @@ body {
       <span class="refresh-time" id="lastUpdate">--</span>
     </div>
     <div class="brand-line">
-      Powered by <a href="https://predictwithoshi.com">Oshi Overseer</a> ✨ Auto-refresh: 10s
+      Powered by <a href="https://predictwithoshi.com">Oshi Overseer</a> ✨ Auto-refresh: 5m
     </div>
   </footer>
 
@@ -2077,7 +2077,7 @@ const updateAll = async () => {
 };
 
 updateAll();
-setInterval(updateAll, 10000);
+setInterval(updateAll, 300000); // 5 minutes
 
 // Mobile tap handling for position tooltips
 document.querySelectorAll('.position-stat').forEach(el => {
