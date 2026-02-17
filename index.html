@@ -1713,23 +1713,40 @@ const renderTrade = (t, platform) => {
 // Update Kalshi
 const updateKalshi = async () => {
   try {
-    // Get trades and filter by version
+    // Get trades and filter by version + daily reset
     const tradesRes = await fetch(`${API_BASE}/api/trades`);
     let trades = [];
     let wins = 0, losses = 0, pnl = 0, winStreak = 0;
     
     if (tradesRes.ok) {
       const data = await tradesRes.json();
+      
+      // Daily reset at 12 AM EST / midnight (5:00 UTC)
+      const now = new Date();
+      const resetTime = new Date(now);
+      resetTime.setUTCHours(5, 0, 0, 0); // 12 AM EST = 5:00 UTC
+      if (now.getUTCHours() < 5) {
+        resetTime.setDate(resetTime.getDate() - 1); // Yesterday's midnight if before 5 UTC
+      }
+      
       trades = (data.trades || []).filter(t => {
+        // Version filter: v10.x only
         const ver = String(t.version || '');
-        return ver.includes('10.') || ver.startsWith('10.');
+        if (!ver.includes('10.') && !ver.startsWith('10.')) return false;
+        
+        // Daily reset: only show trades since 12 AM EST
+        const tradeTime = new Date(t.exit_time || t.timestamp);
+        if (tradeTime < resetTime) return false;
+        
+        return true;
       });
       
-      // Calculate stats from filtered trades
+      // Calculate stats from filtered trades (use pnl_usd)
       for (const t of trades) {
-        const won = t.won === true || t.pnl > 0;
+        const tradePnl = t.pnl_usd !== undefined ? t.pnl_usd : (t.pnl || 0);
+        const won = t.won === true || tradePnl > 0;
         if (won) wins++; else losses++;
-        pnl += t.pnl || 0;
+        pnl += tradePnl;
       }
       
       // Calculate current win streak (most recent trades first)
@@ -1737,7 +1754,8 @@ const updateKalshi = async () => {
         new Date(b.exit_time || b.timestamp) - new Date(a.exit_time || a.timestamp)
       );
       for (const t of sortedTrades) {
-        const won = t.won === true || t.pnl > 0;
+        const tradePnl = t.pnl_usd !== undefined ? t.pnl_usd : (t.pnl || 0);
+        const won = t.won === true || tradePnl > 0;
         if (won) winStreak++;
         else break; // Stop at first loss
       }
