@@ -1288,6 +1288,58 @@ body {
   .balance-banner { flex-direction: column; gap: 20px; align-items: center; }
   .balance-divider { display: none; }
 }
+
+/* Balance Widget - 2 Column Layout */
+.balance-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 24px;
+}
+
+.balance-main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.balance-daily {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  padding-left: 20px;
+  border-left: 1px solid rgba(255,255,255,0.1);
+  min-width: 120px;
+}
+
+.balance-daily .daily-label {
+  font-size: 10px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.balance-daily .daily-start {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.balance-daily .daily-pnl {
+  font-family: 'Space Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.balance-daily .daily-pct {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.pnl-positive { color: #00ff88 !important; }
+.pnl-negative { color: #ff4444 !important; }
 </style>
 </head>
 <body>
@@ -1327,26 +1379,38 @@ body {
   <!-- Balance Banner -->
   <div class="balance-banner">
     <div class="balance-item kalshi">
-      <div class="balance-icon">
-        <img src="kalshi-logo.png" alt="Kalshi" class="platform-logo-img">
+      <div class="balance-main">
+        <div class="balance-icon">
+          <img src="kalshi-logo.png" alt="Kalshi" class="platform-logo-img">
+        </div>
+        <div class="balance-info">
+          <div class="label">Kalshi Balance</div>
+          <div class="value" id="kalshiBalance">$--</div>
+        </div>
       </div>
-      <div class="balance-info">
-        <div class="label">Kalshi Balance</div>
-        <div class="value" id="kalshiBalance">$--</div>
+      <div class="balance-daily">
+        <div class="daily-label">Today's P&L</div>
+        <div class="daily-pnl" id="kalshiDailyPnl">--</div>
+        <div class="daily-pct" id="kalshiDailyPct"></div>
+        <div class="daily-start">Start: $<span id="kalshiStartBalance">--</span></div>
       </div>
     </div>
     <div class="balance-divider"></div>
     <div class="balance-item polymarket">
-      <div class="balance-icon">
-        <img src="polymarket-logo.png" alt="Polymarket" class="platform-logo-img">
-      </div>
-      <div class="balance-info">
-        <div class="label">Polymarket Balance</div>
-        <div class="value" id="polyBalance">$--</div>
-        <div id="polyUnredeemedRow" style="display: none; font-size: 11px; margin-top: 6px; line-height: 1.4;">
-          <div style="color: #ffd700;">+$<span id="polyUnredeemed">0</span> unredeemed</div>
-          <div style="color: #00ff88; font-weight: bold;">= $<span id="polyTotalValue">--</span> total</div>
+      <div class="balance-main">
+        <div class="balance-icon">
+          <img src="polymarket-logo.png" alt="Polymarket" class="platform-logo-img">
         </div>
+        <div class="balance-info">
+          <div class="label">Polymarket Balance</div>
+          <div class="value" id="polyBalance">$--</div>
+        </div>
+      </div>
+      <div class="balance-daily">
+        <div class="daily-label">Today's P&L</div>
+        <div class="daily-pnl" id="polymarketDailyPnl">--</div>
+        <div class="daily-pct" id="polymarketDailyPct"></div>
+        <div class="daily-start">Start: $<span id="polymarketStartBalance">--</span></div>
       </div>
     </div>
   </div>
@@ -1401,10 +1465,10 @@ body {
           </div>
           <div class="platform-meta">
             <h2>POLYMARKET</h2>
-            <div class="timeframe">5-Min BTC | Triple Confluence</div>
+            <div class="timeframe">5-Min BTC | Elite-Only Mode</div>
           </div>
         </div>
-        <span class="version-badge">v4.0</span>
+        <span class="version-badge">v6.0 Elite</span>
         <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">Stats Reset Daily at 12 AM EST</div>
       </div>
       <div class="platform-stats">
@@ -1648,6 +1712,72 @@ body {
 </div>
 
 <script>
+
+// === API ENDPOINTS ===
+const API_BASE = '';
+const POLY_API = '/poly-api';
+
+// === DAILY STARTING BALANCES (Feb 19, 2026 - Fresh Start) ===
+const DAILY_START = {
+  kalshi: 250.00,      // Reset for fresh start
+  polymarket: 250.00,  // Reset for fresh start (also fetched from API)
+  date: '2026-02-19'
+};
+
+// Fetch Polymarket daily start balance from API
+async function fetchPolyDailyStart() {
+  try {
+    const res = await fetch(`${POLY_API}/daily_start`);
+    if (res.ok) {
+      const data = await res.json();
+      DAILY_START.polymarket = data.starting_balance;
+      DAILY_START.date = data.date;
+      // Re-run P&L update with fetched balance
+      const balEl = document.getElementById('polyBalance');
+      if (balEl) {
+        const currentBal = parseFloat(balEl.textContent.replace('$', ''));
+        if (!isNaN(currentBal)) updateDailyPnL('polymarket', currentBal);
+      }
+    }
+  } catch (e) {
+    console.error('Failed to fetch poly daily start:', e);
+  }
+}
+
+function updateDailyPnL(platform, currentBalance) {
+  const startBalance = DAILY_START[platform];
+  if (!startBalance || startBalance <= 0) {
+    // Show -- for missing data
+    const pnlEl = document.getElementById(`${platform}DailyPnl`);
+    const startEl = document.getElementById(`${platform}StartBalance`);
+    if (pnlEl) pnlEl.textContent = '$ --';
+    if (startEl) startEl.textContent = '--';
+    return;
+  }
+  
+  const pnlUsd = currentBalance - startBalance;
+  const pnlPct = ((pnlUsd / startBalance) * 100);
+  
+  const pnlEl = document.getElementById(`${platform}DailyPnl`);
+  const pctEl = document.getElementById(`${platform}DailyPct`);
+  const startEl = document.getElementById(`${platform}StartBalance`);
+  
+  if (pnlEl) {
+    const sign = pnlUsd >= 0 ? '+' : '';
+    pnlEl.textContent = `${sign}$${pnlUsd.toFixed(2)}`;
+    pnlEl.className = `daily-pnl ${pnlUsd >= 0 ? 'pnl-positive' : 'pnl-negative'}`;
+  }
+  if (pctEl) {
+    const sign = pnlPct >= 0 ? '+' : '';
+    pctEl.textContent = `${sign}${pnlPct.toFixed(1)}%`;
+    pctEl.className = `daily-pct ${pnlUsd >= 0 ? 'pnl-positive' : 'pnl-negative'}`;
+  }
+  if (startEl) {
+    startEl.textContent = startBalance.toFixed(2);
+  }
+}
+// === END DAILY PNL CONFIG ===
+
 // Generate sparkles
 const bgEffects = document.querySelector('.bg-effects');
 for (let i = 0; i < 15; i++) {
@@ -1659,9 +1789,6 @@ for (let i = 0; i < 15; i++) {
   sparkle.style.animationDuration = (2 + Math.random() * 2) + 's';
   bgEffects.appendChild(sparkle);
 }
-
-const API_BASE = '';
-const POLY_API = '/poly-api';
 
 // Version filters - only count trades from these versions
 const KALSHI_VERSION = '10.';  // Matches 10.0, 10.1, etc
@@ -1776,8 +1903,8 @@ const updateKalshi = async () => {
       const posRes = await fetch(`${API_BASE}/api/positions`);
       if (posRes.ok) {
         const posData = await posRes.json();
-        // Filter to only truly open positions (position > 0)
-        const positions = (posData.positions || []).filter(p => p.position > 0);
+        // Filter to only truly open positions (position != 0, negative = NO side)
+        const positions = (posData.positions || []).filter(p => p.position !== 0);
         document.getElementById('kalshiPositions').textContent = positions.length;
         
         // Populate tooltip
@@ -1794,15 +1921,17 @@ const updateKalshi = async () => {
             const hour = timePart.slice(0, 2);
             const min = timePart.slice(2, 4);
             const window = hour && min ? `${hour}:${min}` : '?';
-            const contracts = p.position || 0;
+            const rawContracts = p.position || 0;
+            const contracts = Math.abs(rawContracts);
+            const side = rawContracts < 0 ? 'NO' : 'YES';
             const buyIn = parseFloat(p.market_exposure_dollars || 0).toFixed(2);
             const price = contracts > 0 ? Math.round(parseFloat(buyIn) * 100 / contracts) : 0;
             const potentialWin = ((100 - price) * contracts / 100).toFixed(2);
-            const side = p.side || (ticker.includes('YES') ? 'YES' : 'NO');
             return `
               <div class="position-item">
                 <span class="position-asset">${asset} ${window}</span>
                 <div class="position-details">
+                  <div class="direction ${side === 'NO' ? 'down' : ''}">${side}</div>
                   <div class="entry">${contracts} @ ${price}¢ · $${buyIn}</div>
                   <div class="potential">Win: +$${potentialWin}</div>
                 </div>
@@ -1833,6 +1962,7 @@ const updateKalshi = async () => {
       const balData = await balRes.json();
       const bal = balData.balance_cents ? balData.balance_cents / 100 : balData.balance;
       document.getElementById('kalshiBalance').textContent = `$${bal.toFixed(2)}`;
+      updateDailyPnL('kalshi', bal);
     }
   } catch (e) {
     console.error('Kalshi error:', e);
@@ -1959,6 +2089,7 @@ const updatePolymarket = async () => {
         
         // Update balance display
         document.getElementById('polyBalance').textContent = `$${balance.toFixed(2)}`;
+        updateDailyPnL('polymarket', balance);
         
         // Update unredeemed display
         const unredeemedRow = document.getElementById('polyUnredeemedRow');
@@ -2072,6 +2203,8 @@ const updatePolyDecisions = async () => {
 };
 
 const updateAll = async () => {
+  // Fetch dynamic starting balances first
+  await fetchPolyDailyStart();
   await Promise.all([updateKalshi(), updatePolymarket(), updateKalshiDecisions(), updatePolyDecisions()]);
   updateTimestamp();
 };
