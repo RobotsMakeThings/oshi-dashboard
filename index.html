@@ -1992,6 +1992,10 @@ const updatePolymarket = async () => {
         const tradeTime = new Date(t.exit_time || t.entry_time);
         if (tradeTime < resetTime) return false;
         
+        // BTC only - SOL trading is off, filter out any ghost trades
+        const asset = (t.asset || '').toUpperCase();
+        if (asset === 'SOL') return false;
+        
         // Trade is resolved if it has an exit_time (v4.x exits early, not at 0/100)
         const isResolved = !!t.exit_time;
         
