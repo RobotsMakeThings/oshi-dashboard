@@ -2481,13 +2481,18 @@ const loadDailyPnLData = async () => {
 // Load from local JSON file as fallback
 const loadLocalDailyPnL = async () => {
   try {
+    console.log('Loading local daily PnL data...');
     const res = await fetch('./daily_pnl.json?t=' + Date.now());
     if (res.ok) {
       const data = await res.json();
+      console.log('Loaded daily PnL data:', data);
       pnlCalendarState.dailyRecords = data.records || [];
       pnlCalendarState.currentDay = data.current_day || null;
+      console.log(`Loaded ${pnlCalendarState.dailyRecords.length} records, current day:`, pnlCalendarState.currentDay);
       renderCalendar();
       updateCalendarSummary();
+    } else {
+      console.error('Failed to load daily_pnl.json:', res.status);
     }
   } catch (e) {
     console.error('Failed to load local daily PnL:', e);
@@ -2497,7 +2502,17 @@ const loadLocalDailyPnL = async () => {
 // Render the calendar
 const renderCalendar = () => {
   const grid = document.getElementById('pnlCalendarGrid');
-  if (!grid) return;
+  if (!grid) {
+    console.error('Calendar grid not found');
+    return;
+  }
+  
+  // Check if data is loaded
+  if (!pnlCalendarState.dailyRecords || !pnlCalendarState.currentDay) {
+    console.log('Calendar data not loaded yet, retrying...');
+    setTimeout(renderCalendar, 1000);
+    return;
+  }
   
   const year = pnlCalendarState.currentDate.getFullYear();
   const month = pnlCalendarState.currentDate.getMonth();
@@ -2511,10 +2526,17 @@ const renderCalendar = () => {
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   
-  // Clear existing days (keep headers)
-  const headers = grid.querySelectorAll('.pnl-calendar-day-header');
+  // Clear grid and rebuild with headers
   grid.innerHTML = '';
-  headers.forEach(h => grid.appendChild(h));
+  
+  // Add day headers
+  const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  dayHeaders.forEach(day => {
+    const header = document.createElement('div');
+    header.className = 'pnl-calendar-day-header';
+    header.textContent = day;
+    grid.appendChild(header);
+  });
   
   // Add empty cells for days before the 1st
   for (let i = 0; i < firstDay; i++) {
@@ -2579,28 +2601,33 @@ const renderCalendar = () => {
 
 // Update calendar summary stats
 const updateCalendarSummary = () => {
-  const records = pnlCalendarState.dailyRecords;
+  console.log('Updating calendar summary...', pnlCalendarState);
+  
+  const records = pnlCalendarState.dailyRecords || [];
   const winningDays = records.filter(r => r.pnl_usd > 0).length;
   const losingDays = records.filter(r => r.pnl_usd < 0).length;
   
-  // Calculate total P&L including current day
-  let totalPnl = records.reduce((sum, r) => sum + r.pnl_usd, 0);
+  // Calculate total P&L from completed days
+  let totalPnl = records.reduce((sum, r) => sum + (r.pnl_usd || 0), 0);
   
-  // Add current day live P&L if available
-  if (pnlCalendarState.currentDay) {
-    const currentBal = parseFloat(document.getElementById('kalshiBalance')?.textContent?.replace('$', '') || pnlCalendarState.currentDay.start_balance);
-    const livePnl = currentBal - pnlCalendarState.currentDay.start_balance;
-    totalPnl += livePnl;
+  console.log(`Records: ${records.length}, Winning: ${winningDays}, Losing: ${losingDays}, Total PnL: ${totalPnl}`);
+  
+  const totalTradingDaysEl = document.getElementById('totalTradingDays');
+  const winningDaysEl = document.getElementById('winningDays');
+  const losingDaysEl = document.getElementById('losingDays');
+  const totalPnlEl = document.getElementById('calendarTotalPnl');
+  
+  if (totalTradingDaysEl) totalTradingDaysEl.textContent = records.length;
+  if (winningDaysEl) winningDaysEl.textContent = winningDays;
+  if (losingDaysEl) losingDaysEl.textContent = losingDays;
+  
+  if (totalPnlEl) {
+    const sign = totalPnl >= 0 ? '+' : '';
+    totalPnlEl.textContent = `${sign}$${totalPnl.toFixed(2)}`;
+    totalPnlEl.className = `pnl-calendar-summary-value ${totalPnl >= 0 ? 'positive' : 'negative'}`;
   }
   
-  document.getElementById('totalTradingDays').textContent = records.length;
-  document.getElementById('winningDays').textContent = winningDays;
-  document.getElementById('losingDays').textContent = losingDays;
-  
-  const totalPnlEl = document.getElementById('calendarTotalPnl');
-  const sign = totalPnl >= 0 ? '+' : '';
-  totalPnlEl.textContent = `${sign}$${totalPnl.toFixed(2)}`;
-  totalPnlEl.className = `pnl-calendar-summary-value ${totalPnl >= 0 ? 'positive' : 'negative'}`;
+  console.log('Calendar summary updated successfully');
 };
 
 // Calendar navigation
