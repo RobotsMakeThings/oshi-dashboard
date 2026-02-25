@@ -2292,11 +2292,9 @@ const updateKalshi = async () => {
     if (tradesRes.ok) {
       const data = await tradesRes.json();
       
-      // Get today's date in EST (UTC-5)
+      // Get date 24 hours ago for recent activity
       const now = new Date();
-      const estOffset = 5 * 60 * 60 * 1000; // 5 hours in ms
-      const estNow = new Date(now.getTime() - estOffset);
-      const todayStr = estNow.toISOString().split('T')[0]; // YYYY-MM-DD
+      const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
       
       // Filter all v10.x trades for recent trades list
       allTrades = (data.trades || []).filter(t => {
@@ -2304,10 +2302,10 @@ const updateKalshi = async () => {
         return ver.includes('10.') || ver.startsWith('10.');
       });
       
-      // Filter today's trades for stats only
+      // Filter last 24 hours for stats (instead of just today)
       todaysTrades = allTrades.filter(t => {
-        const tradeDate = (t.exit_time || t.timestamp || '').split('T')[0];
-        return tradeDate === todayStr;
+        const tradeTime = new Date(t.exit_time || t.timestamp || 0);
+        return tradeTime >= oneDayAgo;
       });
       
       // Calculate stats from TODAY'S trades only
