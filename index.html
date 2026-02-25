@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>✨ Oshi — Prediction Agent Dashboard</title>
+<title>✨ Oshi — Kalshi 15m BTC Trading Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -79,7 +79,7 @@ body {
 
 .decisions-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 20px;
 }
 
@@ -474,7 +474,7 @@ body {
 /* === PLATFORM GRID === */
 .platform-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 24px;
   margin-bottom: 30px;
 }
@@ -661,7 +661,7 @@ body {
 /* === TRADES GRID (Side by Side) === */
 .trades-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 24px;
 }
 
@@ -1359,7 +1359,7 @@ body {
       </div>
       <div class="hero-brand">
         <h1>✨ OSHI</h1>
-        <div class="tagline">Prediction Agent Dashboard</div>
+        <div class="tagline">Kalshi 15-Min Bitcoin Trading</div>
       </div>
     </div>
     <div class="hero-right">
@@ -1393,24 +1393,6 @@ body {
         <div class="daily-pnl" id="kalshiDailyPnl">--</div>
         <div class="daily-pct" id="kalshiDailyPct"></div>
         <div class="daily-start">Start: $<span id="kalshiStartBalance">--</span></div>
-      </div>
-    </div>
-    <div class="balance-divider"></div>
-    <div class="balance-item polymarket">
-      <div class="balance-main">
-        <div class="balance-icon">
-          <img src="polymarket-logo.png" alt="Polymarket" class="platform-logo-img">
-        </div>
-        <div class="balance-info">
-          <div class="label">Polymarket Balance</div>
-          <div class="value" id="polyBalance">$--</div>
-        </div>
-      </div>
-      <div class="balance-daily">
-        <div class="daily-label">Today's P&L</div>
-        <div class="daily-pnl" id="polymarketDailyPnl">--</div>
-        <div class="daily-pct" id="polymarketDailyPct"></div>
-        <div class="daily-start">Start: $<span id="polymarketStartBalance">--</span></div>
       </div>
     </div>
   </div>
@@ -1455,48 +1437,9 @@ body {
         </div>
       </div>
     </div>
-
-    <!-- Polymarket -->
-    <div class="platform-card polymarket">
-      <div class="platform-header">
-        <div class="platform-identity">
-          <div class="platform-logo">
-            <img src="polymarket-logo.png" alt="Polymarket" class="platform-logo-img">
-          </div>
-          <div class="platform-meta">
-            <h2>POLYMARKET</h2>
-            <div class="timeframe">5-Min BTC | Elite-Only Mode</div>
-          </div>
-        </div>
-        <span class="version-badge">v6.0 Elite</span>
-        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">Stats Reset Daily at 12 AM EST</div>
-      </div>
-      <div class="platform-stats">
-        <div class="stat-card">
-          <div class="value win" id="polyWins">--</div>
-          <div class="label">Wins</div>
-        </div>
-        <div class="stat-card">
-          <div class="value loss" id="polyLosses">--</div>
-          <div class="label">Losses</div>
-        </div>
-        <div class="stat-card">
-          <div class="value neutral" id="polyWinRate">--%</div>
-          <div class="label">Win Rate</div>
-        </div>
-        <div class="stat-card position-stat">
-          <div class="value neutral" id="polyPositions">--</div>
-          <div class="label">Open Positions</div>
-          <div class="position-tooltip" id="polyPositionTooltip">
-            <h5>📊 Polymarket Open Positions</h5>
-            <div id="polyPositionList"><div class="no-positions">Loading...</div></div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
-  <!-- Recent Decisions - Side by Side -->
+  <!-- Recent Decisions -->
   <div class="section-card decisions-section">
     <div class="section-header">
       <h3>🧠 RECENT DECISIONS</h3>
@@ -1516,26 +1459,12 @@ body {
           </div>
         </div>
       </div>
-      
-      <!-- Polymarket Decisions -->
-      <div class="decisions-column polymarket">
-        <div class="decisions-column-header">
-          <h4><img src="polymarket-logo.png" alt="Polymarket" class="header-logo"> POLYMARKET</h4>
-          <span class="version">v5.4</span>
-        </div>
-        <div class="decisions-list" id="polyDecisionsList">
-          <div class="loading">
-            <div class="loader"></div>
-            Loading...
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
 
 
-  <!-- Recent Trades - Side by Side -->
+  <!-- Recent Trades -->
   <div class="section-card">
     <div class="section-header">
       <h3>📜 RECENT TRADES</h3>
@@ -1549,20 +1478,6 @@ body {
           <span class="version">v10.3</span>
         </div>
         <div class="trades-list" id="kalshiTradesList">
-          <div class="loading">
-            <div class="loader"></div>
-            Loading...
-          </div>
-        </div>
-      </div>
-      
-      <!-- Polymarket Trades -->
-      <div class="trades-column polymarket">
-        <div class="trades-column-header">
-          <h4><img src="polymarket-logo.png" alt="Polymarket" class="header-logo"> POLYMARKET <span id="polyStreakBadge" class="streak-badge">🔥 0</span></h4>
-          <span class="version">v4.0</span>
-        </div>
-        <div class="trades-list" id="polyTradesList">
           <div class="loading">
             <div class="loader"></div>
             Loading...
@@ -1660,7 +1575,6 @@ body {
           </div>
           <div class="node-platforms">
             <span class="platform kalshi">🟢 Kalshi</span>
-            <span class="platform poly">🔵 Polymarket</span>
           </div>
         </div>
         
@@ -1715,34 +1629,12 @@ body {
 
 // === API ENDPOINTS ===
 const API_BASE = '';
-const POLY_API = '/poly-api';
 
-// === DAILY STARTING BALANCES (Feb 24, 2026) ===
+// === DAILY STARTING BALANCES ===
 const DAILY_START = {
-  kalshi: 268.00,      // Live - Feb 24
-  polymarket: 100.00,  // v7.3 Live Start - Feb 23
+  kalshi: 500.00,      // Live - Updated
   date: '2026-02-24'
 };
-
-// Fetch Polymarket daily start balance from API
-async function fetchPolyDailyStart() {
-  try {
-    const res = await fetch(`${POLY_API}/daily_start`);
-    if (res.ok) {
-      const data = await res.json();
-      DAILY_START.polymarket = data.starting_balance;
-      DAILY_START.date = data.date;
-      // Re-run P&L update with fetched balance
-      const balEl = document.getElementById('polyBalance');
-      if (balEl) {
-        const currentBal = parseFloat(balEl.textContent.replace('$', ''));
-        if (!isNaN(currentBal)) updateDailyPnL('polymarket', currentBal);
-      }
-    }
-  } catch (e) {
-    console.error('Failed to fetch poly daily start:', e);
-  }
-}
 
 function updateDailyPnL(platform, currentBalance) {
   const startBalance = DAILY_START[platform];
@@ -1790,9 +1682,8 @@ for (let i = 0; i < 15; i++) {
   bgEffects.appendChild(sparkle);
 }
 
-// Version filters - only count trades from these versions
+// Version filter - only count trades from these versions
 const KALSHI_VERSION = '10.';  // Matches 10.0, 10.1, etc
-const POLY_VERSION = '2.';     // Matches 2.0, 2.1, etc (displayed as v2.1)
 
 const fmt = (n) => {
   if (n === null || n === undefined || isNaN(n)) return '$--';
@@ -1811,8 +1702,7 @@ const fmtPnl = (n, el) => {
 };
 
 // Render trade row
-const renderTrade = (t, platform) => {
-  // Use pnl_usd first (Polymarket), fallback to pnl (Kalshi)
+const renderTrade = (t) => {
   const pnl = t.pnl_usd !== undefined ? t.pnl_usd : (t.pnl || 0);
   const won = t.won === true || t.redeemed === true || t.exit_price === 100 || pnl > 0;
   const pnlClass = pnl >= 0 ? 'positive' : 'negative';
@@ -1822,11 +1712,10 @@ const renderTrade = (t, platform) => {
   const tier = t.tier ? `[${t.tier}]` : '';
   const timeStr = t.exit_time || t.entry_time || t.timestamp;
   const time = timeStr ? new Date(timeStr).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) : '';
-  const logo = platform === 'kalshi' ? 'kalshi-logo.png' : 'polymarket-logo.png';
   
   return `
-    <div class="trade-row ${platform}">
-      <div class="trade-icon"><img src="${logo}" alt="${platform}" class="trade-logo"></div>
+    <div class="trade-row kalshi">
+      <div class="trade-icon"><img src="kalshi-logo.png" alt="Kalshi" class="trade-logo"></div>
       <div class="trade-info">
         <div class="trade-market">${market} ${side} ${tier}</div>
         <div class="trade-meta">${time}</div>
@@ -1953,7 +1842,7 @@ const updateKalshi = async () => {
     if (trades.length === 0) {
       container.innerHTML = '<div class="no-trades">✨ No v10.3 trades yet</div>';
     } else {
-      container.innerHTML = trades.slice(0, 8).map(t => renderTrade(t, 'kalshi')).join('');
+      container.innerHTML = trades.slice(0, 8).map(t => renderTrade(t)).join('');
     }
     
     // Balance
@@ -1966,150 +1855,6 @@ const updateKalshi = async () => {
     }
   } catch (e) {
     console.error('Kalshi error:', e);
-  }
-};
-
-// Update Polymarket
-const updatePolymarket = async () => {
-  try {
-    // Get trades and filter by version + resolution status
-    const tradesRes = await fetch(`${POLY_API}/trades?limit=200`);
-    let trades = [];
-    let wins = 0, losses = 0, pnl = 0, winStreak = 0;
-    
-    if (tradesRes.ok) {
-      const data = await tradesRes.json();
-      // Daily reset at 12 AM EST / midnight (5:00 UTC)
-      const now = new Date();
-      const resetTime = new Date(now);
-      resetTime.setUTCHours(5, 0, 0, 0); // 12 AM EST = 5:00 UTC
-      if (now.getUTCHours() < 5) {
-        resetTime.setDate(resetTime.getDate() - 1); // Yesterday's midnight if before 5 UTC
-      }
-      
-      trades = (data.trades || []).filter(t => {
-        // Daily reset: only show trades since 12 AM EST (version-agnostic)
-        const tradeTime = new Date(t.exit_time || t.entry_time);
-        if (tradeTime < resetTime) return false;
-        
-        // BTC only - SOL trading is off, filter out any ghost trades
-        const asset = (t.asset || '').toUpperCase();
-        if (asset === 'SOL') return false;
-        
-        // Trade is resolved if it has an exit_time (v4.x exits early, not at 0/100)
-        const isResolved = !!t.exit_time;
-        
-        return isResolved;
-      });
-      
-      // Calculate stats from filtered trades (v4.x: win = positive pnl)
-      for (const t of trades) {
-        const isWin = t.won === true || (t.pnl_usd && t.pnl_usd > 0);
-        if (isWin) wins++;
-        else losses++;
-        pnl += t.pnl_usd || 0;
-      }
-      
-      // Calculate current win streak (most recent trades first)
-      const sortedTrades = [...trades].sort((a, b) => 
-        new Date(b.exit_time || b.entry_time) - new Date(a.exit_time || a.entry_time)
-      );
-      for (const t of sortedTrades) {
-        const isWin = t.won === true || (t.pnl_usd && t.pnl_usd > 0);
-        if (isWin) winStreak++;
-        else break; // Stop at first loss
-      }
-    }
-    
-    document.getElementById('polyWins').textContent = wins;
-    document.getElementById('polyLosses').textContent = losses;
-    const total = wins + losses;
-    document.getElementById('polyWinRate').textContent = total > 0 ? Math.round(wins / total * 100) + '%' : '--%';
-    
-    // Update streak badge
-    const polyStreakEl = document.getElementById('polyStreakBadge');
-    polyStreakEl.textContent = `🔥 ${winStreak}`;
-    polyStreakEl.className = winStreak >= 3 ? 'streak-badge hot' : 'streak-badge';
-    
-    // Get open positions with details
-    try {
-      const posRes = await fetch(`${POLY_API}/positions`);
-      if (posRes.ok) {
-        const posData = await posRes.json();
-        const positions = posData.positions || [];
-        document.getElementById('polyPositions').textContent = positions.length;
-        
-        // Populate tooltip
-        const listEl = document.getElementById('polyPositionList');
-        if (positions.length === 0) {
-          listEl.innerHTML = '<div class="no-positions">No open positions</div>';
-        } else {
-          listEl.innerHTML = positions.map(p => {
-            const asset = p.asset || 'BTC';
-            const direction = p.direction || '?';
-            const dirClass = direction === 'DOWN' ? 'down' : '';
-            const entryPrice = p.entry_price || 50;
-            const sizeUsd = p.size_usd || 5;
-            const shares = (sizeUsd / (entryPrice / 100)).toFixed(1);
-            const potentialWin = ((100 - entryPrice) / 100 * parseFloat(shares)).toFixed(2);
-            const entryTime = p.entry_time ? new Date(p.entry_time).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}) : '';
-            return `
-              <div class="position-item">
-                <span class="position-asset">${asset} ${entryTime}</span>
-                <div class="position-details">
-                  <div class="direction ${dirClass}">${direction}</div>
-                  <div class="entry">${shares} @ ${entryPrice}¢ · $${sizeUsd}</div>
-                  <div class="potential">Win: +$${potentialWin}</div>
-                </div>
-              </div>
-            `;
-          }).join('');
-        }
-      } else {
-        document.getElementById('polyPositions').textContent = '0';
-        document.getElementById('polyPositionList').innerHTML = '<div class="no-positions">No open positions</div>';
-      }
-    } catch (e) {
-      document.getElementById('polyPositions').textContent = '0';
-      document.getElementById('polyPositionList').innerHTML = '<div class="no-positions">Error loading</div>';
-    }
-    
-    // Render only resolved trades
-    const container = document.getElementById('polyTradesList');
-    if (trades.length === 0) {
-      container.innerHTML = '<div class="no-trades">✨ No resolved trades yet</div>';
-    } else {
-      container.innerHTML = trades.slice(0, 8).map(t => renderTrade(t, 'polymarket')).join('');
-    }
-    
-    // Balance and unredeemed
-    try {
-      const statsRes = await fetch(`${POLY_API}/stats`);
-      if (statsRes.ok) {
-        const statsData = await statsRes.json();
-        const balance = statsData.balance || 0;
-        const unredeemed = statsData.unredeemed_pnl || 0;
-        const total = balance + unredeemed;
-        
-        // Update balance display
-        document.getElementById('polyBalance').textContent = `$${balance.toFixed(2)}`;
-        updateDailyPnL('polymarket', balance);
-        
-        // Update unredeemed display
-        const unredeemedRow = document.getElementById('polyUnredeemedRow');
-        if (unredeemedRow) {
-          if (unredeemed > 0) {
-            document.getElementById('polyUnredeemed').textContent = unredeemed.toFixed(2);
-            document.getElementById('polyTotalValue').textContent = total.toFixed(2);
-            unredeemedRow.style.display = 'block';
-          } else {
-            unredeemedRow.style.display = 'none';
-          }
-        }
-      }
-    } catch (e) {}
-  } catch (e) {
-    console.error('Poly error:', e);
   }
 };
 
@@ -2185,31 +1930,8 @@ const updateKalshiDecisions = async () => {
   }
 };
 
-// Update Polymarket decisions
-const updatePolyDecisions = async () => {
-  try {
-    const res = await fetch(`${POLY_API}/decisions`);
-    if (res.ok) {
-      const data = await res.json();
-      const decisions = data.decisions || [];
-      const listEl = document.getElementById('polyDecisionsList');
-      
-      if (decisions.length === 0) {
-        listEl.innerHTML = '<div class="no-positions">No recent decisions</div>';
-      } else {
-        listEl.innerHTML = decisions.slice(0, 10).map(d => renderDecision(d, 'polymarket')).join('');
-      }
-    }
-  } catch (e) {
-    console.log('Poly decisions fetch error:', e);
-    document.getElementById('polyDecisionsList').innerHTML = '<div class="no-positions">API unavailable</div>';
-  }
-};
-
 const updateAll = async () => {
-  // Fetch dynamic starting balances first
-  await fetchPolyDailyStart();
-  await Promise.all([updateKalshi(), updatePolymarket(), updateKalshiDecisions(), updatePolyDecisions()]);
+  await Promise.all([updateKalshi(), updateKalshiDecisions()]);
   updateTimestamp();
 };
 
