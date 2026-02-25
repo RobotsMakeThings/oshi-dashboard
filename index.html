@@ -1730,7 +1730,7 @@ const renderTrade = (t) => {
 const updateKalshi = async () => {
   try {
     // Get trades and filter by version + daily reset
-    const tradesRes = await fetch(`${API_BASE}/api/trades`);
+    const tradesRes = await fetch(`${API_BASE}/api/trades?t=${Date.now()}`);
     let trades = [];
     let wins = 0, losses = 0, pnl = 0, winStreak = 0;
     
@@ -1789,7 +1789,7 @@ const updateKalshi = async () => {
     
     // Get open positions with details
     try {
-      const posRes = await fetch(`${API_BASE}/api/positions`);
+      const posRes = await fetch(`${API_BASE}/api/positions?t=${Date.now()}`);
       if (posRes.ok) {
         const posData = await posRes.json();
         // Filter to only truly open positions (position != 0, negative = NO side)
@@ -1846,7 +1846,7 @@ const updateKalshi = async () => {
     }
     
     // Balance
-    const balRes = await fetch(`${API_BASE}/api/balance`);
+    const balRes = await fetch(`${API_BASE}/api/balance?t=${Date.now()}`);
     if (balRes.ok) {
       const balData = await balRes.json();
       const bal = balData.balance_cents ? balData.balance_cents / 100 : balData.balance;
@@ -1912,7 +1912,7 @@ const renderDecision = (d, platform) => {
 // Update Kalshi decisions
 const updateKalshiDecisions = async () => {
   try {
-    const res = await fetch(`${API_BASE}/api/decisions`);
+    const res = await fetch(`${API_BASE}/api/decisions?t=${Date.now()}`);
     if (res.ok) {
       const data = await res.json();
       const decisions = data.decisions || [];
@@ -1936,7 +1936,7 @@ const updateAll = async () => {
 };
 
 updateAll();
-setInterval(updateAll, 300000); // 5 minutes
+setInterval(updateAll, 30000); // 30 seconds for live data
 
 // Mobile tap handling for position tooltips
 document.querySelectorAll('.position-stat').forEach(el => {
