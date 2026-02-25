@@ -1862,7 +1862,7 @@ body {
           </div>
         </div>
         <span class="version-badge">v10.3</span>
-        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">Last 24 Hours</div>
+        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">Last 10 Trades</div>
       </div>
       <div class="platform-stats">
         <div class="stat-card">
@@ -1918,7 +1918,7 @@ body {
   <div class="section-card">
     <div class="section-header">
       <h3>📜 RECENT TRADES</h3>
-      <span style="font-size: 12px; color: var(--text-dim);">Last 24 Hours</span>
+      <span style="font-size: 12px; color: var(--text-dim);">Last 10 Trades</span>
     </div>
     <div class="trades-grid">
       <!-- Kalshi Trades -->
@@ -2292,23 +2292,18 @@ const updateKalshi = async () => {
     if (tradesRes.ok) {
       const data = await tradesRes.json();
       
-      // Get date 24 hours ago for recent activity
-      const now = new Date();
-      const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-      
-      // Filter all v10.x trades for recent trades list
+      // Filter all v10.x trades and sort by most recent
       allTrades = (data.trades || []).filter(t => {
         const ver = String(t.version || '');
         return ver.includes('10.') || ver.startsWith('10.');
-      });
+      }).sort((a, b) => 
+        new Date(b.exit_time || b.timestamp) - new Date(a.exit_time || a.timestamp)
+      );
       
-      // Filter last 24 hours for stats (instead of just today)
-      todaysTrades = allTrades.filter(t => {
-        const tradeTime = new Date(t.exit_time || t.timestamp || 0);
-        return tradeTime >= oneDayAgo;
-      });
+      // Get last 10 trades for stats (regardless of date)
+      todaysTrades = allTrades.slice(0, 10);
       
-      // Calculate stats from TODAY'S trades only
+      // Calculate stats from last 10 trades
       for (const t of todaysTrades) {
         const tradePnl = t.pnl_usd !== undefined ? t.pnl_usd : (t.pnl || 0);
         const won = t.won === true || tradePnl > 0;
@@ -2316,11 +2311,8 @@ const updateKalshi = async () => {
         pnl += tradePnl;
       }
       
-      // Calculate current win streak from today's trades
-      const sortedToday = [...todaysTrades].sort((a, b) => 
-        new Date(b.exit_time || b.timestamp) - new Date(a.exit_time || a.timestamp)
-      );
-      for (const t of sortedToday) {
+      // Calculate current win streak from last 10 trades
+      for (const t of todaysTrades) {
         const tradePnl = t.pnl_usd !== undefined ? t.pnl_usd : (t.pnl || 0);
         const won = t.won === true || tradePnl > 0;
         if (won) winStreak++;
