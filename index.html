@@ -1847,6 +1847,15 @@ body {
     </div>
   </div>
 
+  <!-- Trading Status Message -->
+  <div class="section-card" style="background: linear-gradient(135deg, rgba(0, 212, 170, 0.2), rgba(0, 212, 170, 0.05)); border-color: var(--win); margin-bottom: 20px;">
+    <div style="text-align: center; padding: 16px;">
+      <div style="font-size: 18px; font-weight: 700; color: var(--win); margin-bottom: 8px;">✅ Daily Profit Target Hit!</div>
+      <div style="font-size: 14px; color: var(--text-primary);">Trading will commence again tomorrow</div>
+      <div style="font-size: 12px; color: var(--text-dim); margin-top: 8px;">Feb 25: +$880.94 (+88.1%) | Funds withdrawn for the day</div>
+    </div>
+  </div>
+
   <!-- Platform Cards -->
   <div class="platform-grid">
     <!-- Kalshi -->
@@ -2130,7 +2139,7 @@ const KALSHI_DASHBOARD_API = 'http://209.38.37.63:5000/api';  // Captain's compr
 
 // === DAILY STARTING BALANCES ===
 const DAILY_START = {
-  kalshi: 1880.94,      // Feb 26 - New day after +88.1% win
+  kalshi: 0.00,      // Feb 26 - WITHDRAWN for the day
   date: '2026-02-26'
 };
 
@@ -2733,8 +2742,9 @@ setTimeout(() => {
     }];
     pnlCalendarState.currentDay = {
       date: '2026-02-26',
-      start_balance: 1880.94,
-      starting_set: true
+      start_balance: 0.00,
+      starting_set: true,
+      note: 'WITHDRAWN - Trading resumes tomorrow'
     };
     renderCalendar();
     updateCalendarSummary();
