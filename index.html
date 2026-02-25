@@ -1462,7 +1462,10 @@ body {
 .legend-dot.feedback { background: linear-gradient(135deg, var(--pink), var(--purple)); }
 
 /* === RESPONSIVE === */
+
+/* Tablet and smaller */
 @media (max-width: 1024px) {
+  .main-container { padding: 16px; }
   .platform-grid, .trades-grid { grid-template-columns: 1fr; }
   .brain-row, .bottom-row { flex-direction: column; gap: 20px; }
   .arch-connector.horizontal { 
@@ -1487,16 +1490,229 @@ body {
   .arch-legend { flex-direction: column; align-items: center; gap: 12px; }
 }
 
+/* Mobile phones */
 @media (max-width: 768px) {
+  /* Container */
+  .main-container { padding: 12px; }
+  
+  /* Hero Header */
   .hero-header {
     flex-direction: column;
     text-align: center;
     gap: 20px;
-    padding: 24px;
+    padding: 20px;
+    margin-bottom: 20px;
   }
-  .hero-left { flex-direction: column; }
-  .balance-banner { flex-direction: column; gap: 20px; align-items: center; }
-  .balance-divider { display: none; }
+  .hero-left { 
+    flex-direction: column; 
+    gap: 16px;
+  }
+  .oshi-avatar-container {
+    width: 60px;
+    height: 60px;
+  }
+  .oshi-avatar {
+    width: 60px;
+    height: 60px;
+  }
+  .hero-brand h1 {
+    font-size: 24px;
+  }
+  .hero-brand .tagline {
+    font-size: 12px;
+  }
+  .hero-right {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  .trade-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  .social-btn {
+    width: 36px;
+    height: 36px;
+  }
+  
+  /* Balance Banner */
+  .balance-banner { 
+    flex-direction: column; 
+    gap: 16px; 
+    align-items: stretch;
+    padding: 16px;
+  }
+  .balance-item {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+  }
+  .balance-main {
+    width: 100%;
+    justify-content: center;
+  }
+  .balance-daily {
+    align-items: center;
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 12px;
+    min-width: auto;
+    width: 100%;
+  }
+  .balance-info .value {
+    font-size: 28px;
+  }
+  
+  /* Platform Card */
+  .platform-card {
+    padding: 20px;
+  }
+  .platform-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .platform-identity {
+    gap: 12px;
+  }
+  .platform-logo {
+    width: 48px;
+    height: 48px;
+  }
+  .platform-meta h2 {
+    font-size: 20px;
+  }
+  .platform-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .stat-card {
+    padding: 16px;
+  }
+  .stat-card .value {
+    font-size: 24px;
+  }
+  
+  /* Section Cards */
+  .section-card {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  .section-header {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  .section-header h3 {
+    font-size: 16px;
+  }
+  
+  /* Decisions & Trades */
+  .decisions-column,
+  .trades-column {
+    max-height: 300px;
+  }
+  
+  /* Architecture Section */
+  .arch-node {
+    padding: 20px;
+  }
+  .arch-node h4 {
+    font-size: 16px;
+  }
+  .node-content p {
+    font-size: 12px;
+  }
+  
+  /* Footer */
+  .footer {
+    padding: 20px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .main-container { padding: 8px; }
+  
+  .hero-brand h1 {
+    font-size: 20px;
+  }
+  
+  .platform-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  
+  .stat-card {
+    padding: 12px;
+  }
+  
+  .stat-card .value {
+    font-size: 20px;
+  }
+  
+  .stat-card .label {
+    font-size: 10px;
+  }
+  
+  .section-card {
+    padding: 16px;
+    border-radius: 16px;
+  }
+  
+  /* Touch-friendly buttons */
+  .trade-btn,
+  .social-btn,
+  .pnl-calendar-nav button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Calendar specific */
+  .pnl-calendar-grid {
+    gap: 4px;
+  }
+  
+  .pnl-calendar-day {
+    padding: 4px;
+    border-radius: 8px;
+  }
+  
+  .pnl-calendar-day-number {
+    font-size: 12px;
+  }
+  
+  .pnl-calendar-day-pnl {
+    font-size: 9px;
+  }
+  
+  .pnl-calendar-summary {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 16px;
+  }
+  
+  .pnl-calendar-summary-value {
+    font-size: 16px;
+  }
+}
+
+/* Ensure touch targets are at least 44px */
+@media (pointer: coarse) {
+  .trade-btn,
+  .social-btn,
+  .pnl-calendar-nav button,
+  .decision-row,
+  .trade-row,
+  .pnl-calendar-day {
+    min-height: 44px;
+  }
+  
+  .position-stat {
+    cursor: pointer;
+  }
 }
 
 /* Balance Widget - 2 Column Layout */
