@@ -1596,23 +1596,47 @@ body {
   
   /* Section Cards */
   .section-card {
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 16px;
   }
   .section-header {
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     align-items: flex-start;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
   }
   .section-header h3 {
-    font-size: 16px;
+    font-size: 14px;
+    letter-spacing: 1px;
   }
   
   /* Decisions & Trades */
   .decisions-column,
   .trades-column {
-    max-height: 300px;
+    max-height: 250px;
+    border-radius: 12px;
+  }
+  
+  .decisions-list,
+  .trades-list {
+    padding: 6px;
+  }
+  
+  .decision-row,
+  .trade-row {
+    padding: 8px 10px;
+    margin-bottom: 4px;
+    border-radius: 8px;
+  }
+  
+  .trade-row .trade-market {
+    font-size: 12px;
+  }
+  
+  .trade-row .trade-pnl {
+    font-size: 12px;
   }
   
   /* Architecture Section */
@@ -2105,8 +2129,8 @@ const API_BASE = '';
 
 // === DAILY STARTING BALANCES ===
 const DAILY_START = {
-  kalshi: 500.00,      // Live - Updated
-  date: '2026-02-24'
+  kalshi: 1423.43,      // Feb 25 - New day after +184.7% win
+  date: '2026-02-25'
 };
 
 function updateDailyPnL(platform, currentBalance) {
@@ -2548,7 +2572,16 @@ const updateCalendarSummary = () => {
   const records = pnlCalendarState.dailyRecords;
   const winningDays = records.filter(r => r.pnl_usd > 0).length;
   const losingDays = records.filter(r => r.pnl_usd < 0).length;
-  const totalPnl = records.reduce((sum, r) => sum + r.pnl_usd, 0);
+  
+  // Calculate total P&L including current day
+  let totalPnl = records.reduce((sum, r) => sum + r.pnl_usd, 0);
+  
+  // Add current day live P&L if available
+  if (pnlCalendarState.currentDay) {
+    const currentBal = parseFloat(document.getElementById('kalshiBalance')?.textContent?.replace('$', '') || pnlCalendarState.currentDay.start_balance);
+    const livePnl = currentBal - pnlCalendarState.currentDay.start_balance;
+    totalPnl += livePnl;
+  }
   
   document.getElementById('totalTradingDays').textContent = records.length;
   document.getElementById('winningDays').textContent = winningDays;
