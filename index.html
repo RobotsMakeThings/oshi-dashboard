@@ -2126,6 +2126,7 @@ body {
 
 // === API ENDPOINTS ===
 const API_BASE = '';
+const KALSHI_DASHBOARD_API = 'http://209.38.37.63:5000/api';  // Captain's comprehensive API
 
 // === DAILY STARTING BALANCES ===
 const DAILY_START = {
@@ -2223,9 +2224,65 @@ const renderTrade = (t) => {
   `;
 };
 
+// Fetch comprehensive dashboard data from Captain's API
+const fetchComprehensiveDashboardData = async () => {
+  try {
+    // Try Captain's comprehensive dashboard API first
+    const dashboardRes = await fetch(`${KALSHI_DASHBOARD_API}/dashboard?t=${Date.now()}`);
+    if (dashboardRes.ok) {
+      const dashboardData = await dashboardRes.json();
+      console.log('Loaded comprehensive dashboard data:', dashboardData);
+      
+      // Update balance from comprehensive data
+      if (dashboardData.system_status) {
+        const bal = dashboardData.system_status.balance;
+        document.getElementById('kalshiBalance').textContent = `$${bal.toFixed(2)}`;
+        updateDailyPnL('kalshi', bal);
+        
+        // Update stats
+        document.getElementById('kalshiWins').textContent = dashboardData.system_status.wins || 0;
+        document.getElementById('kalshiLosses').textContent = dashboardData.system_status.losses || 0;
+        const total = (dashboardData.system_status.wins || 0) + (dashboardData.system_status.losses || 0);
+        document.getElementById('kalshiWinRate').textContent = total > 0 ? Math.round((dashboardData.system_status.wins || 0) / total * 100) + '%' : '--%';
+        
+        // Update streak
+        const streak = dashboardData.system_status.streak || 0;
+        const kalshiStreakEl = document.getElementById('kalshiStreakBadge');
+        kalshiStreakEl.textContent = `🔥 ${streak}`;
+        kalshiStreakEl.className = streak >= 3 ? 'streak-badge hot' : 'streak-badge';
+        
+        // Update positions
+        document.getElementById('kalshiPositions').textContent = dashboardData.system_status.open_positions || 0;
+      }
+      
+      return dashboardData;
+    }
+  } catch (e) {
+    console.log('Comprehensive dashboard API not available, falling back to individual endpoints:', e);
+  }
+  return null;
+};
+
 // Update Kalshi
 const updateKalshi = async () => {
   try {
+    // Try Captain's comprehensive API first
+    const comprehensiveData = await fetchComprehensiveDashboardData();
+    if (comprehensiveData) {
+      // Use comprehensive data for trades list too
+      if (comprehensiveData.trading && comprehensiveData.trading.last_5_trades) {
+        const container = document.getElementById('kalshiTradesList');
+        const trades = comprehensiveData.trading.last_5_trades;
+        if (trades.length === 0) {
+          container.innerHTML = '<div class="no-trades">✨ No v10.3 trades yet</div>';
+        } else {
+          container.innerHTML = trades.map(t => renderTrade(t)).join('');
+        }
+      }
+      return; // Successfully used comprehensive data
+    }
+    
+    // Fall back to individual API calls
     // Get all trades for recent trades list
     const tradesRes = await fetch(`${API_BASE}/api/trades?t=${Date.now()}`);
     let allTrades = [];
