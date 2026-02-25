@@ -944,6 +944,216 @@ body {
   font-style: italic;
 }
 
+/* === PnL CALENDAR WIDGET === */
+.pnl-calendar-section {
+  margin-bottom: 30px;
+}
+
+.pnl-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.pnl-calendar-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pnl-calendar-title h3 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--oshi-teal);
+}
+
+.pnl-calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pnl-calendar-nav button {
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.pnl-calendar-nav button:hover {
+  background: var(--oshi-teal);
+  color: var(--bg-deep);
+}
+
+.pnl-calendar-month {
+  font-family: 'Space Mono', monospace;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  min-width: 140px;
+  text-align: center;
+}
+
+.pnl-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.pnl-calendar-day-header {
+  text-align: center;
+  padding: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.pnl-calendar-day {
+  aspect-ratio: 1;
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.pnl-calendar-day:hover {
+  transform: translateY(-2px);
+  border-color: var(--oshi-teal);
+  box-shadow: 0 4px 20px var(--oshi-teal-glow);
+}
+
+.pnl-calendar-day.today {
+  border: 2px solid var(--oshi-teal);
+  box-shadow: 0 0 20px var(--oshi-teal-glow);
+}
+
+.pnl-calendar-day.profit {
+  background: linear-gradient(135deg, rgba(0, 212, 170, 0.15), rgba(0, 212, 170, 0.05));
+  border-color: var(--win);
+}
+
+.pnl-calendar-day.loss {
+  background: linear-gradient(135deg, rgba(255, 92, 138, 0.15), rgba(255, 92, 138, 0.05));
+  border-color: var(--loss);
+}
+
+.pnl-calendar-day.empty {
+  background: transparent;
+  border-color: transparent;
+  cursor: default;
+}
+
+.pnl-calendar-day.empty:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.pnl-calendar-day-number {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.pnl-calendar-day-pnl {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.pnl-calendar-day-pnl.positive {
+  color: var(--win);
+}
+
+.pnl-calendar-day-pnl.negative {
+  color: var(--loss);
+}
+
+.pnl-calendar-day-trades {
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.pnl-calendar-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+  padding: 20px;
+  background: var(--bg-glass);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+}
+
+.pnl-calendar-summary-item {
+  text-align: center;
+}
+
+.pnl-calendar-summary-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.pnl-calendar-summary-value {
+  font-family: 'Space Mono', monospace;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.pnl-calendar-summary-value.positive {
+  color: var(--win);
+}
+
+.pnl-calendar-summary-value.negative {
+  color: var(--loss);
+}
+
+@media (max-width: 768px) {
+  .pnl-calendar-grid {
+    gap: 4px;
+  }
+  
+  .pnl-calendar-day {
+    padding: 4px;
+    border-radius: 8px;
+  }
+  
+  .pnl-calendar-day-number {
+    font-size: 12px;
+  }
+  
+  .pnl-calendar-day-pnl {
+    font-size: 9px;
+  }
+  
+  .pnl-calendar-day-trades {
+    font-size: 8px;
+  }
+  
+  .pnl-calendar-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 /* === FOOTER === */
 .footer {
   text-align: center;
@@ -1487,6 +1697,53 @@ body {
     </div>
   </div>
 
+  <!-- PnL Calendar Section -->
+  <div class="section-card pnl-calendar-section">
+    <div class="section-header">
+      <h3>📅 DAILY P&L CALENDAR</h3>
+      <span style="font-size: 12px; color: var(--text-dim);">Day-by-day trading performance</span>
+    </div>
+    <div class="pnl-calendar-header">
+      <div class="pnl-calendar-title">
+        <h3>📊 KALSHI TRADING DAYS</h3>
+      </div>
+      <div class="pnl-calendar-nav">
+        <button id="prevMonth">◀</button>
+        <span class="pnl-calendar-month" id="calendarMonth">February 2026</span>
+        <button id="nextMonth">▶</button>
+      </div>
+    </div>
+    <div class="pnl-calendar-grid" id="pnlCalendarGrid">
+      <!-- Day headers -->
+      <div class="pnl-calendar-day-header">Sun</div>
+      <div class="pnl-calendar-day-header">Mon</div>
+      <div class="pnl-calendar-day-header">Tue</div>
+      <div class="pnl-calendar-day-header">Wed</div>
+      <div class="pnl-calendar-day-header">Thu</div>
+      <div class="pnl-calendar-day-header">Fri</div>
+      <div class="pnl-calendar-day-header">Sat</div>
+      <!-- Calendar days will be populated by JS -->
+    </div>
+    <div class="pnl-calendar-summary">
+      <div class="pnl-calendar-summary-item">
+        <div class="pnl-calendar-summary-label">Trading Days</div>
+        <div class="pnl-calendar-summary-value" id="totalTradingDays">--</div>
+      </div>
+      <div class="pnl-calendar-summary-item">
+        <div class="pnl-calendar-summary-label">Winning Days</div>
+        <div class="pnl-calendar-summary-value positive" id="winningDays">--</div>
+      </div>
+      <div class="pnl-calendar-summary-item">
+        <div class="pnl-calendar-summary-label">Losing Days</div>
+        <div class="pnl-calendar-summary-value negative" id="losingDays">--</div>
+      </div>
+      <div class="pnl-calendar-summary-item">
+        <div class="pnl-calendar-summary-label">Total P&L</div>
+        <div class="pnl-calendar-summary-value" id="calendarTotalPnl">--</div>
+      </div>
+    </div>
+  </div>
+
   <!-- How Oshi Works - Architecture Section -->
   <div class="section-card architecture-section">
     <div class="section-header">
@@ -1945,6 +2202,141 @@ document.addEventListener('click', () => {
     el.classList.remove('active');
   });
 });
+
+// === PnL CALENDAR WIDGET ===
+const pnlCalendarState = {
+  currentDate: new Date(),
+  dailyRecords: [],
+  currentDay: null
+};
+
+// Load daily PnL data from API
+const loadDailyPnLData = async () => {
+  try {
+    const res = await fetch(`${API_BASE}/api/daily_pnl?t=${Date.now()}`);
+    if (res.ok) {
+      const data = await res.json();
+      pnlCalendarState.dailyRecords = data.records || [];
+      pnlCalendarState.currentDay = data.current_day || null;
+      renderCalendar();
+      updateCalendarSummary();
+    }
+  } catch (e) {
+    console.error('Failed to load daily PnL data:', e);
+    // Use local data as fallback
+    loadLocalDailyPnL();
+  }
+};
+
+// Load from local JSON file as fallback
+const loadLocalDailyPnL = async () => {
+  try {
+    const res = await fetch('./daily_pnl.json?t=' + Date.now());
+    if (res.ok) {
+      const data = await res.json();
+      pnlCalendarState.dailyRecords = data.records || [];
+      pnlCalendarState.currentDay = data.current_day || null;
+      renderCalendar();
+      updateCalendarSummary();
+    }
+  } catch (e) {
+    console.error('Failed to load local daily PnL:', e);
+  }
+};
+
+// Render the calendar
+const renderCalendar = () => {
+  const grid = document.getElementById('pnlCalendarGrid');
+  if (!grid) return;
+  
+  const year = pnlCalendarState.currentDate.getFullYear();
+  const month = pnlCalendarState.currentDate.getMonth();
+  
+  // Update month display
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                      'July', 'August', 'September', 'October', 'November', 'December'];
+  document.getElementById('calendarMonth').textContent = `${monthNames[month]} ${year}`;
+  
+  // Get first day of month and number of days
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  
+  // Clear existing days (keep headers)
+  const headers = grid.querySelectorAll('.pnl-calendar-day-header');
+  grid.innerHTML = '';
+  headers.forEach(h => grid.appendChild(h));
+  
+  // Add empty cells for days before the 1st
+  for (let i = 0; i < firstDay; i++) {
+    const emptyDay = document.createElement('div');
+    emptyDay.className = 'pnl-calendar-day empty';
+    grid.appendChild(emptyDay);
+  }
+  
+  // Add days
+  const today = new Date();
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dayEl = document.createElement('div');
+    dayEl.className = 'pnl-calendar-day';
+    
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    const record = pnlCalendarState.dailyRecords.find(r => r.date === dateStr);
+    
+    // Check if today
+    if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
+      dayEl.classList.add('today');
+    }
+    
+    if (record) {
+      const pnlClass = record.pnl_usd >= 0 ? 'positive' : 'negative';
+      dayEl.classList.add(record.pnl_usd >= 0 ? 'profit' : 'loss');
+      
+      dayEl.innerHTML = `
+        <span class="pnl-calendar-day-number">${day}</span>
+        <span class="pnl-calendar-day-pnl ${pnlClass}">${record.pnl_usd >= 0 ? '+' : ''}$${Math.abs(record.pnl_usd).toFixed(0)}</span>
+        <span class="pnl-calendar-day-trades">${record.trades_count || 0} trades</span>
+      `;
+      
+      // Add tooltip with more info
+      dayEl.title = `Start: $${record.start_balance.toFixed(2)}\nEnd: $${record.end_balance.toFixed(2)}\nP&L: ${record.pnl_pct >= 0 ? '+' : ''}${record.pnl_pct.toFixed(2)}%`;
+    } else {
+      dayEl.innerHTML = `<span class="pnl-calendar-day-number">${day}</span>`;
+    }
+    
+    grid.appendChild(dayEl);
+  }
+};
+
+// Update calendar summary stats
+const updateCalendarSummary = () => {
+  const records = pnlCalendarState.dailyRecords;
+  const winningDays = records.filter(r => r.pnl_usd > 0).length;
+  const losingDays = records.filter(r => r.pnl_usd < 0).length;
+  const totalPnl = records.reduce((sum, r) => sum + r.pnl_usd, 0);
+  
+  document.getElementById('totalTradingDays').textContent = records.length;
+  document.getElementById('winningDays').textContent = winningDays;
+  document.getElementById('losingDays').textContent = losingDays;
+  
+  const totalPnlEl = document.getElementById('calendarTotalPnl');
+  const sign = totalPnl >= 0 ? '+' : '';
+  totalPnlEl.textContent = `${sign}$${totalPnl.toFixed(2)}`;
+  totalPnlEl.className = `pnl-calendar-summary-value ${totalPnl >= 0 ? 'positive' : 'negative'}`;
+};
+
+// Calendar navigation
+document.getElementById('prevMonth')?.addEventListener('click', () => {
+  pnlCalendarState.currentDate.setMonth(pnlCalendarState.currentDate.getMonth() - 1);
+  renderCalendar();
+});
+
+document.getElementById('nextMonth')?.addEventListener('click', () => {
+  pnlCalendarState.currentDate.setMonth(pnlCalendarState.currentDate.getMonth() + 1);
+  renderCalendar();
+});
+
+// Initialize calendar
+loadDailyPnLData();
 </script>
 
 </body>
