@@ -2226,9 +2226,10 @@ const renderTrade = (t) => {
 // Update Kalshi
 const updateKalshi = async () => {
   try {
-    // Get trades and filter by version + TODAY ONLY
+    // Get all trades for recent trades list
     const tradesRes = await fetch(`${API_BASE}/api/trades?t=${Date.now()}`);
-    let trades = [];
+    let allTrades = [];
+    let todaysTrades = [];
     let wins = 0, losses = 0, pnl = 0, winStreak = 0;
     
     if (tradesRes.ok) {
@@ -2240,38 +2241,39 @@ const updateKalshi = async () => {
       const estNow = new Date(now.getTime() - estOffset);
       const todayStr = estNow.toISOString().split('T')[0]; // YYYY-MM-DD
       
-      trades = (data.trades || []).filter(t => {
-        // Version filter: v10.x only
+      // Filter all v10.x trades for recent trades list
+      allTrades = (data.trades || []).filter(t => {
         const ver = String(t.version || '');
-        if (!ver.includes('10.') && !ver.startsWith('10.')) return false;
-        
-        // DAILY RESET: Only show trades from today
-        const tradeDate = (t.exit_time || t.timestamp || '').split('T')[0];
-        if (tradeDate !== todayStr) return false;
-        
-        return true;
+        return ver.includes('10.') || ver.startsWith('10.');
       });
       
-      // Calculate stats from filtered trades (use pnl_usd)
-      for (const t of trades) {
+      // Filter today's trades for stats only
+      todaysTrades = allTrades.filter(t => {
+        const tradeDate = (t.exit_time || t.timestamp || '').split('T')[0];
+        return tradeDate === todayStr;
+      });
+      
+      // Calculate stats from TODAY'S trades only
+      for (const t of todaysTrades) {
         const tradePnl = t.pnl_usd !== undefined ? t.pnl_usd : (t.pnl || 0);
         const won = t.won === true || tradePnl > 0;
         if (won) wins++; else losses++;
         pnl += tradePnl;
       }
       
-      // Calculate current win streak (most recent trades first)
-      const sortedTrades = [...trades].sort((a, b) => 
+      // Calculate current win streak from today's trades
+      const sortedToday = [...todaysTrades].sort((a, b) => 
         new Date(b.exit_time || b.timestamp) - new Date(a.exit_time || a.timestamp)
       );
-      for (const t of sortedTrades) {
+      for (const t of sortedToday) {
         const tradePnl = t.pnl_usd !== undefined ? t.pnl_usd : (t.pnl || 0);
         const won = t.won === true || tradePnl > 0;
         if (won) winStreak++;
-        else break; // Stop at first loss
+        else break;
       }
     }
     
+    // Update stats (today only)
     document.getElementById('kalshiWins').textContent = wins;
     document.getElementById('kalshiLosses').textContent = losses;
     const total = wins + losses;
@@ -2332,12 +2334,16 @@ const updateKalshi = async () => {
       document.getElementById('kalshiPositionList').innerHTML = '<div class="no-positions">Error loading</div>';
     }
     
-    // Render trades
+    // Render trades (show recent trades from all days)
     const container = document.getElementById('kalshiTradesList');
-    if (trades.length === 0) {
+    if (allTrades.length === 0) {
       container.innerHTML = '<div class="no-trades">✨ No v10.3 trades yet</div>';
     } else {
-      container.innerHTML = trades.slice(0, 8).map(t => renderTrade(t)).join('');
+      // Sort by most recent and show top 8
+      const sortedTrades = allTrades.sort((a, b) =>
+        new Date(b.exit_time || b.timestamp) - new Date(a.exit_time || a.timestamp)
+      );
+      container.innerHTML = sortedTrades.slice(0, 8).map(t => renderTrade(t)).join('');
     }
     
     // Balance
