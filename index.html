@@ -1862,7 +1862,7 @@ body {
           </div>
         </div>
         <span class="version-badge">v10.3</span>
-        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">v10.x Trades Only</div>
+        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">Daily Stats - Resets 12 AM EST</div>
       </div>
       <div class="platform-stats">
         <div class="stat-card">
@@ -1918,7 +1918,7 @@ body {
   <div class="section-card">
     <div class="section-header">
       <h3>📜 RECENT TRADES</h3>
-      <span style="font-size: 12px; color: var(--text-dim);">v10.x Trades Only</span>
+      <span style="font-size: 12px; color: var(--text-dim);">Today's Trades Only</span>
     </div>
     <div class="trades-grid">
       <!-- Kalshi Trades -->
@@ -2226,7 +2226,7 @@ const renderTrade = (t) => {
 // Update Kalshi
 const updateKalshi = async () => {
   try {
-    // Get trades and filter by version
+    // Get trades and filter by version + TODAY ONLY
     const tradesRes = await fetch(`${API_BASE}/api/trades?t=${Date.now()}`);
     let trades = [];
     let wins = 0, losses = 0, pnl = 0, winStreak = 0;
@@ -2234,10 +2234,20 @@ const updateKalshi = async () => {
     if (tradesRes.ok) {
       const data = await tradesRes.json();
       
+      // Get today's date in EST (UTC-5)
+      const now = new Date();
+      const estOffset = 5 * 60 * 60 * 1000; // 5 hours in ms
+      const estNow = new Date(now.getTime() - estOffset);
+      const todayStr = estNow.toISOString().split('T')[0]; // YYYY-MM-DD
+      
       trades = (data.trades || []).filter(t => {
         // Version filter: v10.x only
         const ver = String(t.version || '');
         if (!ver.includes('10.') && !ver.startsWith('10.')) return false;
+        
+        // DAILY RESET: Only show trades from today
+        const tradeDate = (t.exit_time || t.timestamp || '').split('T')[0];
+        if (tradeDate !== todayStr) return false;
         
         return true;
       });
