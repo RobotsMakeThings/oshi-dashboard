@@ -2288,6 +2288,7 @@ const renderCalendar = () => {
     }
     
     if (record) {
+      // Completed day
       const pnlClass = record.pnl_usd >= 0 ? 'positive' : 'negative';
       dayEl.classList.add(record.pnl_usd >= 0 ? 'profit' : 'loss');
       
@@ -2299,6 +2300,25 @@ const renderCalendar = () => {
       
       // Add tooltip with more info
       dayEl.title = `Start: $${record.start_balance.toFixed(2)}\nEnd: $${record.end_balance.toFixed(2)}\nP&L: ${record.pnl_pct >= 0 ? '+' : ''}${record.pnl_pct.toFixed(2)}%`;
+    } else if (pnlCalendarState.currentDay && dateStr === pnlCalendarState.currentDay.date) {
+      // Current day - show live status
+      const currentBal = parseFloat(document.getElementById('kalshiBalance')?.textContent?.replace('$', '') || pnlCalendarState.currentDay.start_balance);
+      const startBal = pnlCalendarState.currentDay.start_balance;
+      const livePnl = currentBal - startBal;
+      const livePnlPct = (livePnl / startBal * 100);
+      const pnlClass = livePnl >= 0 ? 'positive' : 'negative';
+      
+      dayEl.classList.add('today');
+      if (livePnl > 0) dayEl.classList.add('profit');
+      if (livePnl < 0) dayEl.classList.add('loss');
+      
+      dayEl.innerHTML = `
+        <span class="pnl-calendar-day-number">${day}</span>
+        <span class="pnl-calendar-day-pnl ${pnlClass}">${livePnl >= 0 ? '+' : ''}$${Math.abs(livePnl).toFixed(0)}</span>
+        <span class="pnl-calendar-day-trades">LIVE</span>
+      `;
+      
+      dayEl.title = `Current Day\nStart: $${startBal.toFixed(2)}\nCurrent: $${currentBal.toFixed(2)}\nP&L: ${livePnlPct >= 0 ? '+' : ''}${livePnlPct.toFixed(2)}%`;
     } else {
       dayEl.innerHTML = `<span class="pnl-calendar-day-number">${day}</span>`;
     }
