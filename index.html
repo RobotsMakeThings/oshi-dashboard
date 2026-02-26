@@ -2769,6 +2769,25 @@ const updateAll = async () => {
 updateAll();
 setInterval(updateAll, 30000); // 30 seconds for live data
 
+// Initialize starting balance immediately (don't wait for API)
+function initializeStartingBalance() {
+  const balEl = document.getElementById('kalshiBalance');
+  const startEl = document.getElementById('kalshiStartBalance');
+  
+  if (balEl && DAILY_START.kalshi > 0) {
+    balEl.textContent = `$${DAILY_START.kalshi.toFixed(2)}`;
+  }
+  if (startEl && DAILY_START.kalshi > 0) {
+    startEl.textContent = DAILY_START.kalshi.toFixed(2);
+  }
+  
+  // Also initialize daily P&L display
+  updateDailyPnL('kalshi', DAILY_START.kalshi);
+}
+
+// Call immediately
+initializeStartingBalance();
+
 // Mobile tap handling for position tooltips
 document.querySelectorAll('.position-stat').forEach(el => {
   el.addEventListener('click', (e) => {
