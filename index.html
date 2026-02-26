@@ -1090,6 +1090,240 @@ body {
   color: var(--text-dim);
 }
 
+/* === SORA WEATHER SECTION === */
+.sora-weather-section {
+  margin-bottom: 30px;
+}
+
+.sora-weather-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.sora-current-prediction {
+  background: linear-gradient(135deg, rgba(0, 150, 255, 0.15), rgba(0, 212, 170, 0.1));
+  border: 1px solid rgba(0, 212, 170, 0.3);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.sora-prediction-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.sora-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--oshi-teal);
+  box-shadow: 0 0 20px var(--oshi-teal-glow);
+}
+
+.sora-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sora-meta h4 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--oshi-teal);
+  margin: 0;
+}
+
+.sora-meta .version {
+  font-size: 12px;
+  color: var(--text-dim);
+  background: var(--bg-glass);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.sora-prediction-card {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.sora-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.sora-stat-card {
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.sora-stat-card:hover {
+  border-color: var(--oshi-teal);
+  transform: translateY(-2px);
+}
+
+.sora-stat-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.sora-stat-value {
+  font-family: 'Space Mono', monospace;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--oshi-teal);
+}
+
+.sora-stat-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+.sora-predictions-list-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.sora-predictions-list-container h5 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text-primary);
+  margin: 0 0 16px 0;
+}
+
+.sora-predictions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.prediction-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--bg-glass);
+  border-radius: 10px;
+  border-left: 3px solid var(--border);
+  transition: all 0.2s ease;
+}
+
+.prediction-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-left-color: var(--oshi-teal);
+}
+
+.prediction-market {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+  min-width: 140px;
+}
+
+.prediction-details {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.prediction-direction {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.prediction-direction.up {
+  background: rgba(0, 212, 170, 0.2);
+  color: var(--win);
+}
+
+.prediction-direction.down {
+  background: rgba(255, 92, 138, 0.2);
+  color: var(--loss);
+}
+
+.prediction-confidence {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  background: var(--bg-card);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.prediction-time {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.prediction-result {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 6px;
+}
+
+.prediction-result.win {
+  background: rgba(0, 212, 170, 0.2);
+  color: var(--win);
+}
+
+.prediction-result.loss {
+  background: rgba(255, 92, 138, 0.2);
+  color: var(--loss);
+}
+
+.prediction-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  color: var(--text-dim);
+}
+
+/* Sora Responsive */
+@media (max-width: 768px) {
+  .sora-weather-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .sora-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .prediction-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .prediction-details {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
 .pnl-calendar-summary {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1847,15 +2081,6 @@ body {
     </div>
   </div>
 
-  <!-- Trading Status Message -->
-  <div class="section-card" style="background: linear-gradient(135deg, rgba(0, 212, 170, 0.2), rgba(0, 212, 170, 0.05)); border-color: var(--win); margin-bottom: 20px;">
-    <div style="text-align: center; padding: 16px;">
-      <div style="font-size: 18px; font-weight: 700; color: var(--win); margin-bottom: 8px;">✅ Daily Profit Target Hit!</div>
-      <div style="font-size: 14px; color: var(--text-primary);">Trading will commence again tomorrow</div>
-      <div style="font-size: 12px; color: var(--text-dim); margin-top: 8px;">Feb 25: +$880.94 (+88.1%) | Funds withdrawn for the day</div>
-    </div>
-  </div>
-
   <!-- Platform Cards -->
   <div class="platform-grid">
     <!-- Kalshi -->
@@ -1898,49 +2123,87 @@ body {
     </div>
   </div>
 
-  <!-- Recent Decisions -->
-  <div class="section-card decisions-section">
+  <!-- Sora Weather Predictions -->
+  <div class="section-card sora-weather-section">
     <div class="section-header">
-      <h3>🧠 RECENT DECISIONS</h3>
-      <span style="font-size: 12px; color: var(--text-dim);">Why we trade (or skip)</span>
+      <h3>🌤️ SORA WEATHER PREDICTIONS</h3>
+      <span style="font-size: 12px; color: var(--text-dim);">AI-powered weather trading signals</span>
     </div>
-    <div class="decisions-grid">
-      <!-- Kalshi Decisions -->
-      <div class="decisions-column kalshi">
-        <div class="decisions-column-header">
-          <h4><img src="kalshi-logo.png" alt="Kalshi" class="header-logo"> KALSHI</h4>
-          <span class="version">v10.3</span>
+    <div class="sora-weather-grid">
+      <!-- Current Prediction -->
+      <div class="sora-current-prediction">
+        <div class="sora-prediction-header">
+          <div class="sora-avatar">
+            <img src="sora-avatar.jpg" alt="Sora" class="sora-logo-img">
+          </div>
+          <div class="sora-meta">
+            <h4>SORA WEATHER AI</h4>
+            <span class="version">v1.0 Beta</span>
+          </div>
         </div>
-        <div class="decisions-list" id="kalshiDecisionsList">
-          <div class="loading">
+        <div class="sora-prediction-card" id="soraCurrentPrediction">
+          <div class="prediction-loading">
             <div class="loader"></div>
-            Loading...
+            <p>Analyzing atmospheric data...</p>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-
-
-  <!-- Recent Trades -->
-  <div class="section-card">
-    <div class="section-header">
-      <h3>📜 RECENT TRADES</h3>
-      <span style="font-size: 12px; color: var(--text-dim);">Feb 25 Session</span>
-    </div>
-    <div class="trades-grid">
-      <!-- Kalshi Trades -->
-      <div class="trades-column kalshi">
-        <div class="trades-column-header">
-          <h4><img src="kalshi-logo.png" alt="Kalshi" class="header-logo"> KALSHI <span id="kalshiStreakBadge" class="streak-badge">🔥 0</span></h4>
-          <span class="version">v10.3</span>
+      
+      <!-- Prediction Stats -->
+      <div class="sora-stats-grid">
+        <div class="sora-stat-card">
+          <div class="sora-stat-icon">🎯</div>
+          <div class="sora-stat-value" id="soraAccuracy">--%</div>
+          <div class="sora-stat-label">Accuracy</div>
         </div>
-        <div class="trades-list" id="kalshiTradesList">
-          <div class="loading">
-            <div class="loader"></div>
-            Loading...
+        <div class="sora-stat-card">
+          <div class="sora-stat-icon">📊</div>
+          <div class="sora-stat-value" id="soraPredictions">--</div>
+          <div class="sora-stat-label">Predictions</div>
+        </div>
+        <div class="sora-stat-card">
+          <div class="sora-stat-icon">🏆</div>
+          <div class="sora-stat-value" id="soraWins">--</div>
+          <div class="sora-stat-label">Wins</div>
+        </div>
+        <div class="sora-stat-card">
+          <div class="sora-stat-icon">⚡</div>
+          <div class="sora-stat-value" id="soraStreak">--</div>
+          <div class="sora-stat-label">Streak</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Recent Weather Predictions -->
+    <div class="sora-predictions-list-container">
+      <h5>📈 RECENT PREDICTIONS</h5>
+      <div class="sora-predictions-list" id="soraPredictionsList">
+        <div class="prediction-item">
+          <div class="prediction-market">NYC Temperature</div>
+          <div class="prediction-details">
+            <span class="prediction-direction up">Above 75°F</span>
+            <span class="prediction-confidence">87%</span>
+            <span class="prediction-time">2h ago</span>
           </div>
+          <span class="prediction-result win">WIN</span>
+        </div>
+        <div class="prediction-item">
+          <div class="prediction-market">LA Rain</div>
+          <div class="prediction-details">
+            <span class="prediction-direction down">No Rain</span>
+            <span class="prediction-confidence">92%</span>
+            <span class="prediction-time">5h ago</span>
+          </div>
+          <span class="prediction-result win">WIN</span>
+        </div>
+        <div class="prediction-item">
+          <div class="prediction-market">Chicago Wind</div>
+          <div class="prediction-details">
+            <span class="prediction-direction up">Above 15mph</span>
+            <span class="prediction-confidence">78%</span>
+            <span class="prediction-time">8h ago</span>
+          </div>
+          <span class="prediction-result loss">LOSS</span>
         </div>
       </div>
     </div>
@@ -2139,7 +2402,7 @@ const KALSHI_DASHBOARD_API = 'http://209.38.37.63:5000/api';  // Captain's compr
 
 // === DAILY STARTING BALANCES ===
 const DAILY_START = {
-  kalshi: 0.00,      // Feb 26 - WITHDRAWN for the day
+  kalshi: 1050.00,      // Feb 26 - Starting fresh
   date: '2026-02-26'
 };
 
@@ -2742,9 +3005,8 @@ setTimeout(() => {
     }];
     pnlCalendarState.currentDay = {
       date: '2026-02-26',
-      start_balance: 0.00,
-      starting_set: true,
-      note: 'WITHDRAWN - Trading resumes tomorrow'
+      start_balance: 1050.00,
+      starting_set: true
     };
     renderCalendar();
     updateCalendarSummary();
