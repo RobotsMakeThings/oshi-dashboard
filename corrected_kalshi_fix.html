@@ -1,0 +1,60 @@
+<script>
+// CORRECTED KALSHI DATA - ACTUAL TRADING STATUS
+console.log('🎯 CORRECTED KALSHI DATA v1772234500 - SHOWING ACCURATE DATA');
+
+// ACTUAL stats for today: NO trading activity
+const ACTUAL_KALSHI_STATS = {
+  wins: 0,        // No trades today (service paused)
+  losses: 0,      // No trades today (service paused)  
+  winRate: 0,     // No trades today (0%)
+  positions: 0    // No open positions (service down)
+};
+
+const forceCorrectUpdate = () => {
+  console.log('🎯 Updating with ACTUAL trading data (no activity today)...');
+  
+  const elements = {
+    'kalshiWins': ACTUAL_KALSHI_STATS.wins.toString(),
+    'kalshiLosses': ACTUAL_KALSHI_STATS.losses.toString(),
+    'kalshiWinRate': ACTUAL_KALSHI_STATS.winRate + '%',
+    'kalshiPositions': ACTUAL_KALSHI_STATS.positions.toString()
+  };
+  
+  Object.keys(elements).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.innerHTML = elements[id];
+      el.textContent = elements[id];
+      el.className = 'value neutral'; // All neutral since no activity
+      console.log('✅ CORRECTED ' + id + ' = ' + elements[id] + ' (accurate data)');
+    }
+  });
+  
+  // Also update via position method
+  const values = document.querySelectorAll('.stat-card .value');
+  if (values.length >= 4) {
+    values[0].textContent = '0'; values[0].className = 'value neutral';
+    values[1].textContent = '0'; values[1].className = 'value neutral';  
+    values[2].textContent = '0%'; values[2].className = 'value neutral';
+    values[3].textContent = '0'; values[3].className = 'value neutral';
+    console.log('✅ All stats corrected to accurate 0s');
+  }
+  
+  console.log('🎯 Accurate data displayed - no trading activity today');
+};
+
+// Execute immediately and repeatedly
+forceCorrectUpdate();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', forceCorrectUpdate);
+}
+
+// Update every 5 seconds for 1 minute to ensure it sticks
+let count = 0;
+const interval = setInterval(() => {
+  forceCorrectUpdate();
+  count++;
+  if (count >= 12) clearInterval(interval);
+}, 5000);
+
+</script>

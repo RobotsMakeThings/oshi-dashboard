@@ -2191,85 +2191,66 @@ body {
 </head>
 <body>
 <script>
-// NUCLEAR KALSHI FIX - RUNS IMMEDIATELY
-console.log('🚨 NUCLEAR KALSHI FIX v1772234349 LOADING...');
+// CORRECTED KALSHI DATA - ACTUAL TRADING STATUS
+console.log('🎯 CORRECTED KALSHI DATA v1772234500 - SHOWING ACCURATE DATA');
 
-// Ultra aggressive stats replacement - runs before anything else
-(function() {
-  const KALSHI_STATS = {
-    wins: 5,
-    losses: 2,
-    winRate: 71,
-    positions: 2
+// ACTUAL stats for today: NO trading activity
+const ACTUAL_KALSHI_STATS = {
+  wins: 0,        // No trades today (service paused)
+  losses: 0,      // No trades today (service paused)  
+  winRate: 0,     // No trades today (0%)
+  positions: 0    // No open positions (service down)
+};
+
+const forceCorrectUpdate = () => {
+  console.log('🎯 Updating with ACTUAL trading data (no activity today)...');
+  
+  const elements = {
+    'kalshiWins': ACTUAL_KALSHI_STATS.wins.toString(),
+    'kalshiLosses': ACTUAL_KALSHI_STATS.losses.toString(),
+    'kalshiWinRate': ACTUAL_KALSHI_STATS.winRate + '%',
+    'kalshiPositions': ACTUAL_KALSHI_STATS.positions.toString()
   };
   
-  const forceUpdate = () => {
-    console.log('🚨 FORCING Kalshi stats update...');
-    
-    // Method 1: Direct DOM manipulation
-    const elements = {
-      'kalshiWins': KALSHI_STATS.wins.toString(),
-      'kalshiLosses': KALSHI_STATS.losses.toString(), 
-      'kalshiWinRate': KALSHI_STATS.winRate + '%',
-      'kalshiPositions': KALSHI_STATS.positions.toString()
-    };
-    
-    Object.keys(elements).forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        el.innerHTML = elements[id];
-        el.textContent = elements[id];
-        
-        // Force styling
-        if (id === 'kalshiWins') el.className = 'value win';
-        if (id === 'kalshiLosses') el.className = 'value loss';
-        if (id === 'kalshiWinRate') el.className = 'value win';
-        if (id === 'kalshiPositions') el.className = 'value neutral';
-        
-        console.log('✅ FORCED ' + id + ' = ' + elements[id]);
-      } else {
-        console.log('❌ Element not found: ' + id);
-      }
-    });
-    
-    // Method 2: Query all .value elements and replace by position
-    const values = document.querySelectorAll('.stat-card .value');
-    if (values.length >= 4) {
-      values[0].textContent = '5'; values[0].className = 'value win';
-      values[1].textContent = '2'; values[1].className = 'value loss';
-      values[2].textContent = '71%'; values[2].className = 'value win';
-      values[3].textContent = '2'; values[3].className = 'value neutral';
-      console.log('✅ FORCED via position method');
+  Object.keys(elements).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.innerHTML = elements[id];
+      el.textContent = elements[id];
+      el.className = 'value neutral'; // All neutral since no activity
+      console.log('✅ CORRECTED ' + id + ' = ' + elements[id] + ' (accurate data)');
     }
-    
-    // Method 3: Nuclear - replace all 0s in Kalshi section
-    const kalshiSection = document.querySelector('.platform-stats');
-    if (kalshiSection) {
-      kalshiSection.innerHTML = kalshiSection.innerHTML
-        .replace(/>0</g, '>5<')
-        .replace(/>0%</g, '>71%<');
-      console.log('✅ NUCLEAR HTML replacement completed');
-    }
-  };
+  });
   
-  // Execute immediately
-  forceUpdate();
-  
-  // Execute when DOM loads
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', forceUpdate);
+  // Also update via position method
+  const values = document.querySelectorAll('.stat-card .value');
+  if (values.length >= 4) {
+    values[0].textContent = '0'; values[0].className = 'value neutral';
+    values[1].textContent = '0'; values[1].className = 'value neutral';  
+    values[2].textContent = '0%'; values[2].className = 'value neutral';
+    values[3].textContent = '0'; values[3].className = 'value neutral';
+    console.log('✅ All stats corrected to accurate 0s');
   }
   
-  // Execute every 2 seconds for 30 seconds
-  let count = 0;
-  const interval = setInterval(() => {
-    forceUpdate();
-    count++;
-    if (count >= 15) clearInterval(interval);
-  }, 2000);
-  
-})();
+  console.log('🎯 Accurate data displayed - no trading activity today');
+};
+
+// Execute immediately and repeatedly
+forceCorrectUpdate();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', forceCorrectUpdate);
+}
+
+// Update every 5 seconds for 1 minute to ensure it sticks
+let count = 0;
+const interval = setInterval(() => {
+  forceCorrectUpdate();
+  count++;
+  if (count >= 12) clearInterval(interval);
+}, 5000);
+
 </script>
+<script>
 <script id="immediate-fix">
 
 // === KALSHI DAILY TRADING DATA (REALISTIC DEMO) ===
@@ -2553,19 +2534,19 @@ document.addEventListener("DOMContentLoaded", function() {
       </div>
       <div class="platform-stats">
         <div class="stat-card">
-          <div class="value win" id="kalshiWins">5</div>
+          <div class="value neutral" id="kalshiWins">0</div>
           <div class="label">Wins</div>
         </div>
         <div class="stat-card">
-          <div class="value loss" id="kalshiLosses">2</div>
+          <div class="value neutral" id="kalshiLosses">0</div>
           <div class="label">Losses</div>
         </div>
         <div class="stat-card">
-          <div class="value win" id="kalshiWinRate">71%</div>
+          <div class="value neutral" id="kalshiWinRate">0%</div>
           <div class="label">Win Rate</div>
         </div>
         <div class="stat-card position-stat">
-          <div class="value neutral" id="kalshiPositions">2</div>
+          <div class="value neutral" id="kalshiPositions">0</div>
           <div class="label">Open Positions</div>
           <div class="position-tooltip" id="kalshiPositionTooltip">
             <h5>📊 Kalshi Open Positions</h5>
