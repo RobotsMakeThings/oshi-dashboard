@@ -1,19 +1,6 @@
-<!-- NUCLEAR CACHE BUST v1772233528 -->
 <!DOCTYPE html>
-<html data-version="1772233528" lang="en">
+<html lang="en">
 <head>
-<style id="nuclear-stats-fix">
-#kalshiWins, #kalshiLosses, #kalshiWinRate, #kalshiPositions {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-#kalshiWins::after { content: "" !important; }
-#kalshiLosses::after { content: "" !important; }
-#kalshiWinRate::after { content: "" !important; }
-#kalshiPositions::after { content: "" !important; }
-.value:empty::before { content: "0" !important; color: var(--text-primary) !important; }
-</style>
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
@@ -2190,41 +2177,6 @@ body {
 </style>
 </head>
 <body>
-<script id="immediate-fix">
-console.log("🚨 IMMEDIATE FIX v1772233528 LOADING...");
-document.addEventListener("DOMContentLoaded", function() {
-  console.log("🚨 DOM loaded - applying immediate fixes...");
-  
-  // Immediate Kalshi stats fix
-  const kalshiStats = {
-    "kalshiWins": "0",
-    "kalshiLosses": "0", 
-    "kalshiWinRate": "0%",
-    "kalshiPositions": "0"
-  };
-  
-  Object.keys(kalshiStats).forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.textContent = kalshiStats[id];
-      el.className = "value neutral";
-      console.log("✅ Fixed " + id + " to " + kalshiStats[id]);
-    }
-  });
-  
-  // Remove any duplicate weather sections
-  const duplicates = document.querySelectorAll(".prediction-item");
-  duplicates.forEach(item => {
-    const market = item.querySelector(".prediction-market");
-    if (market && (market.textContent.includes("LA Rain") || market.textContent.includes("Chicago Wind"))) {
-      item.remove();
-      console.log("🗑️ Removed duplicate weather: " + market.textContent);
-    }
-  });
-  
-  console.log("✅ Immediate fixes complete");
-});
-</script>
 
 <div class="bg-effects">
   <div class="bg-gradient"></div>
