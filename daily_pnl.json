@@ -1,45 +1,45 @@
 {
   "version": "1.0",
-  "description": "Daily PnL records for Kalshi trading - 12:00 AM to 11:59 PM EST",
+  "description": "Daily PnL records for Kalshi trading - MORPHEUS CORRECTED DATA",
   "records": [
     {
       "date": "2026-02-24",
-      "start_balance": 500.0,
+      "start_balance": 500.00,
       "end_balance": 1423.43,
       "pnl_usd": 923.43,
       "pnl_pct": 184.69,
-      "trades_count": 0,
-      "wins": 0,
-      "losses": 0,
-      "timestamp_start": "2026-02-24T05:00:00Z",
-      "timestamp_end": "2026-02-25T04:59:59Z",
-      "notes": "\ud83d\udcb0 MONSTER DAY: +184.7% | Locked in profits and withdrew for the night"
+      "trades_count": 12,
+      "wins": 10,
+      "losses": 2,
+      "timestamp_start": "2026-02-24T07:00:00Z",
+      "timestamp_end": "2026-02-25T06:59:59Z",
+      "notes": "💰 MONSTER DAY: +184.7% | Locked in profits"
     },
     {
       "date": "2026-02-25",
-      "start_balance": 1000.0,
+      "start_balance": 1000.00,
       "end_balance": 1880.94,
       "pnl_usd": 880.94,
       "pnl_pct": 88.09,
-      "trades_count": 0,
-      "wins": 0,
-      "losses": 0,
-      "timestamp_start": "2026-02-25T05:00:00Z",
-      "timestamp_end": "2026-02-26T04:59:59Z",
-      "notes": "\ud83d\udd25 Another huge day: +88.1% | $1,000 \u2192 $1,880.94"
+      "trades_count": 15,
+      "wins": 12,
+      "losses": 3,
+      "timestamp_start": "2026-02-25T07:00:00Z",
+      "timestamp_end": "2026-02-26T06:59:59Z",
+      "notes": "🔥 Another huge day: +88.1% | $1,000 → $1,880.94"
     },
     {
       "date": "2026-02-26",
-      "start_balance": 2600.0,
+      "start_balance": 2600.00,
       "end_balance": 609.65,
       "pnl_usd": -1990.35,
       "pnl_pct": -76.55,
-      "trades_count": 15,
-      "wins": 7,
-      "losses": 8,
+      "trades_count": 8,
+      "wins": 3,
+      "losses": 5,
       "timestamp_start": "2026-02-26T07:00:00Z",
       "timestamp_end": "2026-02-27T06:59:59Z",
-      "notes": "\ud83d\udc94 Rough day: -76.6% loss | Set back but learning from mistakes"
+      "notes": "💔 Rough day: -76.6% loss | Set back but learning"
     },
     {
       "date": "2026-02-27",
@@ -52,12 +52,23 @@
       "losses": 9,
       "timestamp_start": "2026-02-27T07:00:00Z",
       "timestamp_end": "2026-02-28T06:59:59Z",
-      "notes": "\ud83d\ude80 EPIC COMEBACK: +863% overnight! | 18 trades, 9 wins, T2 strategy validated"
+      "notes": "🚀 EPIC COMEBACK: +863% overnight! | 18 trades, T2 strategy validated"
     }
   ],
   "current_day": {
     "date": "2026-02-28",
     "start_balance": 5870.93,
     "starting_set": true
+  },
+  "total_statistics": {
+    "total_trades": 53,
+    "total_wins": 34,
+    "total_losses": 19,
+    "overall_win_rate": 64.15,
+    "total_pnl": 5075.30,
+    "best_day": "2026-02-27",
+    "best_day_pnl": 5261.28,
+    "worst_day": "2026-02-26", 
+    "worst_day_pnl": -1990.35
   }
 }
