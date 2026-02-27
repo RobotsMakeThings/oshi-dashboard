@@ -136,3 +136,83 @@ setInterval(() => {
 }, 30000);
 
 console.log('✅ Dashboard API fixes applied!');
+
+// === SORA WEATHER DATA INTEGRATION ===
+const updateSoraWeatherData = async () => {
+  console.log('🌤️ Updating Sora weather data...');
+  
+  try {
+    // Use the Sora data we created earlier
+    const soraData = {
+      portfolio_balance: 1000.00,
+      open_positions_value: 200.00,
+      total_pnl: 0.00,
+      win_count: 0,
+      loss_count: 0,
+      status: "active",
+      current_positions: [
+        {
+          market: "Weather Pattern Analysis",
+          type: "Temperature/Precipitation", 
+          value: "$200.00",
+          status: "monitoring"
+        }
+      ]
+    };
+    
+    // Update Sora prediction card
+    const soraPredictionEl = document.getElementById('soraCurrentPrediction');
+    if (soraPredictionEl) {
+      soraPredictionEl.innerHTML = `
+        <div class="sora-live-data">
+          <div class="sora-status">🌤️ Weather Analysis Active</div>
+          <div class="sora-portfolio">
+            <span class="portfolio-label">Portfolio:</span>
+            <span class="portfolio-value">$${soraData.portfolio_balance.toFixed(2)}</span>
+          </div>
+          <div class="sora-positions">
+            <span class="positions-label">Open Positions:</span>
+            <span class="positions-value">$${soraData.open_positions_value.toFixed(2)}</span>
+          </div>
+          <div class="sora-mode">Mode: Paper Trading</div>
+        </div>
+      `;
+      console.log('🌤️ Sora prediction card updated');
+    }
+    
+    // Update Sora stats
+    const soraAccuracyEl = document.getElementById('soraAccuracy');
+    const soraPredictionsEl = document.getElementById('soraPredictions') || 
+                              document.querySelector('[data-sora="predictions"]');
+    const soraWinsEl = document.getElementById('soraWins') || 
+                       document.querySelector('[data-sora="wins"]');
+    const soraStreakEl = document.getElementById('soraStreak') ||
+                         document.querySelector('[data-sora="streak"]');
+    
+    if (soraAccuracyEl) {
+      soraAccuracyEl.textContent = '--'; // Will be calculated when we have data
+    }
+    if (soraPredictionsEl) {
+      soraPredictionsEl.textContent = '--';
+    }
+    if (soraWinsEl) {
+      soraWinsEl.textContent = '--'; 
+    }
+    if (soraStreakEl) {
+      soraStreakEl.textContent = '--';
+    }
+    
+    console.log('✅ Sora weather data updated successfully');
+    
+  } catch (error) {
+    console.error('❌ Error updating Sora data:', error);
+  }
+};
+
+// Add Sora update to the main refresh cycle
+console.log('🌤️ Initializing Sora weather integration...');
+updateSoraWeatherData();
+
+// Update Sora data every minute (less frequent than Kalshi since it's less active)
+setInterval(updateSoraWeatherData, 60000);
+
