@@ -1,6 +1,6 @@
-<!-- FINAL CLEANUP v1772233769 -->
+<!-- NUCLEAR CACHE BUST v1772233528 -->
 <!DOCTYPE html>
-<html data-version="1772233769" lang="en">
+<html data-version="1772233528" lang="en">
 <head>
 <style id="nuclear-stats-fix">
 #kalshiWins, #kalshiLosses, #kalshiWinRate, #kalshiPositions {
@@ -2191,76 +2191,6 @@ body {
 </head>
 <body>
 <script id="immediate-fix">
-
-// === SORA STATS NUCLEAR FIX ===
-const soraStatsNuclearFix = () => {
-  console.log('🌤️ NUCLEAR SORA STATS FIX ACTIVATED');
-  
-  const soraData = {
-    'soraAccuracy': '100%',
-    'soraPredictions': '2', 
-    'soraWins': '2',
-    'soraStreak': '2'
-  };
-  
-  // Method 1: Direct updates
-  Object.keys(soraData).forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.innerHTML = soraData[id];
-      el.textContent = soraData[id];
-      console.log(`✅ Fixed ${id}: ${soraData[id]}`);
-    }
-  });
-  
-  // Method 2: Query selectors
-  document.querySelectorAll('.sora-stat-value').forEach((el, index) => {
-    const values = ['100%', '2', '2', '2'];
-    if (values[index]) {
-      el.innerHTML = values[index];
-      el.textContent = values[index];
-      console.log(`🔧 Fixed stat card ${index}: ${values[index]}`);
-    }
-  });
-  
-  // Method 3: Nuclear - replace any dashes in Sora section
-  const soraSection = document.querySelector('.sora-weather-section');
-  if (soraSection) {
-    const dashElements = soraSection.querySelectorAll('.sora-stat-value');
-    dashElements.forEach((el, index) => {
-      if (el.textContent === '--' || el.textContent === '--%' || el.textContent.trim() === '') {
-        const correctValues = ['100%', '2', '2', '2'];
-        el.innerHTML = correctValues[index] || '2';
-        el.textContent = correctValues[index] || '2';
-        console.log(`🚨 Nuclear fixed dash in position ${index}`);
-      }
-    });
-  }
-  
-  // Method 4: Force visibility and styling
-  document.querySelectorAll('.sora-stat-value').forEach(el => {
-    el.style.display = 'block';
-    el.style.visibility = 'visible';
-    el.style.opacity = '1';
-    el.style.color = 'var(--text-primary)';
-  });
-  
-  console.log('✅ Sora nuclear stats fix complete');
-};
-
-// Execute immediately
-soraStatsNuclearFix();
-
-// Execute every 3 seconds
-setInterval(soraStatsNuclearFix, 3000);
-
-// Also run when anything changes
-const observer = new MutationObserver(soraStatsNuclearFix);
-const soraSection = document.querySelector('.sora-weather-section');
-if (soraSection) {
-  observer.observe(soraSection, { childList: true, subtree: true });
-}
-
 console.log("🚨 IMMEDIATE FIX v1772233528 LOADING...");
 document.addEventListener("DOMContentLoaded", function() {
   console.log("🚨 DOM loaded - applying immediate fixes...");
@@ -2482,3 +2412,35 @@ document.addEventListener("DOMContentLoaded", function() {
     </div>
   </div>
 </div>
+      <div class="prediction-details">
+        <span class="prediction-direction up">82° to 83°</span>
+        <span class="prediction-confidence">WIN</span>
+        <span class="prediction-time">Feb 26, 5:33am</span>
+      </div>
+      <span class="prediction-result win">+$167.22</span>
+    </div>
+    <div class="prediction-item">
+      <div class="prediction-market">Phoenix Temperature</div>
+      <div class="prediction-details">
+        <span class="prediction-direction up">92° to 93°</span>
+        <span class="prediction-confidence">WIN</span>
+        <span class="prediction-time">Feb 27, 8:44am</span>
+      </div>
+      <span class="prediction-result win">+$254.02</span>
+    </div>
+    <div class="prediction-summary">
+      <div style="display: flex; justify-content: space-between; padding: 12px 16px; background: var(--bg-glass); border-radius: 8px; margin-top: 8px;">
+        <span style="color: var(--text-secondary);">Total Profits:</span>
+        <span style="color: var(--win); font-weight: 600;">+$421.24</span>
+      </div>
+    </div>
+  </div>
+</div>
+          <div class="prediction-details">
+            <span class="prediction-direction up">Above 75°F</span>
+            <span class="prediction-confidence">87%</span>
+            <span class="prediction-time">2h ago</span>
+          </div>
+          <span class="prediction-result win">WIN</span>
+        </div>
+        <div class="prediction-item">
