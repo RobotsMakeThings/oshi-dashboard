@@ -2284,7 +2284,7 @@ body {
     <div class="section-header">
       <h3>🌤️ SORA WEATHER PREDICTIONS</h3>
       <span style="font-size: 12px; color: var(--text-dim);">AI-powered weather trading signals</span>
-      <span style="font-size: 11px; background: var(--win); color: var(--bg-deep); padding: 4px 12px; border-radius: 20px; font-weight: 600; margin-left: 10px;">LIVE TRADING</span>
+      <span style="font-size: 11px; background: var(--oshi-teal); color: var(--bg-deep); padding: 4px 12px; border-radius: 20px; font-weight: 600; margin-left: 10px;">COMING SOON</span>
     </div>
     <div class="sora-weather-grid">
       <!-- Current Prediction -->
@@ -2301,7 +2301,7 @@ body {
         <div class="sora-prediction-card" id="soraCurrentPrediction">
           <div class="prediction-loading">
             <div class="loader"></div>
-            <p>🌤️ <strong>Live Weather Trading</strong><br>💰 Total Profit: <strong>+$421.24</strong><br>🎯 Perfect Record: 2/2 Wins</p>
+            <p>🌤️ Weather analysis active<br>Portfolio: $1,200<br>Paper trading mode</p>
           </div>
         </div>
       </div>
@@ -2331,36 +2331,12 @@ body {
       </div>
     </div>
     
-<!-- Recent Weather Predictions -->
-<div class="sora-predictions-list-container">
-  <h5>🏆 SORA'S WINNING TRADES</h5>
-  <div class="sora-predictions-list" id="soraPredictionsList">
-    <div class="prediction-item">
-      <div class="prediction-market">Las Vegas Temperature</div>
-      <div class="prediction-details">
-        <span class="prediction-direction up">82° to 83°</span>
-        <span class="prediction-confidence">WIN</span>
-        <span class="prediction-time">Feb 26, 5:33am</span>
-      </div>
-      <span class="prediction-result win">+$167.22</span>
-    </div>
-    <div class="prediction-item">
-      <div class="prediction-market">Phoenix Temperature</div>
-      <div class="prediction-details">
-        <span class="prediction-direction up">92° to 93°</span>
-        <span class="prediction-confidence">WIN</span>
-        <span class="prediction-time">Feb 27, 8:44am</span>
-      </div>
-      <span class="prediction-result win">+$254.02</span>
-    </div>
-    <div class="prediction-summary">
-      <div style="display: flex; justify-content: space-between; padding: 12px 16px; background: var(--bg-glass); border-radius: 8px; margin-top: 8px;">
-        <span style="color: var(--text-secondary);">Total Profits:</span>
-        <span style="color: var(--win); font-weight: 600;">+$421.24</span>
-      </div>
-    </div>
-  </div>
-</div>
+    <!-- Recent Weather Predictions -->
+    <div class="sora-predictions-list-container">
+      <h5>📈 RECENT PREDICTIONS</h5>
+      <div class="sora-predictions-list" id="soraPredictionsList">
+        <div class="prediction-item">
+          <div class="prediction-market">NYC Temperature</div>
           <div class="prediction-details">
             <span class="prediction-direction up">Above 75°F</span>
             <span class="prediction-confidence">87%</span>
