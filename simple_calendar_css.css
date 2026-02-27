@@ -1,0 +1,147 @@
+
+/* === SIMPLE 5-DAY CALENDAR === */
+.calendar-simple-section {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 24px;
+  margin: 20px 0;
+}
+
+.calendar-header h3 {
+  color: var(--text-primary);
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.calendar-header p {
+  color: var(--text-secondary);
+  margin: 0 0 20px 0;
+  font-size: 14px;
+}
+
+.five-day-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.day-card {
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.day-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--oshi-teal);
+}
+
+.day-card.today {
+  border: 2px solid var(--oshi-teal);
+  box-shadow: 0 0 20px var(--oshi-teal-glow);
+}
+
+.day-date {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.day-pnl {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  font-family: 'Space Mono', monospace;
+}
+
+.day-pnl.profit {
+  color: var(--win);
+  text-shadow: 0 0 8px rgba(0, 212, 170, 0.3);
+}
+
+.day-pnl.massive-profit {
+  color: var(--win);
+  font-size: 20px;
+  text-shadow: 0 0 15px var(--oshi-teal-glow);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.day-pnl.loss {
+  color: var(--loss);
+  text-shadow: 0 0 8px rgba(255, 92, 138, 0.3);
+}
+
+.day-pnl.neutral {
+  color: var(--text-secondary);
+}
+
+.day-pct {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+.five-day-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.summary-stat {
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 12px;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 16px;
+  font-family: 'Space Mono', monospace;
+}
+
+.stat-value.profit {
+  color: var(--win);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@media (max-width: 768px) {
+  .five-day-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .five-day-summary {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .day-card {
+    padding: 12px;
+  }
+  
+  .day-pnl {
+    font-size: 16px;
+  }
+}
+

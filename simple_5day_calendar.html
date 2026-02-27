@@ -1,0 +1,175 @@
+<!-- SIMPLE 5-DAY CALENDAR SECTION -->
+<div class="calendar-simple-section">
+  <div class="calendar-header">
+    <h3>📅 LAST 5 DAYS TRADING</h3>
+    <p>Daily P&L Performance</p>
+  </div>
+  
+  <div class="five-day-grid">
+    <div class="day-card">
+      <div class="day-date">Feb 24</div>
+      <div class="day-pnl profit">+$923</div>
+      <div class="day-pct">+184.7%</div>
+    </div>
+    
+    <div class="day-card">
+      <div class="day-date">Feb 25</div>
+      <div class="day-pnl profit">+$881</div>
+      <div class="day-pct">+88.1%</div>
+    </div>
+    
+    <div class="day-card">
+      <div class="day-date">Feb 26</div>
+      <div class="day-pnl loss">-$1,990</div>
+      <div class="day-pct">-76.5%</div>
+    </div>
+    
+    <div class="day-card">
+      <div class="day-date">Feb 27</div>
+      <div class="day-pnl massive-profit">+$5,261</div>
+      <div class="day-pct">+863.0%</div>
+    </div>
+    
+    <div class="day-card today">
+      <div class="day-date">Feb 28</div>
+      <div class="day-pnl neutral">$0</div>
+      <div class="day-pct">PAUSED</div>
+    </div>
+  </div>
+  
+  <div class="five-day-summary">
+    <div class="summary-stat">
+      <span class="stat-label">5-Day Total:</span>
+      <span class="stat-value profit">+$5,075</span>
+    </div>
+    <div class="summary-stat">
+      <span class="stat-label">Win Days:</span>
+      <span class="stat-value">3/5</span>
+    </div>
+    <div class="summary-stat">
+      <span class="stat-label">Best Day:</span>
+      <span class="stat-value">Feb 27 (+863%)</span>
+    </div>
+  </div>
+</div>
+
+<style>
+.calendar-simple-section {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 24px;
+  margin: 20px 0;
+}
+
+.calendar-header h3 {
+  color: var(--text-primary);
+  margin: 0 0 8px 0;
+  font-size: 18px;
+}
+
+.calendar-header p {
+  color: var(--text-secondary);
+  margin: 0 0 20px 0;
+}
+
+.five-day-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.day-card {
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.day-card:hover {
+  transform: translateY(-2px);
+}
+
+.day-card.today {
+  border: 2px solid var(--oshi-teal);
+  box-shadow: 0 0 20px var(--oshi-teal-glow);
+}
+
+.day-date {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.day-pnl {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.day-pnl.profit {
+  color: var(--win);
+}
+
+.day-pnl.massive-profit {
+  color: var(--win);
+  font-size: 20px;
+  text-shadow: 0 0 10px var(--win);
+}
+
+.day-pnl.loss {
+  color: var(--loss);
+}
+
+.day-pnl.neutral {
+  color: var(--text-secondary);
+}
+
+.day-pct {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.five-day-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.summary-stat {
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  color: var(--text-secondary);
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.stat-value.profit {
+  color: var(--win);
+}
+
+@media (max-width: 768px) {
+  .five-day-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .five-day-summary {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+</style>
