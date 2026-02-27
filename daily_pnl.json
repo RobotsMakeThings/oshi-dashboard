@@ -4,7 +4,7 @@
   "records": [
     {
       "date": "2026-02-24",
-      "start_balance": 500.00,
+      "start_balance": 500.0,
       "end_balance": 1423.43,
       "pnl_usd": 923.43,
       "pnl_pct": 184.69,
@@ -13,11 +13,11 @@
       "losses": 0,
       "timestamp_start": "2026-02-24T05:00:00Z",
       "timestamp_end": "2026-02-25T04:59:59Z",
-      "notes": "💰 MONSTER DAY: +184.7% | Locked in profits and withdrew for the night"
+      "notes": "\ud83d\udcb0 MONSTER DAY: +184.7% | Locked in profits and withdrew for the night"
     },
     {
       "date": "2026-02-25",
-      "start_balance": 1000.00,
+      "start_balance": 1000.0,
       "end_balance": 1880.94,
       "pnl_usd": 880.94,
       "pnl_pct": 88.09,
@@ -26,12 +26,38 @@
       "losses": 0,
       "timestamp_start": "2026-02-25T05:00:00Z",
       "timestamp_end": "2026-02-26T04:59:59Z",
-      "notes": "🔥 Another huge day: +88.1% | $1,000 → $1,880.94"
+      "notes": "\ud83d\udd25 Another huge day: +88.1% | $1,000 \u2192 $1,880.94"
+    },
+    {
+      "date": "2026-02-26",
+      "start_balance": 2600.0,
+      "end_balance": 609.65,
+      "pnl_usd": -1990.35,
+      "pnl_pct": -76.55,
+      "trades_count": 15,
+      "wins": 7,
+      "losses": 8,
+      "timestamp_start": "2026-02-26T07:00:00Z",
+      "timestamp_end": "2026-02-27T06:59:59Z",
+      "notes": "\ud83d\udc94 Rough day: -76.6% loss | Set back but learning from mistakes"
+    },
+    {
+      "date": "2026-02-27",
+      "start_balance": 609.65,
+      "end_balance": 5870.93,
+      "pnl_usd": 5261.28,
+      "pnl_pct": 863.04,
+      "trades_count": 18,
+      "wins": 9,
+      "losses": 9,
+      "timestamp_start": "2026-02-27T07:00:00Z",
+      "timestamp_end": "2026-02-28T06:59:59Z",
+      "notes": "\ud83d\ude80 EPIC COMEBACK: +863% overnight! | 18 trades, 9 wins, T2 strategy validated"
     }
   ],
   "current_day": {
-    "date": "2026-02-26",
-    "start_balance": 2600.00,
+    "date": "2026-02-28",
+    "start_balance": 5870.93,
     "starting_set": true
   }
 }

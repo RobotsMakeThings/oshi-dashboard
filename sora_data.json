@@ -1,0 +1,31 @@
+{
+  "timestamp": "2026-02-27T21:22:03.906747+00:00",
+  "system_name": "SoraWinds Weather Trading",
+  "status": "active",
+  "mode": "paper_trading",
+  "portfolio": {
+    "balance": 1000.0,
+    "starting_balance": 1000.0,
+    "pnl": 0.0,
+    "pnl_pct": 0.0,
+    "open_positions_value": 200.0
+  },
+  "performance": {
+    "total_trades": 0,
+    "wins": 0,
+    "losses": 0,
+    "win_rate": "0.0%"
+  },
+  "current_positions": [
+    {
+      "market": "Weather Pattern Analysis",
+      "type": "Temperature/Precipitation",
+      "value": "$200.00",
+      "status": "monitoring",
+      "confidence": "analyzing"
+    }
+  ],
+  "last_activity": "2026-02-27T21:22:03.906747+00:00",
+  "analysis_status": "\ud83c\udf24\ufe0f Monitoring atmospheric conditions for trading opportunities",
+  "next_scan": "Continuous monitoring active"
+}
